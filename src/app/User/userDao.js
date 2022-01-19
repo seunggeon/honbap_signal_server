@@ -1,11 +1,12 @@
+// 데이터 가져오기 원본
 
-// 휴대폰 번호 체크
-async function selectUserPhoneNum(connection, hashedPhoneNum) {
+// 비밀번호 체크
+async function selectUserPassword(connection, hashedPassword) {
     const query = `
-        select exists(select phoneNum from User where phoneNum = ?) as exist;
+        select exists(select password from User where password = ?) as exist;
         `;
 
-    const row = await connection.query(query, hashedPhoneNum);
+    const row = await connection.query(query, hashedPassword);
 
     return row[0];
 }
@@ -64,7 +65,7 @@ async function updateUserProfile(connection, params) {
 }
 
 module.exports = {
-    selectUserPhoneNum,
+    selectUserPassword,
     selectUserNickname,
     insertUserInfo,
     selectUserId,
