@@ -20,50 +20,50 @@ module.exports = {
     }, // ?
   
     //Request error
-    SIGNUP_PHONENUM_EMPTY: {
+    SIGNUP_USERID_EMPTY: {
       isSuccess: false,
       code: 2001,
-      message: "휴대폰 번호를 입력해주세요.",
+      message: "아이디를 입력해주세요.",
     },
-    SIGNUP_PHONENUM_ERROR_TYPE: {
+    SIGNUP_USERID_LENGTH: {
       isSuccess: false,
       code: 2002,
-      message: "휴대폰 번호는 숫자만 입력하세요.",
+      message: "아이디는 5~20자 이내로 입력해주세요.",
     },
-    SIGNUP_AUTH_EMPTY: {
+    SIGNUP_NICKNAME_EMPTY: {
       isSuccess: false,
       code: 2003,
-      message: "인증번호를 입력하세요.",
+      message: "닉네임을 입력해주세요.",
     },
-    SIGNUP_AUTH_NOT_MATCH: {
+    SIGNUP_NICKNAME_LENGTH: {
       isSuccess: false,
       code: 2004,
-      message: "인증번호가 올바르지 않습니다.",
+      message: "닉네임은 10자 이내로 입력해주세요.",
     },
-    USER_ID_IS_EMPTY: {
+    SIGNUP_EMAIL_EMPTY: {
       isSuccess: false,
       code: 2005,
-      message: "userId값이 입력되지 않았습니다.",
+      message: "이메일을 입력해주세요.",
     },
-    USER_ID_NOT_MATCH: {
+    SIGNUP_EMAIL_LENGTH: {
       isSuccess: false,
       code: 2006,
-      message: "userId가 적절하지 않습니다.",
+      message: "이메일은 30자 이내로 입력해주세요.",
     },
-    SELECTED_USER_IS_NOT_EXIST: {
+    SIGNUP_EMAIL_TYPE_ERROR: {
       isSuccess: false,
       code: 2007,
-      message: "조회하려는 유저는 존재하지 않는 유저입니다.",
+      message: "이메일의 형식이 잘못되었습니다.",
     },
-    USER_STATUS_IS_NOT_VALID: {
+    SIGNUP_PHONENUMBER_EMPTY: {
       isSuccess: false,
       code: 2008,
-      message: "조회할 수 없는 유저입니다.",
+      message: "핸드폰 번호를 입력해주세요.",
     },
-    LOCATION_IS_NOT_EXIST: {
+    SIGNUP_PHONENUMBER_LENGTH: {
       isSuccess: false,
       code: 2009,
-      message: "존재하지 않는 지역입니다.",
+      message: "핸드폰 번호는 11자 이내로 입력해주세요.",
     },
     MERCHANDISE_IS_NOT_EXIST: {
       isSuccess: false,
@@ -217,9 +217,27 @@ module.exports = {
     },
   
     // Response error
+    SIGNUP_REDUNDANT_USERID : { 
+      isSuccess : false, 
+      code : 3001, 
+      message :"이미 존재하는 아이디입니다." },
+    SIGNUP_REDUNDANT_NICKNAME : { 
+      isSuccess : false, 
+      code : 3002, 
+      message :"이미 존재하는 닉네임입니다." },
+    SIGNUP_REDUNDANT_EMAIL : { 
+      isSuccess : false, 
+      code : 3003, 
+      message :"이미 존재하는 이메일입니다." },
+    SIGNUP_REDUNDANT_PHONENUMBER : { 
+      isSuccess : false, 
+      code : 3004, 
+      message :"이미 존재하는 번호입니다." },
+  
+
     MODIFY_REDUNDANT_NICKNAME: {
       isSuccess: false,
-      code: 3001,
+      code: 3050,
       message: "이미 존재하는 닉네임입니다.",
     },
   

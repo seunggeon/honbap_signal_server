@@ -1,4 +1,4 @@
-const express = require("./config/express");
+/*const express = require("./config/express");
 //const { logger } = require("./config/winston");
 
 let port;
@@ -10,5 +10,11 @@ if (process.env.NODE_ENV === "development") {
 } else {
   port = 3001;
 }
+express().listen(port);
+logger.info(`${process.env.NODE_ENV} - API Server Start At Port ${port}`);*/
+const express = require('./config/express');
+const {logger} = require('./config/winston');
+
+const port = 3000;
 express().listen(port);
 logger.info(`${process.env.NODE_ENV} - API Server Start At Port ${port}`);

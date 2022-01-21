@@ -11,8 +11,22 @@ async function selectUserPassword(connection, hashedPassword) {
     return row[0];
 }
 
-// 닉네임 체크
-async function selectUserNickname(connection, nickName) {
+// 위는 수정이 필요한 부분입니다 :
+
+
+
+// user ID 체크 : 데옹
+async function existUserId(connection, userId) {
+    const query = `
+      select exists(select userId from User where userId = ?) as exist;
+      `;
+  
+    const row = await connection.query(query, userId);
+  
+    return row[0];
+}
+// 닉네임 체크 : 데옹
+async function existUserNickname(connection, nickName) {
     const query = `
       select exists(select nickName from User where nickName = ?) as exist;
       `;
@@ -21,18 +35,52 @@ async function selectUserNickname(connection, nickName) {
   
     return row[0];
 }
+// 이메일 체크 : 데옹
+async function existUserEmail(connection, email) {
+    const query = `
+      select exists(select email from User where email = ?) as exist;
+      `;
+  
+    const row = await connection.query(query, email);
+  
+    return row[0];
+}
+// 핸드폰 번호 체크 : 데옹
+async function existUserPhone(connection, phoneNum) {
+    const query = `
+      select exists(select phoneNum from User where phoneNum = ?) as exist;
+      `;
+  
+    const row = await connection.query(query, phoneNum);
+  
+    return row[0];
+}
+
+
+
+// userId 회원 조회
+async function selectUserId(connection, userId) {
+    const selectUserIdQuery = `
+                   SELECT userId, userName
+                   FROM User
+                   WHERE userId = ?;
+                   `;
+    const [userRow] = await connection.query(selectUserIdQuery, userId);
+    return userRow;
+  }
+
 
 // 회원가입
 async function insertUserInfo(connection, params) {
-    const query = `
+/*    const query = `
                   insert into User(phoneNum, nickName)
                   values (?, ?);
-                  `;
-/*    const query = `
+                  `;*/
+    const query = `
                   insert into User(userId, password, userName, nickName, email, phoneNum, sex, createAt, updateAt)
                   values (?, ?, ?, ?, ?, ?, DEFAULT, DEFAULT);
                   `;
-                  */
+                  
     const row = await connection.query(query, params);
   
     return row;
@@ -66,7 +114,10 @@ async function updateUserProfile(connection, params) {
 
 module.exports = {
     selectUserPassword,
-    selectUserNickname,
+    existUserId,
+    existUserNickname,
+    existUserEmail,
+    existUserPhone,
     insertUserInfo,
     selectUserId,
     updateUserProfile,
