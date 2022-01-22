@@ -1,5 +1,5 @@
 const express = require("./config/express");
-//const { logger } = require("./config/winston");
+const { logger } = require("./config/winston");
 
 let port;
 

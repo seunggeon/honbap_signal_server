@@ -1,11 +1,11 @@
-//const jwtMiddleware = require("../../../config/jwtMiddleware");
+const jwtMiddleware = require("../../../config/jwtMiddleware");
 const userProvider = require("../../app/User/userProvider");
 const userService = require("../../app/User/userService");
 const baseResponse = require("../../../config/baseResponseStatus");
 const { response, errResponse } = require("../../../config/response");
-//const logger = require("../../../config/winston");
+const logger = require("../../../config/winston");
 const crypto = require("crypto");
-
+const regexEmail = require("regex-email");
 //controller : 판단 부분.
 /**
  * API No. 1
@@ -48,3 +48,66 @@ exports.createUser = async function (req, res) {
     //   response(baseResponse.SUCCESS, { userId: userIdx[0].id, jwt: token })
     // );
   }}
+
+
+/**
+ * API No. 2
+ * API Name : 유저 생성 (회원가입) API
+ * [POST] /app/users
+ */
+
+// 데옹의 앱 자체 회원가입 API
+exports.postUsers = async function (req, res) {
+  const {userId, password, userName, nickName, email, phoneNum, sex} = req.body;
+
+  // userId checking and print error message
+
+  // 빈 값 체크
+  if(!userId)
+    return res.send(response(baseResponse.SIGNUP_USERID_EMPTY));
+  // 길이 체크
+  if(userId.length > 20 || userId.length < 5)
+    return res.send(response(baseResponse.SIGNUP_USERID_LENGTH));
+
+  // nickName
+
+  // 빈 값 체크
+  if(!nickName)
+    return res.send(response(baseResponse.SIGNUP_NICKNAME_EMPTY));
+  if(nickName.length > 10)
+    return res.send(response(baseResponse.SIGNUP_NICKNAME_LENGTH));
+
+  // email
+
+  // 빈 값 체크
+  if (!email)
+    return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
+  // 길이 체크
+  if (email.length > 30)
+    return res.send(response(baseResponse.SIGNUP_EMAIL_LENGTH));
+  // 형식 체크 (by 정규표현식)
+  if (!regexEmail.test(email))
+    return res.send(response(baseResponse.SIGNUP_EMAIL_TYPE_ERROR));
+
+  // phoneNum
+
+  // 빈 값 체크
+  if(!phoneNum)
+    return res.send(response(baseResponse.SIGNUP_PHONENUMBER_EMPTY));
+  // 길이체크
+  if(phoneNum.length > 11)
+    return res.send(response(baseResponse.SIGNUP_PHONENUMBER_LENGTH));
+  
+  
+  const signUpResponse = await userService.createUsers(
+    userId,
+    password,
+    userName,
+    nickName,
+    email,
+    phoneNum,
+    sex
+  );
+
+  return res.send(signUpResponse);
+}

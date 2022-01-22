@@ -1,8 +1,10 @@
 const { logger } = require("../../../config/winston");
 const { pool } = require("../../../config/database");
 const secret_config = require("../../../config/secret");
+
 const userProvider = require("./userProvider");
 const userDao = require("./userDao");
+
 const baseResponse = require("../../../config/baseResponseStatus");
 const { response } = require("../../../config/response");
 const { errResponse } = require("../../../config/response");
@@ -24,7 +26,7 @@ exports.createUser = async function (hashedPhoneNum, nickname) {
       await connection.commit();
   
       connection.release();
-      return result;s
+      return result;
     } catch (err) {
       await connection.rollback();
       connection.release();
@@ -32,6 +34,50 @@ exports.createUser = async function (hashedPhoneNum, nickname) {
       return errResponse(baseResponse.DB_ERROR);
     }
   };
+
+  // 회원가입 : 데옹
+  // 오류 코드는 나중에 수정할 예정
+  exports.createUsers = async function (userId, password, userName, nickName, email, phoneNum, sex) {
+    try {
+        const userIdRows = await userProvider.userIdCheck(userId);
+        if (userIdRows.length > 0)
+            return errResponse(baseResponse.SIGNUP_REDUNDANT_USERID);
+
+        const nickNameRows = await userProvider.nicknameCheck(nickName);
+        if (nickNameRows.length > 0)
+            return errResponse(baseResponse.SIGNUP_REDUNDANT_NICKNAME);
+
+        const emailRows = await userProvider.emailCheck(email);
+        if (emailRows.length > 0)
+            return errResponse(baseResponse.SIGNUP_REDUNDANT_EMAIL);
+
+        const phoneNumRows = await userProvider.phoneNumCheck(phoneNum);
+        if (phoneNumRows.length > 0)
+            return errResponse(baseResponse.SIGNUP_REDUNDANT_PHONENUMBER);
+
+        // 비밀번호 암호화
+        const hashedPassword = await crypto
+            .createHash("sha512")
+            .update(password)
+            .digest("hex");
+
+        // 쿼리문에 사용할 변수 값을 배열 형태로 전달
+        const insertUserInfoParams = [userId, hashedPassword, userName, nickName, email, phoneNum, sex];
+
+        const connection = await pool.getConnection(async (conn) => conn);
+
+        const userIdResult = await userDao.insertUserInfo(connection, insertUserInfoParams);
+        console.log(`추가된 회원 : ${userIdResult[0].insertId}`)
+        connection.release();
+        return response(baseResponse.SUCCESS);
+
+    } catch (err) {
+        logger.error(`App - createUsers Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+};
+
+
   
   exports.updateUserProfile = async function (photoURL, nickname, userId) {
     const connection = await pool.getConnection(async (conn) => conn);
