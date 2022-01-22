@@ -10,8 +10,8 @@ module.exports = function (app) {
     app.post("/user/signup", user.postUsers);
   
     // 3. 회원 프로필 조회 API
-    app.get("/user/:selectedId/profile", jwtMiddleware, user.getUserProfile);
+    //app.get("/user/:selectedId/profile", jwtMiddleware, user.getUserProfile);
   
     // 4. 회원 프로필 수정 API
-    app.patch("/user/profile", jwtMiddleware, user.updateUserProfile);
+    //app.patch("/user/profile", jwtMiddleware, user.updateUserProfile);
   };

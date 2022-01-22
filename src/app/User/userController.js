@@ -97,7 +97,7 @@ exports.postUsers = async function (req, res) {
   
   
   const signUpResponse = await userService.createUser(
-    email,
+    userId,
     password,
     userName,
     nickName,
