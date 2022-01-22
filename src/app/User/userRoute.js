@@ -14,4 +14,4 @@ module.exports = function (app) {
   
     // 4. 회원 프로필 수정 API
     //app.patch("/user/profile", jwtMiddleware, user.updateUserProfile);
-  };
+};

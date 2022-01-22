@@ -3,7 +3,7 @@ const userProvider = require("../../app/User/userProvider");
 const userService = require("../../app/User/userService");
 const baseResponse = require("../../../config/baseResponseStatus");
 const { response, errResponse } = require("../../../config/response");
-//const logger = require("../../../config/winston");
+const logger = require("../../../config/winston");
 const crypto = require("crypto");
 const regexEmail = require("regex-email");
 //controller : 판단 부분.
@@ -78,6 +78,7 @@ exports.postUsers = async function (req, res) {
     return res.send(response(baseResponse.SIGNUP_NICKNAME_LENGTH));
 
   // email
+
   // 빈 값 체크
   if (!email)
     return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
@@ -89,6 +90,8 @@ exports.postUsers = async function (req, res) {
     return res.send(response(baseResponse.SIGNUP_EMAIL_TYPE_ERROR));
 
   // phoneNum
+
+  // 빈 값 체크
   if(!phoneNum)
     return res.send(response(baseResponse.SIGNUP_PHONENUMBER_EMPTY));
   // 길이체크
@@ -96,7 +99,7 @@ exports.postUsers = async function (req, res) {
     return res.send(response(baseResponse.SIGNUP_PHONENUMBER_LENGTH));
   
   
-  const signUpResponse = await userService.createUser(
+  const signUpResponse = await userService.createUsers(
     userId,
     password,
     userName,
