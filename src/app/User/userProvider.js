@@ -61,7 +61,7 @@ exports.phoneNumCheck = async function (phoneNum) {
 };
 
 
-
+/*
 // 비밀 번호 체크
 exports.passwordCheck = async function (hashedPassword) {
     try {
@@ -91,7 +91,7 @@ exports.nicknameCheck = async function (nickName) {
       return errResponse(baseResponse.DB_ERROR);
     }
 };
-
+*/
 // 유저 ID 조회
 exports.getUserId = async function (hashedPassword) {
     try {
