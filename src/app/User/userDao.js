@@ -18,42 +18,50 @@ async function selectUserPassword(connection, hashedPassword) {
 // user ID 체크 : 데옹
 async function existUserId(connection, userId) {
     const query = `
-      select exists(select userId from User where userId = ?) as exist;
+      SELECT userId
+      FROM User
+      WHERE userId = ?;
       `;
   
-    const row = await connection.query(query, userId);
-  
-    return row[0];
+    const [row] = await connection.query(query, userId);
+    
+    return row;
 }
 // 닉네임 체크 : 데옹
 async function existUserNickname(connection, nickName) {
     const query = `
-      select exists(select nickName from User where nickName = ?) as exist;
+      SELECT nickName
+      FROM User
+      WHERE nickName = ?;
       `;
   
-    const row = await connection.query(query, nickName);
+    const [row] = await connection.query(query, nickName);
   
-    return row[0];
+    return row;
 }
 // 이메일 체크 : 데옹
 async function existUserEmail(connection, email) {
     const query = `
-      select exists(select email from User where email = ?) as exist;
+      SELECT email
+      FROM User
+      WHERE email = ?;
       `;
   
-    const row = await connection.query(query, email);
+    const [row] = await connection.query(query, email);
   
-    return row[0];
+    return row;
 }
 // 핸드폰 번호 체크 : 데옹
 async function existUserPhone(connection, phoneNum) {
     const query = `
-      select exists(select phoneNum from User where phoneNum = ?) as exist;
+      SELECT phoneNum
+      FROM User
+      WHERE phoneNum = ?;
       `;
   
-    const row = await connection.query(query, phoneNum);
+    const [row] = await connection.query(query, phoneNum);
   
-    return row[0];
+    return row;
 }
 
 
@@ -72,13 +80,9 @@ async function selectUserId(connection, userId) {
 
 // 회원가입
 async function insertUserInfo(connection, params) {
-/*    const query = `
-                  insert into User(phoneNum, nickName)
-                  values (?, ?);
-                  `;*/
     const query = `
-                  insert into User(userId, password, userName, nickName, email, phoneNum, sex, createAt, updateAt)
-                  values (?, ?, ?, ?, ?, ?, DEFAULT, DEFAULT);
+                  insert into User(userId, password, userName, nickName, email, phoneNum, sex)
+                  values (?, ?, ?, ?, ?, ?, ?);
                   `;
                   
     const row = await connection.query(query, params);

@@ -43,7 +43,7 @@ exports.createUser = async function (hashedPhoneNum, nickname) {
         if (userIdRows.length > 0)
             return errResponse(baseResponse.SIGNUP_REDUNDANT_USERID);
 
-        const nickNameRows = await userProvider.nicknameCheck(nickName);
+        const nickNameRows = await userProvider.nickNameCheck(nickName);
         if (nickNameRows.length > 0)
             return errResponse(baseResponse.SIGNUP_REDUNDANT_NICKNAME);
 

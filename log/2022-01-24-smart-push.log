@@ -1,0 +1,21 @@
+{"level":"info","message":"undefined - API Server Start At Port 3001","timestamp":"2022-01-24 00:09:36"}
+{"level":"error","message":"userIdCheck Provider error\n: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'email = 'admin'' at line 3","timestamp":"2022-01-24 00:10:00"}
+{"level":"error","message":"App - createUsers Service error\n: baseResponse is not defined","timestamp":"2022-01-24 00:10:00"}
+{"level":"info","message":"undefined - API Server Start At Port 3001","timestamp":"2022-01-24 00:11:20"}
+{"level":"error","message":"nicknameCheck Provider error\n: userDao.selectUserNickname is not a function","timestamp":"2022-01-24 00:11:24"}
+{"level":"error","message":"App - createUsers Service error\n: baseResponse is not defined","timestamp":"2022-01-24 00:11:24"}
+{"level":"info","message":"undefined - API Server Start At Port 3001","timestamp":"2022-01-24 00:17:42"}
+{"level":"error","message":"App - createUsers Service error\n: userProvider.nicknameCheck is not a function","timestamp":"2022-01-24 00:17:52"}
+{"level":"info","message":"undefined - API Server Start At Port 3001","timestamp":"2022-01-24 00:18:28"}
+{"level":"info","message":"undefined - API Server Start At Port 3001","timestamp":"2022-01-24 00:22:00"}
+{"level":"error","message":"App - createUsers Service error\n: Column count doesn't match value count at row 1","timestamp":"2022-01-24 00:22:04"}
+{"level":"info","message":"undefined - API Server Start At Port 3001","timestamp":"2022-01-24 00:22:47"}
+{"level":"error","message":"App - createUsers Service error\n: Column count doesn't match value count at row 1","timestamp":"2022-01-24 00:22:50"}
+{"level":"info","message":"undefined - API Server Start At Port 3001","timestamp":"2022-01-24 00:26:58"}
+{"level":"error","message":"App - createUsers Service error\n: Column count doesn't match value count at row 1","timestamp":"2022-01-24 00:27:01"}
+{"level":"info","message":"undefined - API Server Start At Port 3001","timestamp":"2022-01-24 00:32:55"}
+{"level":"error","message":"App - createUsers Service error\n: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 2","timestamp":"2022-01-24 00:32:58"}
+{"level":"error","message":"App - createUsers Service error\n: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 2","timestamp":"2022-01-24 00:33:17"}
+{"level":"info","message":"undefined - API Server Start At Port 3001","timestamp":"2022-01-24 00:34:06"}
+{"level":"error","message":"App - createUsers Service error\n: Column count doesn't match value count at row 1","timestamp":"2022-01-24 00:34:10"}
+{"level":"info","message":"undefined - API Server Start At Port 3001","timestamp":"2022-01-24 00:34:55"}
