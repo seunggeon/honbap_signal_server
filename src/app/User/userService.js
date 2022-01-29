@@ -33,19 +33,19 @@ exports.createUser = async function (hashedPhoneNum, nickname) {
       logger.error(`createUser Service error\n: ${err.message}`);
       return errResponse(baseResponse.DB_ERROR);
     }
-  };
+};
 
   // 회원가입 : 데옹
   // 오류 코드는 나중에 수정할 예정
-  exports.createUsers = async function (userId, password, userName, nickName, email, phoneNum, sex) {
+exports.createUsers = async function (userId, password, userName, email, phoneNum, sex) {
     try {
         const userIdRows = await userProvider.userIdCheck(userId);
         if (userIdRows.length > 0)
             return errResponse(baseResponse.SIGNUP_REDUNDANT_USERID);
-
+/*
         const nickNameRows = await userProvider.nickNameCheck(nickName);
         if (nickNameRows.length > 0)
-            return errResponse(baseResponse.SIGNUP_REDUNDANT_NICKNAME);
+            return errResponse(baseResponse.SIGNUP_REDUNDANT_NICKNAME);*/
 
         const emailRows = await userProvider.emailCheck(email);
         if (emailRows.length > 0)
@@ -62,7 +62,7 @@ exports.createUser = async function (hashedPhoneNum, nickname) {
             .digest("hex");
 
         // 쿼리문에 사용할 변수 값을 배열 형태로 전달
-        const insertUserInfoParams = [userId, hashedPassword, userName, nickName, email, phoneNum, sex];
+        const insertUserInfoParams = [userId, hashedPassword, userName, email, phoneNum, sex];
 
         const connection = await pool.getConnection(async (conn) => conn);
 
@@ -78,8 +78,7 @@ exports.createUser = async function (hashedPhoneNum, nickname) {
 };
 
 
-  
-  exports.updateUserProfile = async function (photoURL, nickname, userId) {
+exports.updateUserProfile = async function (photoURL, nickname, userId) {
     const connection = await pool.getConnection(async (conn) => conn);
     try {
       await connection.beginTransaction();
@@ -98,4 +97,5 @@ exports.createUser = async function (hashedPhoneNum, nickname) {
       logger.error(`updateUserProfile Service error\n: ${err.message}`);
       return errResponse(baseResponse.DB_ERROR);
     }
-  };
+};
+

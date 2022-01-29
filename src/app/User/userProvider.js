@@ -23,18 +23,6 @@ exports.userIdCheck = async function (userId) {
     return errResponse(baseResponse.DB_ERROR);
   }
 };
-exports.nickNameCheck = async function (nickName) {
-  try {
-    const connection = await pool.getConnection(async (conn) => conn);
-    const nickNameCheckResult = await userDao.existUserNickname(connection, nickName);
-    connection.release();
-
-    return nickNameCheckResult;
-  } catch (err) {
-    logger.error(`nicknameCheck Provider error\n: ${err.message}`);
-    return errResponse(baseResponse.DB_ERROR);
-  }
-};
 exports.emailCheck = async function (email) {
   try {
     const connection = await pool.getConnection(async (conn) => conn);
@@ -59,6 +47,21 @@ exports.phoneNumCheck = async function (phoneNum) {
     return errResponse(baseResponse.DB_ERROR);
   }
 };
+
+//======================================
+//mypage
+/*exports.nickNameCheck = async function (nickName) {
+  try {
+    const connection = await pool.getConnection(async (conn) => conn);
+    const nickNameCheckResult = await userDao.existUserNickname(connection, nickName);
+    connection.release();
+
+    return nickNameCheckResult;
+  } catch (err) {
+    logger.error(`nicknameCheck Provider error\n: ${err.message}`);
+    return errResponse(baseResponse.DB_ERROR);
+  }
+};*/
 
 
 /*

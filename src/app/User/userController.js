@@ -58,8 +58,7 @@ exports.createUser = async function (req, res) {
 
 // 데옹의 앱 자체 회원가입 API
 exports.postUsers = async function (req, res) {
-  const {userId, password, userName, nickName, email, phoneNum, sex} = req.body;
-
+  const {userId, password, userName, email, phoneNum, sex} = req.body;
   // userId checking and print error message
 
   // 빈 값 체크
@@ -70,13 +69,13 @@ exports.postUsers = async function (req, res) {
     return res.send(response(baseResponse.SIGNUP_USERID_LENGTH));
 
   // nickName
-
+/*
   // 빈 값 체크
   if(!nickName)
     return res.send(response(baseResponse.SIGNUP_NICKNAME_EMPTY));
   if(nickName.length > 10)
     return res.send(response(baseResponse.SIGNUP_NICKNAME_LENGTH));
-
+*/
   // email
 
   // 빈 값 체크
@@ -103,7 +102,7 @@ exports.postUsers = async function (req, res) {
     userId,
     password,
     userName,
-    nickName,
+//    nickName,
     email,
     phoneNum,
     sex
