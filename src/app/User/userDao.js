@@ -27,18 +27,6 @@ async function existUserId(connection, userId) {
     
     return row;
 }
-// 닉네임 체크 : 데옹
-async function existUserNickname(connection, nickName) {
-    const query = `
-      SELECT nickName
-      FROM User
-      WHERE nickName = ?;
-      `;
-  
-    const [row] = await connection.query(query, nickName);
-  
-    return row;
-}
 // 이메일 체크 : 데옹
 async function existUserEmail(connection, email) {
     const query = `
@@ -81,9 +69,11 @@ async function selectUserId(connection, userId) {
 // 회원가입
 async function insertUserInfo(connection, params) {
     const query = `
-                  insert into User(userId, password, userName, nickName, email, phoneNum, sex)
-                  values (?, ?, ?, ?, ?, ?, ?);
+                  insert into User(userId, password, userName, email, phoneNum, sex)
+                  values (?, ?, ?, ?, ?, ?);
+
                   `;
+
                   
     const row = await connection.query(query, params);
   
@@ -107,7 +97,7 @@ async function selectUserId(connection, hashedPhoneNum) {
 async function updateUserProfile(connection, params) {
     const query = `
                   update User 
-                  set password = ?, nickname = ?, email = ?, updateAt = default  
+                  set password = ?, email = ?, updateAt = default  
                   where userId = ?;
                   `;
 
@@ -115,6 +105,35 @@ async function updateUserProfile(connection, params) {
 
     return row;
 }
+
+//==================================================
+// user mypage
+/*
+async function selectUserProfile(connection, userIdx) {
+    const query = `
+                select 
+                from User u, UserProfile up
+                where userIdx = ?
+                `;
+    const row = await connection.query(query, userIdx);
+
+    return row;
+}*/
+
+// 닉네임 체크 : 데옹
+async function existUserNickname(connection, nickName) {
+  const query = `
+    SELECT nickName
+    FROM User
+    WHERE nickName = ?;
+    `;
+
+  const [row] = await connection.query(query, nickName);
+
+  return row;
+}
+
+
 
 module.exports = {
     selectUserPassword,
@@ -125,4 +144,5 @@ module.exports = {
     insertUserInfo,
     selectUserId,
     updateUserProfile,
+    //selectUserProfile,
   };
