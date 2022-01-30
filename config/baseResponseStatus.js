@@ -65,30 +65,30 @@ module.exports = {
       code: 2009,
       message: "핸드폰 번호는 11자 이내로 입력해주세요.",
     },
-    MERCHANDISE_IS_NOT_EXIST: {
+    SIGNUP_PASSWORD_EMPTY: {
       isSuccess: false,
       code: 2010,
-      message: "존재하지 않는 상품입니다.",
+      message: "비밀번호를 입력해주세요.",
     },
-    MERCHANDISE_IS_DELETED: {
+    SIGNUP_USERNAME_EMPTY: {
       isSuccess: false,
       code: 2011,
-      message: "삭제된 상품입니다.",
+      message: "이름을 입력해주세요.",
     },
     CATEGORY_IS_NOT_EXIST: {
       isSuccess: false,
       code: 2012,
       message: "존재하지 않는 카테고리입니다.",
     },
-    CREATE_AFTER_3_DAYS: {
+    SIGNUP_BIRTH_EMPTY: {
       isSuccess: false,
       code: 2013,
-      message: "생성일로부터 3일 이후에 끌어올리기가 가능합니다.",
+      message: "생년월일을 입력해주세요.",
     },
-    PULL_UP_IMPOSSIBLE: {
+    SIGNUP_SEX_EMPTY: {
       isSuccess: false,
       code: 2014,
-      message: "끌어올리기를 한지 3일이 지나지 않았습니다.",
+      message: "성별을 입력해주세요.",
     },
     USERID_IS_NOT_HOST: {
       isSuccess: false,

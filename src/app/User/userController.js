@@ -57,7 +57,7 @@ exports.createUser = async function (req, res) {
  */
 
 exports.postUsers = async function (req, res) {
-  const {userId, password, userName, email, phoneNum, sex} = req.body;
+  const {userId, password, userName, birth, email, phoneNum, sex} = req.body;
   // userId checking and print error message
 
   // 빈 값 체크
@@ -87,12 +87,23 @@ exports.postUsers = async function (req, res) {
   // 길이체크
   if(phoneNum.length > 11)
     return res.send(response(baseResponse.SIGNUP_PHONENUMBER_LENGTH));
+
+  // 빈 값 체크
+  if(!password)
+    return res.send(response(baseResponse.SIGNUP_PASSWORD_EMPTY));  // 2011
+  if(!userName)
+    return res.send(response(baseResponse.SIGNUP_USERNAME_EMPTY));  // 2012
+  if(!birth)
+    return res.send(response(baseResponse.SIGNUP_BIRTH_EMPTY));     // 2013
+  if(!sex)
+    return res.send(response(baseResponse.SIGNUP_SEX_EMPTY));       // 2014
   
   
   const signUpResponse = await userService.createUsers(
     userId,
     password,
     userName,
+    birth,
     email,
     phoneNum,
     sex

@@ -53,7 +53,7 @@ async function selectUserId(connection, userId) {
 // 회원가입 *** 5 ***
 async function insertUserInfo(connection, params) {
     const query = `
-                  insert into User(userId, password, userName, email, phoneNum, sex)
+                  insert into User(userId, password, userName, birth, email, phoneNum, sex)
                   values (?, ?, ?, ?, ?, ?);
 
                   `;
