@@ -4,13 +4,9 @@ const { logger } = require("../../../config/winston");
 
 const userDao = require("./userDao");
 
-// provider : read business logic 처리 
-// Dao.js에서 선언된 원본을 가지고 호출해서 사용. 데이터 받아서 controller 에게 넘겨줌.
-// 실제로 어떻게 가동해서 쓸지는 controller에서 결정.
 
 
-// checking for postUsers : 데옹
-// error message는 추후에 추가할 예정입니다.
+// 회원 정보 확인
 exports.userIdCheck = async function (userId) {
   try {
     const connection = await pool.getConnection(async (conn) => conn);
@@ -50,7 +46,9 @@ exports.phoneNumCheck = async function (phoneNum) {
 
 //======================================
 //mypage
-/*exports.nickNameCheck = async function (nickName) {
+
+// 닉네임 체크
+exports.nickNameCheck = async function (nickName) {
   try {
     const connection = await pool.getConnection(async (conn) => conn);
     const nickNameCheckResult = await userDao.existUserNickname(connection, nickName);
@@ -61,7 +59,23 @@ exports.phoneNumCheck = async function (phoneNum) {
     logger.error(`nicknameCheck Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
   }
-};*/
+};
+
+// 유저 IDX 조회
+exports.getUserIdx = async function (userId) {
+    try {
+      const connection = await pool.getConnection(async (conn) => conn);
+  
+      const userIdxCheckResult = await userDao.selectUserIdx(connection, userId);
+      connection.release();
+  
+      return userIdxCheckResult[0];
+    } catch (err) {
+      logger.error(`getUserInfo Provider error\n: ${err.message}`);
+      return errResponse(baseResponse.DB_ERROR);
+    }
+};
+
 
 
 /*
@@ -78,34 +92,4 @@ exports.passwordCheck = async function (hashedPassword) {
         logger.error(`passwordCheck Provider error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     }
-};
-
-// 닉네임 체크
-exports.nicknameCheck = async function (nickName) {
-    try {
-      const connection = await pool.getConnection(async (conn) => conn);
-  
-      const result = await userDao.selectUserNickname(connection, nickName);
-      connection.release();
-  
-      return result;
-    } catch (err) {
-      logger.error(`nicknameCheck Provider error\n: ${err.message}`);
-      return errResponse(baseResponse.DB_ERROR);
-    }
-};
-*/
-// 유저 ID 조회
-exports.getUserId = async function (hashedPassword) {
-    try {
-      const connection = await pool.getConnection(async (conn) => conn);
-  
-      const result = await userDao.selectUserId(connection, hashedPassword);
-      connection.release();
-  
-      return result;
-    } catch (err) {
-      logger.error(`getUserInfo Provider error\n: ${err.message}`);
-      return errResponse(baseResponse.DB_ERROR);
-    }
-};
+};*/
