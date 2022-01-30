@@ -1,60 +1,45 @@
 // 데이터 가져오기 원본
 
-// 비밀번호 체크
-async function selectUserPassword(connection, hashedPassword) {
-    const query = `
-        select exists(select password from User where password = ?) as exist;
-        `;
-
-    const row = await connection.query(query, hashedPassword);
-
-    return row[0];
-}
-
-// 위는 수정이 필요한 부분입니다 :
-
-
-
-// user ID 체크 : 데옹
+//=========================================================
+// 회원가입 API
+// user ID 체크 *** 1 ***
 async function existUserId(connection, userId) {
     const query = `
-      SELECT userId
-      FROM User
-      WHERE userId = ?;
-      `;
+                  SELECT userId
+                  FROM User
+                  WHERE userId = ?;
+                  `;
   
     const [row] = await connection.query(query, userId);
     
     return row;
 }
-// 이메일 체크 : 데옹
+// 이메일 체크 *** 2 ***
 async function existUserEmail(connection, email) {
     const query = `
-      SELECT email
-      FROM User
-      WHERE email = ?;
-      `;
+                  SELECT email
+                  FROM User
+                  WHERE email = ?;
+                  `;
   
     const [row] = await connection.query(query, email);
   
     return row;
 }
-// 핸드폰 번호 체크 : 데옹
+// 핸드폰 번호 체크 *** 3 ***
 async function existUserPhone(connection, phoneNum) {
     const query = `
-      SELECT phoneNum
-      FROM User
-      WHERE phoneNum = ?;
-      `;
+                  SELECT phoneNum
+                  FROM User
+                  WHERE phoneNum = ?;
+                  `;
   
     const [row] = await connection.query(query, phoneNum);
   
     return row;
 }
 
-
-
-// userId 회원 조회
+// userId 회원 조회 *** 4 ***
 async function selectUserId(connection, userId) {
     const selectUserIdQuery = `
                    SELECT userId, userName
@@ -65,8 +50,7 @@ async function selectUserId(connection, userId) {
     return userRow;
   }
 
-
-// 회원가입
+// 회원가입 *** 5 ***
 async function insertUserInfo(connection, params) {
     const query = `
                   insert into User(userId, password, userName, email, phoneNum, sex)
@@ -80,20 +64,20 @@ async function insertUserInfo(connection, params) {
     return row;
 }
 
-// 유저 ID 조회
-async function selectUserId(connection, hashedPhoneNum) {
+// 유저 인덱스 조회 *** 6 ***
+async function selectUserIdx(connection, userId) {
     const query = `
-                  select userId
+                  select userIdx
                   from User
-                  where phoneNum = ?;
+                  where userId = ?;
                   `;
   
-    const row = await connection.query(query, hashedPhoneNum);
+    const row = await connection.query(query, userId);
   
     return row[0];
 }
 
-  // 유저 정보 수정
+  // 유저 개인 정보 수정 *** 7 ***
 async function updateUserProfile(connection, params) {
     const query = `
                   update User 
@@ -107,42 +91,45 @@ async function updateUserProfile(connection, params) {
 }
 
 //==================================================
-// user mypage
-/*
-async function selectUserProfile(connection, userIdx) {
+// user profile
+
+// 유저 프로필 입력 *** 8 ***
+async function insertUserProfile(connection, params) {
     const query = `
-                select 
-                from User u, UserProfile up
-                where userIdx = ?
-                `;
-    const row = await connection.query(query, userIdx);
+                  INSERT INTO UserProfile (nickName, profileImg, taste, hateFood, interest, avgSpeed, preferArea, mbti, userIntroduce)
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                  `;
+    const row = await connection.query(query, params);
 
     return row;
-}*/
-
-// 닉네임 체크 : 데옹
-async function existUserNickname(connection, nickName) {
-  const query = `
-    SELECT nickName
-    FROM User
-    WHERE nickName = ?;
-    `;
-
-  const [row] = await connection.query(query, nickName);
-
-  return row;
 }
+
+// 닉네임 체크 *** 9 ***
+async function existUserNickname(connection, nickName) {
+    const query = `
+                  SELECT nickName
+                  FROM User
+                  WHERE nickName = ?;
+                  `;
+
+    const [row] = await connection.query(query, nickName);
+
+    return row;
+}
+
+// 유저 개인정보 조회
+
 
 
 
 module.exports = {
-    selectUserPassword,
-    existUserId,
-    existUserNickname,
-    existUserEmail,
-    existUserPhone,
-    insertUserInfo,
-    selectUserId,
-    updateUserProfile,
-    //selectUserProfile,
+    existUserId, // 1
+    existUserEmail, // 2
+    existUserPhone, // 3
+    selectUserId, // 4
+    insertUserInfo, // 5
+    selectUserIdx, // 6
+    updateUserProfile, // 7
+    insertUserProfile, // 8
+    existUserNickname, // 9
   };

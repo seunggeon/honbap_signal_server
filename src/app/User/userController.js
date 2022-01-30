@@ -53,10 +53,9 @@ exports.createUser = async function (req, res) {
 /**
  * API No. 2
  * API Name : 유저 생성 (회원가입) API
- * [POST] /app/users
+ * [POST] /app/user/signup
  */
 
-// 데옹의 앱 자체 회원가입 API
 exports.postUsers = async function (req, res) {
   const {userId, password, userName, email, phoneNum, sex} = req.body;
   // userId checking and print error message
@@ -68,14 +67,6 @@ exports.postUsers = async function (req, res) {
   if(userId.length > 20 || userId.length < 5)
     return res.send(response(baseResponse.SIGNUP_USERID_LENGTH));
 
-  // nickName
-/*
-  // 빈 값 체크
-  if(!nickName)
-    return res.send(response(baseResponse.SIGNUP_NICKNAME_EMPTY));
-  if(nickName.length > 10)
-    return res.send(response(baseResponse.SIGNUP_NICKNAME_LENGTH));
-*/
   // email
 
   // 빈 값 체크
@@ -102,11 +93,57 @@ exports.postUsers = async function (req, res) {
     userId,
     password,
     userName,
-//    nickName,
     email,
     phoneNum,
     sex
   );
 
   return res.send(signUpResponse);
+}
+
+/**
+ * API No. 3
+ * API Name : 유저 프로필 등록 API
+ * [POST] /app/user/signup/plusInfo
+ */
+
+exports.postUserProfile = async function (req, res) {
+  const {nickName, profileImg, taste, hateFood, interest, avgSpeed, preferArea, mbti, userIntroduce} = req.body;
+  // userId checking and print error message
+
+  // nickName
+  // 빈 값 체크
+  if(!nickName)
+    return res.send(response(baseResponse.SIGNUP_NICKNAME_EMPTY));
+  if(nickName.length > 10)
+    return res.send(response(baseResponse.SIGNUP_NICKNAME_LENGTH));
+
+  const userProfileResponse = await userService.createUserProfile(
+    nickName,
+    profileImg,
+    taste,
+    hateFood,
+    interest,
+    avgSpeed,
+    preferArea,
+    mbti,
+    userIntroduce
+  );
+
+  return res.send(userProfileResponse);
+}
+
+/**
+ * API No. 4
+ * API Name : 유저 인덱스 조회 API
+ * [POST] /app/user/signup/:userId
+ */
+
+exports.getUserIdx = async function (req, res) {
+  const userId = req.params.userId;
+
+  if(!userId) return res.send(errResponse(baseResponse.SIGNUP_USERID_EMPTY));
+
+  const userIdxResponse = await userProvider.getUserIdx(userId);
+  return res.send(userIdxResponse);
 }
