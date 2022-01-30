@@ -15,29 +15,9 @@ const { connect } = require("http2");
 
 // Service: Create, Update, Delete 비즈니스 로직 처리
 
-exports.createUser = async function (hashedPhoneNum, nickname) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    try {
-      await connection.beginTransaction();
-  
-      const params = [hashedPhoneNum, nickname];
-      const result = await userDao.insertUserInfo(connection, params);
-  
-      await connection.commit();
-  
-      connection.release();
-      return result;
-    } catch (err) {
-      await connection.rollback();
-      connection.release();
-      logger.error(`createUser Service error\n: ${err.message}`);
-      return errResponse(baseResponse.DB_ERROR);
-    }
-};
-
-  // 회원가입 : 데옹
+  // 회원가입
   // 오류 코드는 나중에 수정할 예정
-exports.createUsers = async function (userId, password, userName, email, phoneNum, sex) {
+exports.createUsers = async function (userId, password, userName, birth, email, phoneNum, sex) {
     try {
         const userIdRows = await userProvider.userIdCheck(userId);
         if (userIdRows.length > 0)
@@ -62,7 +42,7 @@ exports.createUsers = async function (userId, password, userName, email, phoneNu
             .digest("hex");
 
         // 쿼리문에 사용할 변수 값을 배열 형태로 전달
-        const insertUserInfoParams = [userId, hashedPassword, userName, email, phoneNum, sex];
+        const insertUserInfoParams = [userId, hashedPassword, userName, birth, email, phoneNum, sex];
 
         const connection = await pool.getConnection(async (conn) => conn);
 
