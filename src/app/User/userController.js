@@ -90,13 +90,13 @@ exports.postUsers = async function (req, res) {
 
   // 빈 값 체크
   if(!password)
-    return res.send(response(baseResponse.SIGNUP_PASSWORD_EMPTY));  // 2011
+    return res.send(response(baseResponse.SIGNUP_PASSWORD_EMPTY));  // 2010
   if(!userName)
-    return res.send(response(baseResponse.SIGNUP_USERNAME_EMPTY));  // 2012
+    return res.send(response(baseResponse.SIGNUP_USERNAME_EMPTY));  // 2011
   if(!birth)
-    return res.send(response(baseResponse.SIGNUP_BIRTH_EMPTY));     // 2013
+    return res.send(response(baseResponse.SIGNUP_BIRTH_EMPTY));     // 2012
   if(!sex)
-    return res.send(response(baseResponse.SIGNUP_SEX_EMPTY));       // 2014
+    return res.send(response(baseResponse.SIGNUP_SEX_EMPTY));       // 2013
   
   
   const signUpResponse = await userService.createUsers(
@@ -119,7 +119,7 @@ exports.postUsers = async function (req, res) {
  */
 
 exports.postUserProfile = async function (req, res) {
-  const {nickName, profileImg, taste, hateFood, interest, avgSpeed, preferArea, mbti, userIntroduce} = req.body;
+  const {userIdx, nickName, profileImg, taste, hateFood, interest, avgSpeed, preferArea, mbti, userIntroduce} = req.body;
   // userId checking and print error message
 
   // nickName
@@ -130,6 +130,7 @@ exports.postUserProfile = async function (req, res) {
     return res.send(response(baseResponse.SIGNUP_NICKNAME_LENGTH));
 
   const userProfileResponse = await userService.createUserProfile(
+    userIdx,
     nickName,
     profileImg,
     taste,

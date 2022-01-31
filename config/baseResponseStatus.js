@@ -75,20 +75,20 @@ module.exports = {
       code: 2011,
       message: "이름을 입력해주세요.",
     },
-    CATEGORY_IS_NOT_EXIST: {
-      isSuccess: false,
-      code: 2012,
-      message: "존재하지 않는 카테고리입니다.",
-    },
     SIGNUP_BIRTH_EMPTY: {
       isSuccess: false,
-      code: 2013,
+      code: 2012,
       message: "생년월일을 입력해주세요.",
     },
     SIGNUP_SEX_EMPTY: {
       isSuccess: false,
-      code: 2014,
+      code: 2013,
       message: "성별을 입력해주세요.",
+    },
+    CATEGORY_IS_NOT_EXIST: {
+      isSuccess: false,
+      code: 2014,
+      message: "존재하지 않는 카테고리입니다.",
     },
     USERID_IS_NOT_HOST: {
       isSuccess: false,

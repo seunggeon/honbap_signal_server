@@ -58,14 +58,14 @@ exports.createUsers = async function (userId, password, userName, birth, email, 
 };
 
 // 유저 프로필 등록 : 데옹
-exports.createUserProfile = async function (nickName, profileImg, taste, hateFood, interest, avgSpeed, preferArea, mbti, userIntroduce) {
+exports.createUserProfile = async function (userIdx, nickName, profileImg, taste, hateFood, interest, avgSpeed, preferArea, mbti, userIntroduce) {
   try {
       const nickNameRows = await userProvider.nickNameCheck(nickName);
       if (nickNameRows.length > 0)
           return errResponse(baseResponse.SIGNUP_REDUNDANT_NICKNAME);
 
       // 쿼리문에 사용할 변수 값을 배열 형태로 전달
-      const insertUserProfileParams = [nickName, profileImg, taste, hateFood, interest, avgSpeed, preferArea, mbti, userIntroduce];
+      const insertUserProfileParams = [userIdx, nickName, profileImg, taste, hateFood, interest, avgSpeed, preferArea, mbti, userIntroduce];
 
       const connection = await pool.getConnection(async (conn) => conn);
 
@@ -75,7 +75,7 @@ exports.createUserProfile = async function (nickName, profileImg, taste, hateFoo
       return response(baseResponse.SUCCESS);
 
   } catch (err) {
-      logger.error(`App - createUsers Service error\n: ${err.message}`);
+      logger.error(`App - createUserProfile Service error\n: ${err.message}`);
       return errResponse(baseResponse.DB_ERROR);
   }
 };

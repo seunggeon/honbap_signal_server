@@ -68,15 +68,16 @@ exports.getUserIdx = async function (userId) {
   
       const userIdxCheckResult = await userDao.selectUserIdx(connection, userId);
       connection.release();
+
+      //console.log(userIdxCheckResult[0])
   
       return userIdxCheckResult[0];
+
     } catch (err) {
       logger.error(`getUserInfo Provider error\n: ${err.message}`);
       return errResponse(baseResponse.DB_ERROR);
     }
 };
-
-
 
 /*
 // 비밀 번호 체크
