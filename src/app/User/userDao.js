@@ -53,7 +53,8 @@ async function selectUserId(connection, userId) {
 // 회원가입 *** 5 ***
 async function insertUserInfo(connection, params) {
     const query = `
-                  insert into User(userId, password, userName, birth, email, phoneNum, sex)
+                  insert into 
+                  User(userId, password, userName, birth, email, phoneNum, sex)
                   values (?, ?, ?, ?, ?, ?, ?);
 
                   `;
@@ -96,8 +97,10 @@ async function updateUserProfile(connection, params) {
 // 유저 프로필 입력 *** 8 ***
 async function insertUserProfile(connection, params) {
     const query = `
-                  INSERT INTO UserProfile (userIdx, nickName, profileImg, taste, hateFood, interest, avgSpeed, preferArea, mbti, userIntroduce)
-                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                  INSERT INTO UserProfile 
+                  (userIdx, nickName, profileImg, taste, hateFood, interest, avgSpeed, preferArea, mbti, userIntroduce)
+                  VALUES
+                  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                   `;
     const row = await connection.query(query, params);
 
@@ -118,7 +121,9 @@ async function existUserNickname(connection, nickName) {
 }
 
 // 유저 개인정보 조회 *** 10 ***
-//async function selectUserInfo(connection, userIdx)
+async function selectUserInfo(connection, userIdx) {
+    
+}
 
 
 
