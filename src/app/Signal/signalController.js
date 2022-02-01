@@ -12,7 +12,7 @@ const regexEmail = require("regex-email");
 
 /**
  * API No. 
- * API Name : 로그인 API (비회원일 경우 회원가입 후 로그인)
+ * API Name : 로그인 API
  * [POST] /user/login
  */
 exports.postSignal = async function (req, res) {
@@ -30,3 +30,15 @@ exports.postSignal = async function (req, res) {
 
     return res.send(signalup);
 }
+
+/**
+ * API No. 
+ * API Name : 시그널 조회 API
+ * [POST] /user/login
+ */
+exports.getSignalList = async function (req, res) {
+    const userIdx = req.params.userIdx;
+
+    const signalList = await signalProvider.getSignalList(userIdx);
+    return res.send(signalList);
+} 
