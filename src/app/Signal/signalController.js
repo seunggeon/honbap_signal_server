@@ -12,7 +12,7 @@ const regexEmail = require("regex-email");
 
 /**
  * API No. 
- * API Name : 로그인 API
+ * API Name : 시그널 등록 API
  * [POST] /user/login
  */
 exports.postSignal = async function (req, res) {
@@ -38,7 +38,39 @@ exports.postSignal = async function (req, res) {
  */
 exports.getSignalList = async function (req, res) {
     const userIdx = req.params.userIdx;
-
     const signalList = await signalProvider.getSignalList(userIdx);
     return res.send(signalList);
 } 
+
+/**
+ * API No. 
+ * API Name : 시그널 정보 수정 API
+ * [POST] /user/login
+ */
+exports.postSignalList = async function(req, res) {
+    const userIdx = req.params.userIdx;
+    const {sigPromiseTime, sigPromiseArea, sigStart} = req.body;
+
+    const sigInfo = {
+        sigPromiseTime,
+        sigPromiseArea,
+        sigStart,
+    }
+    const modifySigList = await signalService.modifySigList(
+        sigPromiseTime,
+        sigPromiseArea,
+        sigStart,
+        userIdx
+    )
+    return res.send(sigInfo);
+}
+
+exports.postSigMatch = async function (req, res) {
+    const userIdx = req.params.userIdx;
+    const {matchIdx} = req.body;
+
+    const matching = await signalService.matching(
+        matchIdx, userIdx
+    )
+    return res.send(baseResponse.SUCCESS);
+}

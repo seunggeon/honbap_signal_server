@@ -2,8 +2,8 @@ const { logger } = require("../../../config/winston");
 const { pool } = require("../../../config/database");
 const secret_config = require("../../../config/secret");
 
-const userProvider = require("./signalProvider");
-const userDao = require("./signalDao");
+const signalProvider = require("./signalProvider");
+const signalDao = require("./signalDao");
 
 const baseResponse = require("../../../config/baseResponseStatus");
 const { response } = require("../../../config/response");
@@ -27,6 +27,37 @@ exports.createSignal = async function (userIdx, matchIdx, sigPromiseTime, sigPro
     }
     catch (err) {
         logger.error(`App - createSignal Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}
+
+// 시그널 정보 수정
+exports.modifySigList = async function (sigPromiseTime ,sigPromiseArea, sigStart, userIdx) {
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const params = [sigPromiseTime, sigPromiseArea, sigStart, userIdx];
+        const result = await signalDao.updateSignal(connection, params);
+        connection.release();
+
+        //return response(baseResponse.SUCCESS);
+        return result;
+
+    } catch (err) {
+        logger.error(`App - modifySigList Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}
+
+exports.matching = async function (matchIdx, userIdx) {
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const params = [matchIdx, userIdx];
+        const result = await signalDao.updateSigMatch(connection, params);
+
+        connection.release;
+        return result;
+    } catch (err) {
+        logger.error(`App - matching Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     }
 }

@@ -29,12 +29,12 @@ async function insertSignal(connection, params) {
 async function selectSignalList(connection, userIdx) {
     const query = `
                   SELECT up1.nickName as userNickName, up2.nickName as matchingNickName, 
-                         s.sigPromiseTime, s.sigPromiseArea, s.sigStart, s.updateAt 
+                         s.sigPromiseTime, s.sigPromiseArea, s.sigStart, s.updateAt
                   FROM
                         (select nickName from UserProfile AS upa, Signaling AS s where upa.userIdx = s.userIdx) AS up1,
                         (select nickName from UserProfile AS upb, Signaling AS s where upb.userIdx = s.matchIdx) AS up2,
                          Signaling AS s
-                  WHERE s.userIdx = ? AND sigStatus = 1
+                  WHERE s.userIdx = ? AND s.sigStatus = 1
                   ORDER BY s.signalIdx DESC;
                   `
 
@@ -44,7 +44,23 @@ async function selectSignalList(connection, userIdx) {
 
 // 시그널 수정 *** 3 ***
 async function updateSignal(connection, params) {
-    const query = ''
+    const query = `
+                  UPDATE Signaling
+                  SET sigPromiseTime = ?, sigPromiseArea = ?, sigStart = ?, updateAt = default
+                  where userIdx = ? AND sigStatus = 1;
+                  `
+    const [row] = await connection.query(query, params);
+
+    return row;
+}
+
+// 시그널 매칭 상대 업데이트 *** 4 ***
+async function updateSigMatch(connection, params) {
+    const query = `
+                  UPDATE Signaling
+                  SET matchIdx = ?
+                  where userIdx = ? AND sigStatus = 1;
+                  `
     const [row] = await connection.query(query, params);
 
     return row;
@@ -54,4 +70,5 @@ module.exports = {
     insertSignal, // 1
     selectSignalList, // 2
     updateSignal, // 3
+    updateSigMatch // 4
 };
