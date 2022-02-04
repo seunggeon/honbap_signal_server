@@ -4,7 +4,7 @@ signal table -  userIdx : User.userIdx
                 matchIdx : user.userIdx
                 signalIdx : for 시그널 체크
                 sigStatus : 시그널 on/off 확인
-                sigHideStatus : 시그널 숨김/열림 확인
+                sigMatchStatus : 시그널 숨김/열림 확인
                 sigStart : 시그널 시작 시간
                 sigPromiseTime : 약속 시간
                 sigPromiseArea : 약속 장소
@@ -58,7 +58,7 @@ async function updateSignal(connection, params) {
 async function updateSigMatch(connection, params) {
     const query = `
                   UPDATE Signaling
-                  SET matchIdx = ?
+                  SET matchIdx = ?, sigMatchStatus = 1
                   where userIdx = ? AND sigStatus = 1;
                   `
     const [row] = await connection.query(query, params);

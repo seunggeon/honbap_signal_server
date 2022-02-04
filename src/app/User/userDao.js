@@ -100,7 +100,7 @@ async function insertUserProfile(connection, params) {
                   INSERT INTO UserProfile 
                   (userIdx, nickName, profileImg, taste, hateFood, interest, avgSpeed, preferArea, mbti, userIntroduce)
                   VALUES
-                  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
                   `;
     const row = await connection.query(query, params);
 
@@ -122,7 +122,26 @@ async function existUserNickname(connection, nickName) {
 
 // 유저 개인정보 조회 *** 10 ***
 async function selectUserInfo(connection, userIdx) {
-    
+    const query = `
+                  SELECT userId, userName, birth, email,
+                         phoneNum, sex, updateAt
+                  FROM User
+                  WHERE userIdx = ?;
+                  `;
+    const [row] = await connection.query(query, userIdx);
+    return row;
+}
+
+// 유저 마이페이지 조회 *** 11 ***
+async function selectUserProfile(connection, userIdx) {
+    const query = `
+                  SELECT nickName, profileImg, taste, hateFood, interest,
+                         avgSpeed, preferArea, mbti, userIntroduce, updateAt
+                  FROM UserProfile
+                  WHERE userIdx = ?;
+                  `;
+    const [row] = await connection.query(query, userIdx);
+    return row;
 }
 
 
@@ -137,5 +156,6 @@ module.exports = {
     updateUserProfile, // 7
     insertUserProfile, // 8
     existUserNickname, // 9
-//    selectUserInfo, // 10
+    selectUserInfo, // 10
+    selectUserProfile, // 11
   };

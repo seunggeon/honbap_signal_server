@@ -16,9 +16,10 @@ module.exports = function (app) {
     app.get("/user/signup/:userId", user.getUserIdx);
 
     // 5. 유저 개인정보 조회 API
-    
+    app.get("/user/myinfo/:userIdx", user.getUserInfo);
 
     // 6. 유저 프로필 조회 (마이페이지) API
+    app.get("/user/mypage/:userIdx", user.getUserProfile);
 
     // 3. 회원 프로필 조회 API
     //app.get("/user/:selectedId/profile", jwtMiddleware, user.getUserProfile);
