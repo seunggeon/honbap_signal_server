@@ -74,23 +74,37 @@ exports.getUserIdx = async function (userId) {
       return userIdxCheckResult[0];
 
     } catch (err) {
-      logger.error(`getUserInfo Provider error\n: ${err.message}`);
+      logger.error(`getUserIdx Provider error\n: ${err.message}`);
       return errResponse(baseResponse.DB_ERROR);
     }
 };
 
-/*
-// 비밀 번호 체크
-exports.passwordCheck = async function (hashedPassword) {
+// 유저 개인정보 조회
+exports.getUserInfo = async function (userIdx) {
     try {
-        const connection = await pool.getConnection(async (conn) => conn);
+      const connection = await pool.getConnection(async (conn) => conn);
 
-        const result = await userDao.selectUserPhoneNum(connection, hashedPassword);
-        connection.release();
+      const userInfoResult = await userDao.selectUserInfo(connection, userIdx);
+      connection.release();
 
-        return result;
+      return userInfoResult[0];
     } catch (err) {
-        logger.error(`passwordCheck Provider error\n: ${err.message}`);
-        return errResponse(baseResponse.DB_ERROR);
+      logger.error(`getUserInfo Provider error\n: ${err.message}`);
+      return errResponse(baseResponse.DB_ERROR);
     }
-};*/
+}
+
+// 유저 마이페이지(프로필) 조회
+exports.getUserProfile = async function (userIdx) {
+  try {
+    const connection = await pool.getConnection(async (conn) => conn);
+    
+    const userProfileResult = await userDao.selectUserProfile(connection, userIdx);
+    connection.release();
+
+    return userProfileResult[0];
+  } catch (err) {
+    logger.error(`getUserProfile Provider error\n: ${err.message}`);
+    return errResponse(baseResponse.DB_ERROR);
+  }
+}

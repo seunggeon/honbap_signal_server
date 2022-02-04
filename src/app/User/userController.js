@@ -159,3 +159,29 @@ exports.getUserIdx = async function (req, res) {
   const userIdxResponse = await userProvider.getUserIdx(userId);
   return res.send(userIdxResponse);
 }
+
+/**
+ * API No. 5
+ * API Name : 유저 개인정보 조회 API
+ * [POST] /app/user/userinfo/:userId
+ */
+exports.getUserInfo = async function (req, res) {
+  const userIdx = req.params.userIdx;
+
+  const userInfoResponse = await userProvider.getUserInfo(userIdx);
+  
+  return res.send(userInfoResponse);
+}
+
+/**
+ * API No. 6
+ * API Name : 유저 마이페이지(프로필) 조회 API
+ * [POST] /app/user/mypage/:userId
+ */
+ exports.getUserProfile = async function (req, res) {
+  const userIdx = req.params.userIdx;
+
+  const userMypageResponse = await userProvider.getUserProfile(userIdx);
+  
+  return res.send(userMypageResponse);
+}
