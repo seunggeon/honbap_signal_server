@@ -21,6 +21,10 @@ module.exports = function (app) {
     // 6. 유저 프로필 조회 (마이페이지) API
     app.get("/user/mypage/:userIdx", user.getUserProfile);
 
+    // 7. 카카오 로그인 API
+    app.get('/auth/kakao', passport.authenticate('kakao-login')); 
+    app.get('/auth/kakao/callback', passport.authenticate('kakao-login', { failureRedirect: '/user/login', successRedirect: '/home' }));
+
     // 3. 회원 프로필 조회 API
     //app.get("/user/:selectedId/profile", jwtMiddleware, user.getUserProfile);
 
