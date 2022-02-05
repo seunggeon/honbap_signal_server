@@ -231,10 +231,22 @@ exports.patchUserInfo = async function (req, res) {
  */
  exports.patchUserProfile = async function (req, res) {
   const userIdx = req.params.userIdx;
-  const {userName, birth} = req.body;
+  const {profileImg, taste, hateFood, interest, avgSpeed,
+         preferArea, mbti, userIntroduce} = req.body;
 
-  const updateUserInfo = await userService.updateUserInfo(userName, birth, userIdx);
-  return res.send(baseResponse.SUCCESS);
+  const updateUserProfile = await userService.updateUserProfile(
+    profileImg, 
+    taste, 
+    hateFood, 
+    interest, 
+    avgSpeed,
+    preferArea, 
+    mbti, 
+    userIntroduce,
+    userIdx
+    );
+    
+  return res.send(response(baseResponse.SUCCESS));
 }
 
 /*

@@ -161,6 +161,19 @@ async function updatePassword(connection, password, userIdx) {
     return row;
 }
 
+// 유저 프로필(마이페이지) 수정 *** 13 ***
+async function updateUserProfile(connection, params) {
+    const query = `
+                  UPDATE UserProfile
+                  SET profileImg = ?, taste = ?, hateFood = ?, 
+                      interest = ?, avgSpeed = ?, preferArea = ?,
+                      mbti = ?, userIntroduce = ?, updateAt = default
+                  WHERE userIdx = ?;
+                  `
+    const [row] = await connection.query(query, params);
+    return row;
+}
+
 
 
 module.exports = {
@@ -177,4 +190,5 @@ module.exports = {
     selectUserInfo, // 10
     selectUserProfile, // 11
     updatePassword, // 12
+    updateUserProfile, // 13
   };

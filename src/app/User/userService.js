@@ -80,28 +80,6 @@ exports.createUserProfile = async function (userIdx, nickName, profileImg, taste
   }
 };
 
-
-exports.updateUserProfile = async function (photoURL, nickname, userId) {
-    const connection = await pool.getConnection(async (conn) => conn);
-    try {
-      await connection.beginTransaction();
-  
-      const params = [photoURL, nickname, userId];
-      const result = await userDao.updateUserProfile(connection, params);
-  
-      await connection.commit();
-  
-      connection.release();
-  
-      return result;
-    } catch (err) {
-      await connection.rollback();
-      connection.release();
-      logger.error(`updateUserProfile Service error\n: ${err.message}`);
-      return errResponse(baseResponse.DB_ERROR);
-    }
-};
-
 exports.updatePassword = async function(password, userIdx) {
     try {
         const hashedPassword = await crypto
@@ -134,7 +112,21 @@ exports.updateUserInfo = async function(userName, birth, userIdx) {
 
         return result;
     } catch (err) {
-        logger.error(`App - updatePassword Service error\n: ${err.message}`);
+        logger.error(`App - updateUserInfo Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}
+
+exports.updateUserProfile = async function(profileImg, taste, hateFood, interest, avgSpeed, preferArea, mbti, userIntroduce, userIdx) {
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        
+        const params = [profileImg, taste, hateFood, interest,avgSpeed,
+                        preferArea, mbti, userIntroduce, userIdx];
+        const result = await userDao.updateUserProfile(connection, params);
+        return result;
+    } catch (err) {
+        logger.error(`App - updateUserProfile Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     }
 }
