@@ -53,10 +53,9 @@ async function selectUserId(connection, userId) {
 // 회원가입 *** 5 ***
 async function insertUserInfo(connection, params) {
     const query = `
-                  insert into 
+                  INSERT INTO 
                   User(userId, password, userName, birth, email, phoneNum, sex)
-                  values (?, ?, ?, ?, ?, ?, ?);
-
+                  VALUES (?, ?, ?, ?, ?, ?, ?);
                   `;
 
                   
@@ -68,9 +67,9 @@ async function insertUserInfo(connection, params) {
 // 유저 인덱스 조회 *** 6 ***
 async function selectUserIdx(connection, userId) {
     const query = `
-                  select userIdx
-                  from User
-                  where userId = ?;
+                  SELECT userIdx
+                  FROM User
+                  WHERE userId = ?;
                   `;
   
     const row = await connection.query(query, userId);
@@ -79,11 +78,11 @@ async function selectUserIdx(connection, userId) {
 }
 
   // 유저 개인 정보 수정 *** 7 ***
-async function updateUserProfile(connection, params) {
+async function updateUserInfo(connection, params) {
     const query = `
-                  update User 
-                  set password = ?, email = ?, updateAt = default  
-                  where userId = ?;
+                  UPDATE User 
+                  SET password = ?, email = ?, updateAt = default  
+                  WHERE userId = ?;
                   `;
 
     const row = await connection.query(query, params);
@@ -144,6 +143,18 @@ async function selectUserProfile(connection, userIdx) {
     return row;
 }
 
+// 유저 패스워드 수정 *** 12 ***
+async function updatePassword(connection, password, userIdx) {
+    const query = `
+                  UPDATE User
+                  SET password = ?
+                  WHERE userIdx = ?;
+                  `;
+    const [row] = await connection.query(query, password, userIdx);
+
+    return row;
+}
+
 
 
 module.exports = {
@@ -153,9 +164,10 @@ module.exports = {
     selectUserId, // 4
     insertUserInfo, // 5
     selectUserIdx, // 6
-    updateUserProfile, // 7
+    updateUserInfo, // 7
     insertUserProfile, // 8
     existUserNickname, // 9
     selectUserInfo, // 10
     selectUserProfile, // 11
+    updatePassword, // 12
   };

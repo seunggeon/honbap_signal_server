@@ -199,6 +199,19 @@ exports.getUserInfo = async function (req, res) {
 
 /**
  * API No. 7
+ * API Name : 유저 패스워드 수정 API
+ * [PATCH] /app/user/myinfo/:userId/modifypw
+ */
+exports.patchUserPassword = async function (req, res) {
+  const userIdx = req.params.userIdx;
+  const {password} = req.body;
+
+  const updatePW = await userService.updatePassword(password, userIdx);
+
+  return res.send(baseResponse.SUCCESS);
+}
+
+/*
  * API Name : 카카오 로그인 API
  * [GET] /app/auth/kakao
  */

@@ -6,7 +6,7 @@ module.exports = function (app) {
     // 1. 로그인 API (비회원일 경우 회원가입 후 로그인)
     app.post("/user/login", user.createUser);
 
-    // 2. 회원가입 API
+    // 2. 회원가입 (유저 개인정보) API
     app.post("/user/signup", user.postUsers);
 
     // 3. 유저 프로필 등록 API
@@ -21,13 +21,18 @@ module.exports = function (app) {
     // 6. 유저 프로필 조회 (마이페이지) API
     app.get("/user/mypage/:userIdx", user.getUserProfile);
 
-    // 7. 카카오 로그인 API
+    // 7. 유저 패스워드 수정 API
+    app.patch("/user/myinfo/:userIdx/modifypw", user.patchUserPassword);
+
+    // 8. 유저 개인정보 수정 API
+    app.patch("/user/userinfo/:userIdx", user.patchUserInfo);
+
+    // 9. 유저 프로필 수정 (마이페이지) API
+    app.patch("/user/mypage/:userIdx", user.patchUserProfile);
+
+    // 10. 카카오 로그인 API
     app.get('/auth/kakao', passport.authenticate('kakao-login')); 
     app.get('/auth/kakao/callback', passport.authenticate('kakao-login', { failureRedirect: '/user/login', successRedirect: '/home' }));
 
-    // 3. 회원 프로필 조회 API
-    //app.get("/user/:selectedId/profile", jwtMiddleware, user.getUserProfile);
 
-    // 4. 회원 프로필 수정 API
-    //app.patch("/user/profile", jwtMiddleware, user.updateUserProfile);
 };

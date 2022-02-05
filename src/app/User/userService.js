@@ -22,10 +22,6 @@ exports.createUsers = async function (userId, password, userName, birth, email, 
         const userIdRows = await userProvider.userIdCheck(userId);
         if (userIdRows.length > 0)
             return errResponse(baseResponse.SIGNUP_REDUNDANT_USERID);
-/*
-        const nickNameRows = await userProvider.nickNameCheck(nickName);
-        if (nickNameRows.length > 0)
-            return errResponse(baseResponse.SIGNUP_REDUNDANT_NICKNAME);*/
 
         const emailRows = await userProvider.emailCheck(email);
         if (emailRows.length > 0)
@@ -101,4 +97,25 @@ exports.updateUserProfile = async function (photoURL, nickname, userId) {
       return errResponse(baseResponse.DB_ERROR);
     }
 };
+
+exports.updatePassword = async function(password, userIdx) {
+    try {
+        const hashedPassword = await crypto
+        .createHash("sha512")
+        .update(password)
+        .digest("hex");
+
+        const connection = await pool.getConnection(async (conn) => conn);
+
+        const params = [hashedPassword, userIdx];
+        const result = await userDao.updatePassword(connection, params);
+
+        connection.release();
+
+        return result;
+    } catch (err) {
+        logger.error(`App - updatePassword Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}
 
