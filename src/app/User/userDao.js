@@ -57,8 +57,6 @@ async function insertUserInfo(connection, params) {
                   User(userId, password, userName, birth, email, phoneNum, sex)
                   VALUES (?, ?, ?, ?, ?, ?, ?);
                   `;
-
-                  
     const row = await connection.query(query, params);
   
     return row;
@@ -81,8 +79,8 @@ async function selectUserIdx(connection, userId) {
 async function updateUserInfo(connection, params) {
     const query = `
                   UPDATE User 
-                  SET password = ?, email = ?, updateAt = default  
-                  WHERE userId = ?;
+                  SET userName = ?, birth = ?, updateAt = default  
+                  WHERE userIdx = ?;
                   `;
 
     const row = await connection.query(query, params);
@@ -101,8 +99,16 @@ async function insertUserProfile(connection, params) {
                   VALUES
                   (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
                   `;
-    const row = await connection.query(query, params);
+    const [row] = await connection.query(query, params);
 
+    return row;
+}
+async function createUserLocation(connection, userIdx) {
+    const query = `
+                  INSERT INTO UserLocation
+                  (userIdx) VALUES (?);
+                  `;
+    const [row] = await connection.query(query, userIdx);
     return row;
 }
 
@@ -123,7 +129,7 @@ async function existUserNickname(connection, nickName) {
 async function selectUserInfo(connection, userIdx) {
     const query = `
                   SELECT userId, userName, birth, email,
-                         phoneNum, sex, updateAt
+                         phoneNum, sex, updateAt, createAt
                   FROM User
                   WHERE userIdx = ?;
                   `;
@@ -155,6 +161,19 @@ async function updatePassword(connection, password, userIdx) {
     return row;
 }
 
+// 유저 프로필(마이페이지) 수정 *** 13 ***
+async function updateUserProfile(connection, params) {
+    const query = `
+                  UPDATE UserProfile
+                  SET profileImg = ?, taste = ?, hateFood = ?, 
+                      interest = ?, avgSpeed = ?, preferArea = ?,
+                      mbti = ?, userIntroduce = ?, updateAt = default
+                  WHERE userIdx = ?;
+                  `
+    const [row] = await connection.query(query, params);
+    return row;
+}
+
 
 
 module.exports = {
@@ -166,8 +185,10 @@ module.exports = {
     selectUserIdx, // 6
     updateUserInfo, // 7
     insertUserProfile, // 8
+    createUserLocation, // 8_2 - UserLocation
     existUserNickname, // 9
     selectUserInfo, // 10
     selectUserProfile, // 11
     updatePassword, // 12
+    updateUserProfile, // 13
   };
