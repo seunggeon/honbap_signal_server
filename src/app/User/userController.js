@@ -6,6 +6,17 @@ const { response, errResponse } = require("../../../config/response");
 const logger = require("../../../config/winston");
 const crypto = require("crypto");
 const regexEmail = require("regex-email");
+
+const passport = require("passport");
+const KakaoStrategy = require("passport-kakao").Strategy;
+const axios = require("axios");
+
+const kakao = {
+  clientID: '3a65349851f0c41d0c6038609b178594',
+  //clientSecret: 'PwWQHM1dV1cdRLtyyGwmKlu3c3rrRTBv',
+  redirectUri: 'http://127.0.0.1:3001/auth/kakao/callback'
+}
+
 //controller : 판단 부분.
 /**
  * API No. 1
@@ -189,7 +200,7 @@ exports.getUserInfo = async function (req, res) {
 /**
  * API No. 7
  * API Name : 유저 패스워드 수정 API
- * [POST] /app/user/myinfo/:userId/modifypw
+ * [PATCH] /app/user/myinfo/:userId/modifypw
  */
 exports.patchUserPassword = async function (req, res) {
   const userIdx = req.params.userIdx;
@@ -199,3 +210,76 @@ exports.patchUserPassword = async function (req, res) {
 
   return res.send(baseResponse.SUCCESS);
 }
+
+/*
+ * API Name : 카카오 로그인 API
+ * [GET] /app/auth/kakao
+ */
+
+passport.use(
+  "kakao-login",
+  new KakaoStrategy(
+    {
+      clientID: kakao.clientID,
+      //clientSecret: kakao.clientSecret,
+      callbackURL: kakao.redirectUri,
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      console.log(accessToken);
+      console.log("-------------------------------------------------------");
+      console.log(refreshToken);
+      console.log("-------------------------------------------------------");
+      console.log(profile);
+      console.log("-------------------------------------------------------");
+      console.log(done);
+      
+      kakaoProfile = await axios.get("https://kapi.kakao.com/v2/user/me", {
+        headers: {
+          Authorization: "Bearer " + accessToken,
+          "Content-Type": "application/json",
+        },
+      });
+
+      console.log(kakaoProfile.data.kakao_account);
+      // 여기까지 카카오 자체 로그인은 성공. 이제 우리 APP에 로그인이 가능한 지 체크.
+
+      const token = await jwt.sign(
+        {
+          userId: userIdx[0].id,
+        }, // 토큰의 내용(payload)
+        secret_config.jwtsecret, // 비밀키
+        {
+          expiresIn: "365d",
+          subject: "userInfo",
+        } // 유효 기간 365일
+      );
+      //client와 로그인 유지를 위한 서버의 토큰 발행.
+
+      let {nickname,email} = kakaoProfile.data.kakao_account.profile;
+      var nickName = nickname;
+      console.log(`해당 계정의 닉네임은 ${nickName}입니다`);
+      
+      if(!email){
+        console.log("카카오 계정의 이메일을 불러올 수 없습니다.");
+        return done(null, false, { message: '이메일 정보가 없어서 로그인에 실패하였습니다.' });
+      }
+      
+      else {
+        console.log(`해당 계정의 이메일은 ${email}입니다`);
+
+        const checkEmailExist = await userProvider.emailCheck(email); // 기존 유저 확인 by Email
+    
+        if(checkEmailExist === 1) {
+          //const userId = await userProvider.getUserIdByEmail(email); // 유저 아이디 획득 by Email
+          //const loginData = {token, userId};
+
+          console.log("카카오 계정으로 등록된 유저 정보가 DB에 있습니다")
+          return done(null, token, { message: '로그인에 성공하였습니다.' }); } 
+
+        else {
+          console.log("카카오 계정으로 등록된 유저 정보가 DB에 없습니다. 로그인 불가합니다.")
+          return done(null, false, { message: '회원가입이 가능합니다.' });
+        }
+      }
+    }) 
+);

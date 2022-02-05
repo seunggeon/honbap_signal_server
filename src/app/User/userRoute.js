@@ -25,14 +25,14 @@ module.exports = function (app) {
     app.patch("/user/myinfo/:userIdx/modifypw", user.patchUserPassword);
 
     // 8. 유저 개인정보 수정 API
-    app.patch("/user/userinfo/:userIdx/modifyinfo");
+    app.patch("/user/userinfo/:userIdx/modifyinfo", user.patchUserInfo);
 
     // 9. 유저 프로필 수정 (마이페이지) API
-    app.patch("/user/mypage/:userIdx/modifyprofile");
+    app.patch("/user/mypage/:userIdx/modifyprofile", user.patchUserProfile);
 
-    // 3. 회원 프로필 조회 API
-    //app.get("/user/:selectedId/profile", jwtMiddleware, user.getUserProfile);
+    // 10. 카카오 로그인 API
+    app.get('/auth/kakao', passport.authenticate('kakao-login')); 
+    app.get('/auth/kakao/callback', passport.authenticate('kakao-login', { failureRedirect: '/user/login', successRedirect: '/home' }));
 
-    // 4. 회원 프로필 수정 API
-    //app.patch("/user/profile", jwtMiddleware, user.updateUserProfile);
+
 };
