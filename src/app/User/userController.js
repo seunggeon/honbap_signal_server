@@ -185,3 +185,17 @@ exports.getUserInfo = async function (req, res) {
   
   return res.send(userMypageResponse);
 }
+
+/**
+ * API No. 7
+ * API Name : 유저 패스워드 수정 API
+ * [POST] /app/user/myinfo/:userId/modifypw
+ */
+exports.patchUserPassword = async function (req, res) {
+  const userIdx = req.params.userIdx;
+  const {password} = req.body;
+
+  const updatePW = userService.updatePassword(password, userIdx);
+
+  return res.send(baseResponse.SUCCESS);
+}
