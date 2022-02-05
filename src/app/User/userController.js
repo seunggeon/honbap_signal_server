@@ -206,7 +206,7 @@ exports.patchUserPassword = async function (req, res) {
   const userIdx = req.params.userIdx;
   const {password} = req.body;
 
-  const updatePW = userService.updatePassword(password, userIdx);
+  const updatePW = await userService.updatePassword(password, userIdx);
 
   return res.send(baseResponse.SUCCESS);
 }
