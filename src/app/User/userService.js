@@ -61,12 +61,16 @@ exports.createUserProfile = async function (userIdx, nickName, profileImg, taste
           return errResponse(baseResponse.SIGNUP_REDUNDANT_NICKNAME);
 
       // 쿼리문에 사용할 변수 값을 배열 형태로 전달
-      const insertUserProfileParams = [userIdx, nickName, profileImg, taste, hateFood, interest, avgSpeed, preferArea, mbti, userIntroduce];
+      const insertUserProfileParams = 
+        [userIdx, nickName, profileImg, taste, hateFood, 
+            interest, avgSpeed, preferArea, mbti, userIntroduce];
+      const createUserLocation = [userIdx];
 
       const connection = await pool.getConnection(async (conn) => conn);
 
       const profileResult = await userDao.insertUserProfile(connection, insertUserProfileParams);
-      console.log(`추가된 회원 : ${profileResult[0].insertId}`)
+      const LocationResult = await userDao.createUserLocation(connection, createUserLocation);
+      //console.log(`추가된 회원 : ${profileResult[0].insertId}`)
       connection.release();
       return response(baseResponse.SUCCESS);
 
@@ -109,6 +113,22 @@ exports.updatePassword = async function(password, userIdx) {
 
         const params = [hashedPassword, userIdx];
         const result = await userDao.updatePassword(connection, params);
+
+        connection.release();
+
+        return result;
+    } catch (err) {
+        logger.error(`App - updatePassword Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}
+
+exports.updateUserInfo = async function(userName, birth, userIdx) {
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+
+        const params = [userName, birth, userIdx];
+        const result = await userDao.updateUserInfo(connection, params);
 
         connection.release();
 

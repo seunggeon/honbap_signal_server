@@ -1,5 +1,6 @@
 module.exports = function (app) {
     const user = require("./userController");
+    const passport = require("passport");
     //const jwtMiddleware = require("../../../config/jwtMiddleware");
     //client와 통신 부분.
   
@@ -25,7 +26,7 @@ module.exports = function (app) {
     app.patch("/user/myinfo/:userIdx/modifypw", user.patchUserPassword);
 
     // 8. 유저 개인정보 수정 API
-    app.patch("/user/userinfo/:userIdx", user.patchUserInfo);
+    app.patch("/user/myinfo/:userIdx", user.patchUserInfo);
 
     // 9. 유저 프로필 수정 (마이페이지) API
     app.patch("/user/mypage/:userIdx", user.patchUserProfile);

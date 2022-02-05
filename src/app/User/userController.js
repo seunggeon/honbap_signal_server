@@ -159,7 +159,7 @@ exports.postUserProfile = async function (req, res) {
 /**
  * API No. 4
  * API Name : 유저 인덱스 조회 API
- * [POST] /app/user/signup/:userId
+ * [GET] /app/user/signup/:userId
  */
 
 exports.getUserIdx = async function (req, res) {
@@ -174,7 +174,7 @@ exports.getUserIdx = async function (req, res) {
 /**
  * API No. 5
  * API Name : 유저 개인정보 조회 API
- * [POST] /app/user/userinfo/:userId
+ * [GET] /app/user/myinfo/:userId
  */
 exports.getUserInfo = async function (req, res) {
   const userIdx = req.params.userIdx;
@@ -187,7 +187,7 @@ exports.getUserInfo = async function (req, res) {
 /**
  * API No. 6
  * API Name : 유저 마이페이지(프로필) 조회 API
- * [POST] /app/user/mypage/:userId
+ * [GET] /app/user/mypage/:userId
  */
  exports.getUserProfile = async function (req, res) {
   const userIdx = req.params.userIdx;
@@ -208,6 +208,32 @@ exports.patchUserPassword = async function (req, res) {
 
   const updatePW = await userService.updatePassword(password, userIdx);
 
+  return res.send(baseResponse.SUCCESS);
+}
+
+/**
+ * API No. 8
+ * API Name : 유저 개인정보 수정 API
+ * [PATCH] /app/user/myinfo/:userId
+ */
+exports.patchUserInfo = async function (req, res) {
+  const userIdx = req.params.userIdx;
+  const {userName, birth} = req.body;
+
+  const updateUserInfo = await userService.updateUserInfo(userName, birth, userIdx);
+  return res.send(baseResponse.SUCCESS);
+}
+
+/**
+ * API No. 9
+ * API Name : 유저 프로필 수정 API
+ * [PATCH] /app/user/mypage/:userId
+ */
+ exports.patchUserProfile = async function (req, res) {
+  const userIdx = req.params.userIdx;
+  const {userName, birth} = req.body;
+
+  const updateUserInfo = await userService.updateUserInfo(userName, birth, userIdx);
   return res.send(baseResponse.SUCCESS);
 }
 
