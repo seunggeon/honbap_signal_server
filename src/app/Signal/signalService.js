@@ -61,3 +61,30 @@ exports.matching = async function (matchIdx, userIdx) {
         return errResponse(baseResponse.DB_ERROR);
     }
 }
+
+exports.signalOff = async function (userIdx) {
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const result = await signalDao.signalOff(connection, userIdx);
+
+        connection.release;
+        return result;
+    } catch (err) {
+        logger.error(`App - signalOff Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}
+
+exports.deleteSignalList = async function (signalIdx, userIdx) {
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const params = [signalIdx, userIdx];
+        const result = await signalDao.deleteSignal(connection, params);
+        connection.release();
+
+        return result;
+    } catch(err) {
+        logger.error(`App - deleteSignalList Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}

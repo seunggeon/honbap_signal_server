@@ -74,3 +74,18 @@ exports.postSigMatch = async function (req, res) {
     )
     return res.send(baseResponse.SUCCESS);
 }
+
+exports.patchSigStatus = async function (req, res) {
+    const userIdx = req.params.userIdx;
+    
+    const signalOff = await signalService.signalOff(userIdx);
+    return res.send(baseResponse.SUCCESS);
+}
+
+exports.deleteSignal = async function (req, res) {
+    const userIdx = req.params.userIdx;
+    const {signalIdx} = req.body;
+
+    const deleteSignal = await signalService.deleteSignalList(signalIdx, userIdx);
+    return res.send(baseResponse.SUCCESS);
+}
