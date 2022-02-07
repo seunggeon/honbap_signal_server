@@ -168,7 +168,7 @@ exports.getUserIdx = async function (req, res) {
   if(!userId) return res.send(errResponse(baseResponse.SIGNUP_USERID_EMPTY));
 
   const userIdxResponse = await userProvider.getUserIdx(userId);
-  return res.send(userIdxResponse);
+  return res.send(response(baseResponse.SUCCESS,userIdxResponse));
 }
 
 /**
