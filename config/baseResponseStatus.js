@@ -85,15 +85,15 @@ module.exports = {
       code: 2013,
       message: "성별을 입력해주세요.",
     },
-    CATEGORY_IS_NOT_EXIST: {
+    COMMENT_EMPTY: {
       isSuccess: false,
       code: 2014,
-      message: "존재하지 않는 카테고리입니다.",
+      message: "후기를 적어주세요.",
     },
-    USERID_IS_NOT_HOST: {
+    COMMENT_LENGTH: {
       isSuccess: false,
       code: 2015,
-      message: "해당 상품에 접근할 수 없습니다.",
+      message: "후기가 너무 짧습니다.",
     },
     MANNER_IS_NOT_EXIST: {
       isSuccess: false,

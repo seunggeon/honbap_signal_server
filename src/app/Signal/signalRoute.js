@@ -16,9 +16,12 @@ module.exports = function (app) {
     app.patch("/signal/:userIdx/list/matching", signal.postSigMatch);
 
     // 시그널 OFF
-    app.patch("/signal/:userIdx/list/off", signal.patchSigStatus);
+    app.patch("/signal/:userIdx/list/off", signal.patchSigStatusOff);
 
     // 시그널 삭제
     app.delete("/signal/:userIdx/list", signal.deleteSignal);
+
+    // 시그널 다시 ON
+    app.patch("/signal/:userIdx/list/on", signal.patchSigStatusOn);
 
 };
