@@ -240,7 +240,25 @@ module.exports = {
       code: 3050,
       message: "이미 존재하는 닉네임입니다.",
     },
-  
+    
+    SIGNALFIND_LONGITUDE_EMPTY: {
+      isSuccess : false,
+      code : 4000,
+      message: "경도값이 존재하지 않습니다."
+    },
+
+    SIGNALFIND_LATITUDE_EMPTY: {
+      isSuccess : false,
+      code : 4001,
+      message: "위도값이 존재하지 않습니다."
+    },
+    SIGNALFIND_USERIDX_EMPTY: {
+      isSuccess: false,
+      code: 4002,
+      message: "유저 인덱스가 존재하지 않습니다.",
+    },
+
+
     //Connection, Transaction 등의 서버 오류
     DB_ERROR: { isSuccess: false, code: 4000, message: "데이터 베이스 에러" },
     SERVER_ERROR: { isSuccess: false, code: 4001, message: "서버 에러" },
