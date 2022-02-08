@@ -38,8 +38,8 @@ exports.postSignal = async function (req, res) {
  */
 exports.getSignalList = async function (req, res) {
     const userIdx = req.params.userIdx;
-    const signalList = await signalProvider.getSignalList(userIdx);
-    return res.send(signalList);
+    const result = await signalProvider.getSignalList(userIdx);
+    return res.send(response(baseResponse.SUCCESS, result));
 } 
 
 /**
@@ -72,5 +72,27 @@ exports.postSigMatch = async function (req, res) {
     const matching = await signalService.matching(
         matchIdx, userIdx
     )
+    return res.send(baseResponse.SUCCESS);
+}
+
+exports.patchSigStatusOff = async function (req, res) {
+    const userIdx = req.params.userIdx;
+    
+    const signalOff = await signalService.signalOff(userIdx);
+    return res.send(baseResponse.SUCCESS);
+}
+
+exports.deleteSignal = async function (req, res) {
+    const userIdx = req.params.userIdx;
+    const {signalIdx} = req.body;
+
+    const deleteSignal = await signalService.deleteSignalList(signalIdx, userIdx);
+    return res.send(baseResponse.SUCCESS);
+}
+
+exports.patchSigStatusOn = async function (req, res) {
+    const userIdx = req.params.userIdx;
+    
+    const signalOn = await signalService.signalOn(userIdx);
     return res.send(baseResponse.SUCCESS);
 }

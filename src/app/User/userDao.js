@@ -26,6 +26,7 @@ async function existUserEmail(connection, email) {
   
     return row;
 }
+
 // 핸드폰 번호 체크 *** 3 ***
 async function existUserPhone(connection, phoneNum) {
     const query = `

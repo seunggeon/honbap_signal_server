@@ -47,6 +47,7 @@ exports.modifySigList = async function (sigPromiseTime ,sigPromiseArea, sigStart
     }
 }
 
+// 매칭 상대 업데이트
 exports.matching = async function (matchIdx, userIdx) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
@@ -57,6 +58,49 @@ exports.matching = async function (matchIdx, userIdx) {
         return result;
     } catch (err) {
         logger.error(`App - matching Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}
+
+// 시그널 off
+exports.signalOff = async function (userIdx) {
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const result = await signalDao.signalOff(connection, userIdx);
+
+        connection.release;
+        return result;
+    } catch (err) {
+        logger.error(`App - signalOff Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}
+
+// 시그널 삭제
+exports.deleteSignalList = async function (signalIdx, userIdx) {
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const params = [signalIdx, userIdx];
+        const result = await signalDao.deleteSignal(connection, params);
+        connection.release();
+
+        return result;
+    } catch(err) {
+        logger.error(`App - deleteSignalList Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}
+
+// 시그널 on
+exports.signalOn = async function (userIdx) {
+    try {
+        const connection = await pool.getConnection(async (conn) => conn);
+        const result = await signalDao.signalOn(connection, userIdx);
+
+        connection.release;
+        return result;
+    } catch (err) {
+        logger.error(`App - signalOn Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     }
 }

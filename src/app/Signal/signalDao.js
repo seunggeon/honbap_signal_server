@@ -66,9 +66,46 @@ async function updateSigMatch(connection, params) {
     return row;
 }
 
+// 시그널 OFF *** 5 ***
+async function signalOff(connection, userIdx) {
+    const query = `
+                  UPDATE Signaling
+                  SET sigStatus = 0
+                  WHERE sigStatus = 1 AND userIdx = ?;
+                  `;
+
+    const [row] = await connection.query(query, userIdx);
+    return row;
+}
+
+// 시그널 리스트에서 삭제 *** 6 ***
+async function deleteSignal(connection, params) { 
+    const query = `
+                  DELETE FROM Signaling
+                  WHERE signalIdx = ? AND userIdx = ?;
+                  `;
+    const [row] = await connection.query(query, params);
+    return row;
+}
+
+// 시그널 ON *** 5 ***
+async function signalOn(connection, userIdx) {
+    const query = `
+                  UPDATE Signaling
+                  SET sigStatus = 0
+                  WHERE sigStatus = 0 AND userIdx = ?;
+                  `;
+
+    const [row] = await connection.query(query, userIdx);
+    return row;
+}
+
 module.exports = {
     insertSignal, // 1
     selectSignalList, // 2
     updateSignal, // 3
-    updateSigMatch // 4
+    updateSigMatch, // 4
+    signalOff, // 5
+    deleteSignal, // 6
+    signalOn,
 };
