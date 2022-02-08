@@ -76,7 +76,6 @@ async function getSignalByAddress(connection, matchingAddress){
                     WHERE sigPromiseArea IN (?) ;
                  `;
     const [row] = await connection.query(query, matchingAddress);
-    console.log(row[0]);
     return row ;
     
     /*

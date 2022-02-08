@@ -28,7 +28,7 @@ const logger = require("../../../config/winston");
       longitude
     );
   
-    return res.send(locationResponse);
+    return res.send(response(baseResponse.SUCCESS, locationResponse));
   }
 /**
  * API No. 2
@@ -74,6 +74,6 @@ const logger = require("../../../config/winston");
     return res.send(response(baseResponse.SIGNALFIND_USERIDX_EMPTY));
   
     const signalListResponse = await findProvider.getSignalList(userIdx);
-    
-    return res.send(signalListResponse);
+
+    return res.send(response(baseResponse.SUCCESS,signalListResponse));
   }
