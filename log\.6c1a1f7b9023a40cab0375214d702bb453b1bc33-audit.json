@@ -46,9 +46,19 @@
             "hash": "52ab75e3e3724d212f91060efcaae6f7"
         },
         {
-            "date": 1644263143419,
+            "date": 1644163437228,
+            "name": "log\\2022-02-07-smart-push.log",
+            "hash": "0bbc2338f1041182392e415d0e8a97fb"
+        },
+        {
+            "date": 1644253678876,
+            "name": "log\\2022-02-08-smart-push.log",
+            "hash": "dc31186c4e349996bc1e65913175d85d"
+        },
+        {
+            "date": 1644284257032,
             "name": "log/2022-02-08-smart-push.log",
-            "hash": "d6aab0f5891ae732fe8eed70cbf304ea"
+            "hash": "3d21fed3703d95a42a35dfd486b1bd9c"
         }
     ]
 }

@@ -5,8 +5,6 @@ const baseResponse = require("../../../config/baseResponseStatus");
 
 const findDao = require("./findDao");
 const haversine = require('haversine');
-const { JsonWebTokenError } = require("jsonwebtoken");
-const { getSignalList } = require("./findController");
 
 exports.getSignalList= async function (userIdx) {
     try {
@@ -28,8 +26,7 @@ exports.getSignalList= async function (userIdx) {
         "latitude" : 0,
         "longitude" : 0
       };
-      // var signalIdxList = [];
-      var matchingAddress = [];
+      var matchingAddress = []; // 내 근처 시그널의 매칭장소 
 
 
       // address = ? 에서 for문 안쓰면 주소 여러개 중에 하나만 받고 끝남.
@@ -41,7 +38,6 @@ exports.getSignalList= async function (userIdx) {
 
         arLocation.push([result[0].latitude, result[0].longitude]); // status =1 인 sigPromiseArea의 위도, 경도 리스트화
       }
-
       
 
       for (var i = 0; i < Object.keys(signalPromiseArea).length; i++){
@@ -69,20 +65,13 @@ exports.getSignalList= async function (userIdx) {
             console.log("error");
         }
       }
-      
-      // for( var i =0 ; i <matchingAddress.length ; i ++)
-      // {
-      //   matchingAddress[i] = JSON.stringify(matchingAddress[i]);
-      // }
-      console.log(matchingAddress);
-
-      const signalIdxList = findDao.getSignalByAddress(connection, matchingAddress.join( ',')); 
+     
+      const signalIdxList = findDao.getSignalByAddress(connection, [matchingAddress]); // 리스트 감싸니까 IN 먹히네.
           
       console.log("내 근처 시그널의 signal를 반환합니다.");
           
       connection.release();
-      return signalIdxList;
-    // return signalIdxList[0];   // 현재 3km 안에 있는 시그널Idx 리스트. 없으면 []
+      return signalIdxList;  // 현재 3km 안에 있는 시그널Idx 리스트. 없으면 []
     } 
     catch (err) {
       logger.error(`findProvider error\n: ${err.message}`);
