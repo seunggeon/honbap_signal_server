@@ -11,7 +11,7 @@
 남은 API 작업  
 
 > 곤
-+ 카카오 API  
++ 카카오 API  -> .kakao.config로 카카오 client key 따로 빼두고 깃허브에서 지우기
 
 > 창식
 + DM with 고악
