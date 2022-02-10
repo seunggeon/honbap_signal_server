@@ -49,8 +49,8 @@ exports.getCommented = async function (req, res) {
  * [GET] /comment/commenting/:userIdx
  */
  exports.getCommenting = async function (req, res) {
-    const userIdx = req.params.userIdx;
+    const writerIdx = req.params.userIdx;
     
-    const result = await commentProvider.getCommentingList(userIdx);
+    const result = await commentProvider.getCommentingList(writerIdx);
     res.send(response(baseResponse.SUCCESS, result));
 }

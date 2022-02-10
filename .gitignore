@@ -1,6 +1,6 @@
 node_modules/*
 config/database.js
 config/secret.js
-log
+log/*
 package.json
 package-lock.json
