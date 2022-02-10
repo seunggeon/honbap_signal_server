@@ -7,8 +7,7 @@
     시그널 테이블 재작성 (Signaling)
     시그널 API 회의 후 수정 계획
 > 데옹 
-+ 오류 comment 수정 및 API sheet 작성  
-남은 API 작업  
++ Manner 부분 오류 잡고 해시태그 --> api sheet 작성 
 
 > 곤
 + 카카오 API  -> .kakao.config로 카카오 client key 따로 빼두고 깃허브에서 지우기
@@ -17,3 +16,6 @@
 + DM with 고악
 
 ---
+
+# 2022/02/11 FRI TODO
+> sheet 작성하고, 나머지 부분 빨리 끝냅시다..
