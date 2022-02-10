@@ -65,11 +65,13 @@ exports.createUserProfile = async function (userIdx, nickName, profileImg, taste
         [userIdx, nickName, profileImg, taste, hateFood, 
             interest, avgSpeed, preferArea, mbti, userIntroduce];
       const createUserLocation = [userIdx];
+      const createUserManner = [userIdx];
 
       const connection = await pool.getConnection(async (conn) => conn);
 
       const profileResult = await userDao.insertUserProfile(connection, insertUserProfileParams);
       const LocationResult = await userDao.createUserLocation(connection, createUserLocation);
+      const mannerResult = await userDao.createUserManner(connection, createUserManner);
       //console.log(`추가된 회원 : ${profileResult[0].insertId}`)
       connection.release();
       return response(baseResponse.SUCCESS);
@@ -80,6 +82,7 @@ exports.createUserProfile = async function (userIdx, nickName, profileImg, taste
   }
 };
 
+// 패스워드 변경
 exports.updatePassword = async function(password, userIdx) {
     try {
         const hashedPassword = await crypto
@@ -101,6 +104,7 @@ exports.updatePassword = async function(password, userIdx) {
     }
 }
 
+// 유저 개인정보 변경
 exports.updateUserInfo = async function(userName, birth, userIdx) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
@@ -117,6 +121,7 @@ exports.updateUserInfo = async function(userName, birth, userIdx) {
     }
 }
 
+// 유저 프로필 변경
 exports.updateUserProfile = async function(profileImg, taste, hateFood, interest, avgSpeed, preferArea, mbti, userIntroduce, userIdx) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
