@@ -7,8 +7,8 @@ const logger = require("../../../config/winston");
 const crypto = require("crypto");
 const regexEmail = require("regex-email");
 
-const secret_config = require('secret')
-const jwt = require('jsonwebtoken');
+//const secret_config = require('secret') // 이거 때문에 Enter text to encrypt 입력창 생성.
+const jwt = require('../../../modules/jwt');
 const KakaoStrategy = require("passport-kakao").Strategy;
 const axios = require("axios");
 const passport = require("passport");
@@ -283,17 +283,10 @@ passport.use(
       console.log(kakaoProfile.data.kakao_account);
       // 여기까지 카카오 자체 로그인은 성공. 이제 우리 APP에 로그인이 가능한 지 체크.
 
-      const token = await jwt.sign(
-        {
-          userId: userIdx[0].id,
-        }, // 토큰의 내용(payload)
-        secret_config.jwtsecret, // 비밀키
-        {
-          expiresIn: "365d",
-          subject: "userInfo",
-        } // 유효 기간 365일
-      );
-      //client와 로그인 유지를 위한 서버의 토큰 발행.
+
+      // client와 로그인 유지를 위한 서버의 토큰 발행. 
+      // 이거 떄문에 뜨네 ... Enter text to encrypt 생성창
+      // 함수 호출안해도 정적 할당 때문에 프로그램 돌아가자마자 다 require 관련된 거 다 호출되나보다.
 
       let {nickname,email} = kakaoProfile.data.kakao_account.profile;
       var nickName = nickname;
@@ -314,7 +307,18 @@ passport.use(
           //const loginData = {token, userId};
 
           console.log("카카오 계정으로 등록된 유저 정보가 DB에 있습니다")
-          return done(null, token, { message: '로그인에 성공하였습니다.' }); } 
+
+          const user = await userProvider.getUserByUserIdx(email); // email로 idx 얻어오기
+
+          /* user의 idx을 통해 토큰을 생성! */
+          const jwtToken = await jwt.sign(user); 
+
+          return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMsg.LOGIN_SUCCESS, 
+            {
+              /* 생성된 Token을 클라이언트에게 Response */
+                token: jwtToken.token
+            }))}
+          // return done(null, token, { message: '로그인에 성공하였습니다.' }); } 
 
         else {
           console.log("카카오 계정으로 등록된 유저 정보가 DB에 없습니다. 로그인 불가합니다.")

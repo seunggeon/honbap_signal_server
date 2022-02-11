@@ -5,15 +5,15 @@ var cors = require('cors');
 module.exports = function () {
     const app = express();
 
-    app.use(compression());
+    //app.use(compression());
 
-    app.use(express.json());
+    //app.use(express.json());
 
-    app.use(express.urlencoded({extended: true}));
+   //app.use(express.urlencoded({extended: true}));
 
-    app.use(methodOverride());
+    // app.use(methodOverride());
 
-    app.use(cors());
+    // app.use(cors());
     // app.use(express.static(process.cwd() + '/public'));
 
     /* App (Android, iOS) */

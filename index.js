@@ -12,5 +12,3 @@ if (process.env.NODE_ENV === "development") {
 }
 express().listen(port);
 logger.info(`${process.env.NODE_ENV} - API Server Start At Port ${port}`);
-express().listen(80);
-logger.info(`${process.env.NODE_ENV} - API HTTP Server Start At Port 80`);
