@@ -11,6 +11,7 @@ const secret_config = require('secret')
 const jwt = require('jsonwebtoken');
 const KakaoStrategy = require("passport-kakao").Strategy;
 const axios = require("axios");
+const passport = require("passport");
 
 const kakao = {
   clientID: '3a65349851f0c41d0c6038609b178594',
