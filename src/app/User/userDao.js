@@ -112,6 +112,14 @@ async function createUserLocation(connection, userIdx) {
     const [row] = await connection.query(query, userIdx);
     return row;
 }
+async function createUserManner(connection, userIdx) {
+    const query =   `
+                    INSERT INTO Manner
+                    (userIdx) VALUES (?);
+                    `;
+    const [row] = await connection.query(query, userIdx);
+    return row;
+}
 
 // 닉네임 체크 *** 9 ***
 async function existUserNickname(connection, nickName) {
@@ -187,6 +195,7 @@ module.exports = {
     updateUserInfo, // 7
     insertUserProfile, // 8
     createUserLocation, // 8_2 - UserLocation
+    createUserManner, // 8_3 - Manner
     existUserNickname, // 9
     selectUserInfo, // 10
     selectUserProfile, // 11

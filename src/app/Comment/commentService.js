@@ -17,9 +17,13 @@ const { connect } = require("http2");
 exports.createComment = async function (signalIdx, userIdx, writerIdx, comment, star) {
     try {
         const params = [signalIdx, userIdx, writerIdx, comment, star];
+        const user1 = [userIdx];
+        const user2 = [userIdx];
+        const signal = [signalIdx];
         const connection = await pool.getConnection(async (conn) => conn);
-        
         const createCommentResult = await commentDao.insertComment(connection, params);
+        const plusMannerResult = await commentDao.plusManner(connection, user1);
+        const calculateMannerResult = await commentDao.forCalculateManner(connection, signal, user2);
 
         connection.release();
         return response(baseResponse.SUCCESS);
