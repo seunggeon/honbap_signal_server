@@ -7,7 +7,8 @@ const logger = require("../../../config/winston");
 const crypto = require("crypto");
 const regexEmail = require("regex-email");
 
-const passport = require("passport");
+const secret_config = require('secret')
+const jwt = require('jsonwebtoken');
 const KakaoStrategy = require("passport-kakao").Strategy;
 const axios = require("axios");
 
