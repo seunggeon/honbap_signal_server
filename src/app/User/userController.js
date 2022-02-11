@@ -14,7 +14,7 @@ const axios = require("axios");
 const kakao = {
   clientID: '3a65349851f0c41d0c6038609b178594',
   //clientSecret: 'PwWQHM1dV1cdRLtyyGwmKlu3c3rrRTBv',
-  redirectUri: 'http://52.78.100.231:443/auth/kakao/callback'
+  redirectUri: 'http://52.78.100.231:80/auth/kakao/callback'
 }
 
 //controller : 판단 부분.
