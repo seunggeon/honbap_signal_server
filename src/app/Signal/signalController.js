@@ -65,6 +65,11 @@ exports.postSignalList = async function(req, res) {
     return res.send(baseResponse.SUCCESS);
 }
 
+/**
+ * API No. 
+ * API Name : 시그널 매칭 잡힘 API
+ * [POST] /signal/:userIdx/list/matching
+ */
 exports.postSigMatch = async function (req, res) {
     const userIdx = req.params.userIdx;
     const {matchIdx} = req.body;
@@ -75,6 +80,11 @@ exports.postSigMatch = async function (req, res) {
     return res.send(baseResponse.SUCCESS);
 }
 
+/**
+ * API No. 
+ * API Name : 시그널 OFF API
+ * [PATCH] /signal/:userIdx/list/off
+ */
 exports.patchSigStatusOff = async function (req, res) {
     const userIdx = req.params.userIdx;
     
@@ -82,6 +92,11 @@ exports.patchSigStatusOff = async function (req, res) {
     return res.send(baseResponse.SUCCESS);
 }
 
+/**
+ * API No. 
+ * API Name : 시그널 삭제 API
+ * [DELETE] /signal/:userIdx/lis
+ */
 exports.deleteSignal = async function (req, res) {
     const userIdx = req.params.userIdx;
     const {signalIdx} = req.body;
@@ -90,9 +105,41 @@ exports.deleteSignal = async function (req, res) {
     return res.send(baseResponse.SUCCESS);
 }
 
+/**
+ * API No. 
+ * API Name : 시그널 등록 API
+ * [PATCH] /signal/:userIdx/list/on
+ */
 exports.patchSigStatusOn = async function (req, res) {
     const userIdx = req.params.userIdx;
     
     const signalOn = await signalService.signalOn(userIdx);
+    return res.send(baseResponse.SUCCESS);
+}
+
+/**
+ * API No. 
+ * API Name : 시그널 신청 목록 조회 API
+ * [GET] /signal/:userIdx/applylist
+ */
+ exports.getSignalApply = async function (req, res) {
+    const userIdx = req.params.userIdx;
+    const result = await signalProvider.getSignalApply(userIdx);
+    return res.send(response(baseResponse.SUCCESS, result));
+}
+
+/**
+ * API No. 
+ * API Name : 시그널 신청 API
+ * [POST] /signal/:userIdx/applylist
+ */
+ exports.postSignalApply = async function (req, res) {
+    const userIdx = req.params.userIdx;
+    const {signalIdx, applyIdx} = req.body;
+
+    const apply = await signalService.signalApply(
+        signalIdx, userIdx, applyIdx
+    )
+    
     return res.send(baseResponse.SUCCESS);
 }

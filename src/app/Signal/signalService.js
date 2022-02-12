@@ -52,7 +52,9 @@ exports.matching = async function (matchIdx, userIdx) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
         const params = [matchIdx, userIdx];
+        const user = userIdx;
         const result = await signalDao.updateSigMatch(connection, params);
+        const result2 = await signalDao.deleteSignalApply(connection, user);
 
         connection.release;
         return result;
@@ -103,4 +105,19 @@ exports.signalOn = async function (userIdx) {
         logger.error(`App - signalOn Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     }
+}
+
+// 시그널 리스트 신청
+exports.signalApply = async function (signalIdx, userIdx, applyIdx) {
+    try {
+        const params = [signalIdx, userIdx, applyIdx];
+        const connection = await pool.getConnection(async (conn) => conn);
+        const result = await signalDao.postSignalApply(connection, params);
+        connection.release;
+        return result;
+    } catch (err) {
+        logger.error(`App - signalApply Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+
 }

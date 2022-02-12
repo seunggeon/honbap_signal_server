@@ -6,13 +6,10 @@ module.exports = function (app) {
     //client와 통신 부분.
   
     // 1. 로그인 API
-    app.post("/user/login", 
-        user.signin);
+    app.post("/user/login", user.signin);
 
     // 2. 회원가입 (유저 개인정보) API
-    app.post("/user/signup",
-        user.postUsers
-    );
+    app.post("/user/signup", user.postUsers);
 
     // 3. 유저 프로필 등록 API
     app.post("/user/signup/plusinfo", user.postUserProfile);

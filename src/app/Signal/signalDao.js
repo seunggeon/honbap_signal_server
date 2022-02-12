@@ -58,7 +58,7 @@ async function updateSignal(connection, params) {
 async function updateSigMatch(connection, params) {
     const query = `
                   UPDATE Signaling
-                  SET matchIdx = ?, sigMatchStatus = 1
+                  SET matchIdx = ?, sigStatus = 0, sigMatchStatus = 1
                   where userIdx = ? AND sigStatus = 1;
                   `
     const [row] = await connection.query(query, params);
@@ -100,7 +100,7 @@ async function signalOn(connection, userIdx) {
     return row;
 }
 
-// 시그널 리스트 신청
+// 시그널 리스트 신청 *** 8 ***
 async function postSignalApply(connection, params) {
     const query =   `
                     INSERT INTO SignalApply
@@ -111,16 +111,28 @@ async function postSignalApply(connection, params) {
     return row;
 }
 
-async function getSignalApply(connection, params) {
+// 시그널 신청 리스트 조회 *** 9 ***
+async function getSignalApply(connection, userIdx) {
     const query =   `
-                    SELECT nick.nickName AS applyNickName
-                    FROM
-                        (SELECT up.nickName 
-                         FROM UserProfile AS up, SignalApply AS sa 
-                         WHERE up.userIdx = sa.applyIdx) AS nick
-                    WHERE s.userIdx = ? AND s.signalIdx = ? AND s.signalStatus = 1;
+                    SELECT up.nickName 
+                    FROM UserProfile AS up,
+                         SignalApply as sa,
+                         Signaling as s
+                    WHERE   sa.userIdx = s.userIdx = ? AND 
+                            s.sigStatus = 1 AND
+                            up.userIdx = sa.applyIdx;
                     `;
-    const [row] = await connection.query(query, params);
+    const [row] = await connection.query(query, userIdx);
+    return row;
+}
+
+// 시그널 신청 리스트 삭제 (자동) *** 10 ***
+async function deleteSignalApply(connection, userIdx) {
+    const query =   `
+                    DELETE FROM SignalApply
+                    WHERE userIdx = ?;
+                    `;
+    const [row] = await connection.query(query, userIdx);
     return row;
 }
 
@@ -132,6 +144,7 @@ module.exports = {
     signalOff, // 5
     deleteSignal, // 6
     signalOn, // 7
-    postSignalApply,
-    getSignalApply,
+    postSignalApply, // 8 
+    getSignalApply, // 9
+    deleteSignalApply, // 10
 };

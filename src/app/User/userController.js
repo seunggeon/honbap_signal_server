@@ -100,7 +100,7 @@ exports.postUsers = async function (req, res) {
     sex
   );
 
-  return res.send(signUpResponse);
+  return res.send(baseResponse.SUCCESS);
 }
 
 /**

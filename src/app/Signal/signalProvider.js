@@ -21,3 +21,19 @@ exports.getSignalList = async function (userIdx) {
     }
 };
 
+// 시그널 신청 리스트 조회
+exports.getSignalApply = async function (userIdx) {
+  try {
+    const connection = await pool.getConnection(async (conn) => conn);
+
+    const applyResult = await signalDao.getSignalApply(connection, userIdx);
+    connection.release();
+
+    return applyResult;
+
+  } catch (err) {
+    logger.error(`getSignalApply Provider error\n: ${err.message}`);
+    return errResponse(baseResponse.DB_ERROR);
+  }
+};
+
