@@ -108,9 +108,9 @@ exports.signalOn = async function (userIdx) {
 }
 
 // 시그널 리스트 신청
-exports.signalApply = async function (signalIdx, userIdx, applyIdx) {
+exports.signalApply = async function (signalIdx, applyedIdx, userIdx) {
     try {
-        const params = [signalIdx, userIdx, applyIdx];
+        const params = [signalIdx, applyedIdx, userIdx];
         const connection = await pool.getConnection(async (conn) => conn);
         const result = await signalDao.postSignalApply(connection, params);
         connection.release;

@@ -135,11 +135,15 @@ exports.patchSigStatusOn = async function (req, res) {
  */
  exports.postSignalApply = async function (req, res) {
     const userIdx = req.params.userIdx;
-    const {signalIdx, applyIdx} = req.body;
+    const {signalIdx, applyedIdx} = req.body;
 
     const apply = await signalService.signalApply(
-        signalIdx, userIdx, applyIdx
+        signalIdx, applyedIdx, userIdx
     )
     
     return res.send(baseResponse.SUCCESS);
+}
+
+exports.cancelSignalApply = async function (req, res) {
+    const userIdx
 }

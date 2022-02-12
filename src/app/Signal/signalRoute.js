@@ -29,8 +29,8 @@ module.exports = function (app) {
 
     // 시그널 신청
     app.post("/signal/:userIdx/applylist", signal.postSignalApply);
-/*
-    // 시그널 신청 목록 삭제
-    app.delete("/signal/:userIdx/applylist", signal.deleteSignalApply);*/
+
+    // 시그널 신청 취소
+    app.delete("/signal/:userIdx/applylist", signal.cancelSignalApply);
 
 };
