@@ -132,4 +132,6 @@ module.exports = {
     signalOff, // 5
     deleteSignal, // 6
     signalOn, // 7
+    postSignalApply,
+    getSignalApply,
 };
