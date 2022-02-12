@@ -136,3 +136,38 @@ exports.updateUserProfile = async function(profileImg, taste, hateFood, interest
     }
 }
 
+// 로그인
+exports.login = async function (userId, password, token){
+    try {
+        const userIdRows = await userProvider.userIdCheck(userId);
+        if (userIdRows.length == 0)
+            return errResponse(baseResponse.AUTHOR_ID_FORM_IS_NOT_CORRECT);
+
+        // 비밀번호 암호화
+        const hashedPassword = await crypto
+            .createHash("sha512")
+            .update(password)
+            .digest("hex");
+
+        // 쿼리문에 사용할 변수 값을 배열 형태로 전달
+
+        const connection = await pool.getConnection(async (conn) => conn);
+
+        const passwordRows = await userProvider.passwordCheck(userId,password);
+        if (passwordRows.length == 0)
+            return errResponse(baseResponse.DB_ERROR);
+
+        const user = await userProvider.getUserIdx(userId);
+        const jwtToken = await jwt.sign(user);
+        connection.release();
+        return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMsg.LOGIN_SUCCESS, 
+            {
+              /* 생성된 Token을 클라이언트에게 Response */
+                token: jwtToken.token
+            }));
+        console.log(`로그인 되었습니다.`)
+    } catch (err) {
+        logger.error(`App - login Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}
