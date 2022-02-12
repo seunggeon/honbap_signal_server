@@ -100,7 +100,7 @@ exports.postUsers = async function (req, res) {
     sex
   );
 
-  return res.send(signUpResponse);
+  return res.send(baseResponse.SUCCESS);
 }
 
 /**
@@ -161,7 +161,7 @@ exports.getUserInfo = async function (req, res) {
 
   const userInfoResponse = await userProvider.getUserInfo(userIdx);
   
-  return res.send(userInfoResponse);
+  return res.send(response(baseResponse.SUCCESS,userInfoResponse));
 }
 
 /**
@@ -174,7 +174,7 @@ exports.getUserInfo = async function (req, res) {
 
   const userMypageResponse = await userProvider.getUserProfile(userIdx);
   
-  return res.send(userMypageResponse);
+  return res.send(response(baseResponse.SUCCESS,userMypageResponse));
 }
 
 /**

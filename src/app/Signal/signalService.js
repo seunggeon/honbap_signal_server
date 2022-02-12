@@ -52,7 +52,9 @@ exports.matching = async function (matchIdx, userIdx) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
         const params = [matchIdx, userIdx];
+        const user = userIdx;
         const result = await signalDao.updateSigMatch(connection, params);
+        const result2 = await signalDao.deleteSignalApply(connection, user);
 
         connection.release;
         return result;
@@ -101,6 +103,34 @@ exports.signalOn = async function (userIdx) {
         return result;
     } catch (err) {
         logger.error(`App - signalOn Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}
+
+// 시그널 리스트 신청
+exports.signalApply = async function (signalIdx, applyedIdx, userIdx) {
+    try {
+        const params = [signalIdx, applyedIdx, userIdx];
+        const connection = await pool.getConnection(async (conn) => conn);
+        const result = await signalDao.postSignalApply(connection, params);
+        connection.release;
+        return result;
+    } catch (err) {
+        logger.error(`App - signalApply Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}
+
+// 시그널 신청 취소
+exports.cancelSignalApply = async function (applyedIdx, userIdx) {
+    try {
+        const params = [applyedIdx, userIdx];
+        const connection = await pool.getConnection(async (conn) => conn);
+        const result = await signalDao.cancelSignalApply(connection, params);
+        connection.release;
+        return result;
+    } catch (err) {
+        logger.error(`App - cancelSignalApply Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     }
 }

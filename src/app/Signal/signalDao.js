@@ -58,7 +58,7 @@ async function updateSignal(connection, params) {
 async function updateSigMatch(connection, params) {
     const query = `
                   UPDATE Signaling
-                  SET matchIdx = ?, sigMatchStatus = 1
+                  SET matchIdx = ?, sigStatus = 0, sigMatchStatus = 1
                   where userIdx = ? AND sigStatus = 1;
                   `
     const [row] = await connection.query(query, params);
@@ -88,7 +88,7 @@ async function deleteSignal(connection, params) {
     return row;
 }
 
-// 시그널 ON *** 5 ***
+// 시그널 ON *** 7 ***
 async function signalOn(connection, userIdx) {
     const query = `
                   UPDATE Signaling
@@ -100,6 +100,65 @@ async function signalOn(connection, userIdx) {
     return row;
 }
 
+// 시그널 리스트 신청 *** 8 ***
+async function postSignalApply(connection, params) {
+    const query =   `
+                    INSERT INTO SignalApply
+                    (signalIdx, userIdx, applyIdx) 
+                    VALUES (?, ?, ?);
+                    `;
+    const [row] = await connection.query(query, params);
+    return row;
+}
+
+// 시그널 신청 리스트 조회 *** 9 ***
+async function getSignalApply(connection, userIdx) {
+    const query =   `
+                    SELECT up.nickName 
+                    FROM UserProfile AS up,
+                         SignalApply as sa,
+                         Signaling as s
+                    WHERE   sa.userIdx = s.userIdx = ? AND 
+                            s.sigStatus = 1 AND
+                            up.userIdx = sa.applyIdx;
+                    `;
+    const [row] = await connection.query(query, userIdx);
+    return row;
+}
+
+// 시그널 신청 리스트 삭제 (자동) *** 10 ***
+async function deleteSignalApply(connection, userIdx) {
+    const query =   `
+                    DELETE FROM SignalApply
+                    WHERE userIdx = ?;
+                    `;
+    const [row] = await connection.query(query, userIdx);
+    return row;
+}
+
+// 시그널 신청 취소 *** 11 ***
+async function cancelSignalApply(connection, params) {
+    const query =   `
+                    DELETE FROM SignalApply
+                    WHERE userIdx = ? AND applyIdx = ?;
+                    `;
+    const [row] = await connection.query(query, params);
+    return row;
+}
+
+// 이전 시그널들 조회 *** 12 ***
+async function endSignals(connection, params) {
+    const query =   `
+                    SELECT up1.nickName, up2.nickName, s.sigPromiseArea, s.sigPromiseTime
+                    FROM    Signaling AS s
+                            right join UserProfile AS up1 ON s.userIdx = up1.userIdx
+                            right join UserProfile AS up2 ON s.matchIdx = up2.userIdx
+                    WHERE (s.userIdx = ? OR s.matchIdx = ?) AND s.sigStatus = 0;
+                    `;
+    const [row] = await connection.query(query, params);
+    return row;
+}
+
 module.exports = {
     insertSignal, // 1
     selectSignalList, // 2
@@ -107,5 +166,10 @@ module.exports = {
     updateSigMatch, // 4
     signalOff, // 5
     deleteSignal, // 6
-    signalOn,
+    signalOn, // 7
+    postSignalApply, // 8 
+    getSignalApply, // 9
+    deleteSignalApply, // 10
+    cancelSignalApply, // 11
+    endSignals, // 12
 };
