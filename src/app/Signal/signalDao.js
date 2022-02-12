@@ -88,7 +88,7 @@ async function deleteSignal(connection, params) {
     return row;
 }
 
-// 시그널 ON *** 5 ***
+// 시그널 ON *** 7 ***
 async function signalOn(connection, userIdx) {
     const query = `
                   UPDATE Signaling
@@ -100,6 +100,30 @@ async function signalOn(connection, userIdx) {
     return row;
 }
 
+// 시그널 리스트 신청
+async function postSignalApply(connection, params) {
+    const query =   `
+                    INSERT INTO SignalApply
+                    (signalIdx, userIdx, applyIdx) 
+                    VALUES (?, ?, ?);
+                    `;
+    const [row] = await connection.query(query, params);
+    return row;
+}
+
+async function getSignalApply(connection, params) {
+    const query =   `
+                    SELECT nick.nickName AS applyNickName
+                    FROM
+                        (SELECT up.nickName 
+                         FROM UserProfile AS up, SignalApply AS sa 
+                         WHERE up.userIdx = sa.applyIdx) AS nick
+                    WHERE s.userIdx = ? AND s.signalIdx = ? AND s.signalStatus = 1;
+                    `;
+    const [row] = await connection.query(query, params);
+    return row;
+}
+
 module.exports = {
     insertSignal, // 1
     selectSignalList, // 2
@@ -107,5 +131,5 @@ module.exports = {
     updateSigMatch, // 4
     signalOff, // 5
     deleteSignal, // 6
-    signalOn,
+    signalOn, // 7
 };

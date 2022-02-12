@@ -28,7 +28,7 @@ exports.postSignal = async function (req, res) {
         userIdx, matchIdx, sigPromiseTime, sigPromiseArea
     );
 
-    return res.send(signalup);
+    return res.send(baseResponse.SUCCESS);
 }
 
 /**
@@ -62,7 +62,7 @@ exports.postSignalList = async function(req, res) {
         sigStart,
         userIdx
     )
-    return res.send(sigInfo);
+    return res.send(baseResponse.SUCCESS);
 }
 
 exports.postSigMatch = async function (req, res) {

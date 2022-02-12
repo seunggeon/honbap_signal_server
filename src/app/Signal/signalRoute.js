@@ -24,4 +24,13 @@ module.exports = function (app) {
     // 시그널 다시 ON
     app.patch("/signal/:userIdx/list/on", signal.patchSigStatusOn);
 
+    // 시그널 신청 목록 조회
+    app.get("/signal/:userIdx/applylist", signal.getSignalApply);
+
+    // 시그널 신청
+    app.post("/signal/:userIdx/applylist", signal.postSignalApply);
+/*
+    // 시그널 신청 목록 삭제
+    app.delete("/signal/:userIdx/applylist", signal.deleteSignalApply);*/
+
 };
