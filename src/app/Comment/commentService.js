@@ -18,12 +18,12 @@ exports.createComment = async function (signalIdx, userIdx, writerIdx, comment, 
     try {
         const params = [signalIdx, userIdx, writerIdx, comment, star];
         const user1 = [userIdx];
-        const user2 = [userIdx];
-        const signal = [signalIdx];
+        const params2 = [signalIdx, userIdx];
         const connection = await pool.getConnection(async (conn) => conn);
+        
         const createCommentResult = await commentDao.insertComment(connection, params);
         const plusMannerResult = await commentDao.plusManner(connection, user1);
-        const calculateMannerResult = await commentDao.forCalculateManner(connection, signal, user2);
+        const calculateMannerResult = await commentDao.forCalculateManner(connection, params2);
 
         connection.release();
         return response(baseResponse.SUCCESS);

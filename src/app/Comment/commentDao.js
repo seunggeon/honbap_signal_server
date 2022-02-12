@@ -25,8 +25,8 @@ async function plusManner(connection, userIdx) {
 }
 
 // 매너지수 계산
-async function forCalculateManner(connection, signalIdx, userIdx) {
-    console.log(signalIdx, userIdx);
+async function forCalculateManner(connection, params) {
+
     const query =   `
                     UPDATE Manner, (SELECT star FROM Comment WHERE signalIdx = ?) AS star
                     SET manner =
@@ -39,7 +39,7 @@ async function forCalculateManner(connection, signalIdx, userIdx) {
                                     END
                     WHERE userIdx = ? ;
                     `;
-    const [row] = await connection.query(query, signalIdx, userIdx);
+    const [row] = await connection.query(query, params);
     return row;
 }
 

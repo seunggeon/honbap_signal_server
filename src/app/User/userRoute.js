@@ -2,17 +2,14 @@ module.exports = function (app) {
     const user = require("./userController");
     const jwtMiddleware = require("../../../config/jwtMiddleware");
     const passport = require("passport");
- 
+
     //client와 통신 부분.
-  
+
     // 1. 로그인 API (비회원일 경우 회원가입 후 로그인)
-    app.post("/user/login", 
-        user.createUser);
+    app.post("/user/login", user.createUser);
 
     // 2. 회원가입 (유저 개인정보) API
-    app.post("/user/signup",
-        user.postUsers
-    );
+    app.post("/user/signup", user.postUsers);
 
     // 3. 유저 프로필 등록 API
     app.post("/user/signup/plusinfo", jwtMiddleware,
