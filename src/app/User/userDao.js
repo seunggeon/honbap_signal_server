@@ -183,6 +183,19 @@ async function updateUserProfile(connection, params) {
     return row;
 }
 
+// 비밀번호 검사 *** 14 ***
+async function checkpassword(connection, params) {
+    const query = `
+                  SELECT password
+                  FROM User
+                  WHERE userId = ? and password = ?;
+                  `;
+  
+    const [row] = await connection.query(query, params);
+    
+    return row;
+}
+
 
 
 module.exports = {
@@ -201,4 +214,5 @@ module.exports = {
     selectUserProfile, // 11
     updatePassword, // 12
     updateUserProfile, // 13
+    checkpassword, //14
   };
