@@ -136,6 +136,29 @@ async function deleteSignalApply(connection, userIdx) {
     return row;
 }
 
+// 시그널 신청 취소 *** 11 ***
+async function cancelSignalApply(connection, params) {
+    const query =   `
+                    DELETE FROM SignalApply
+                    WHERE userIdx = ? AND applyIdx = ?;
+                    `;
+    const [row] = await connection.query(query, params);
+    return row;
+}
+
+// 이전 시그널들 조회 *** 12 ***
+async function endSignals(connection, params) {
+    const query =   `
+                    SELECT up1.nickName, up2.nickName, s.sigPromiseArea, s.sigPromiseTime
+                    FROM    Signaling AS s
+                            right join UserProfile AS up1 ON s.userIdx = up1.userIdx
+                            right join UserProfile AS up2 ON s.matchIdx = up2.userIdx
+                    WHERE (s.userIdx = ? OR s.matchIdx = ?) AND s.sigStatus = 0;
+                    `;
+    const [row] = await connection.query(query, params);
+    return row;
+}
+
 module.exports = {
     insertSignal, // 1
     selectSignalList, // 2
@@ -147,4 +170,6 @@ module.exports = {
     postSignalApply, // 8 
     getSignalApply, // 9
     deleteSignalApply, // 10
+    cancelSignalApply, // 11
+    endSignals, // 12
 };

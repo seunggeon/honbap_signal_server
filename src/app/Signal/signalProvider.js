@@ -37,3 +37,19 @@ exports.getSignalApply = async function (userIdx) {
   }
 };
 
+// 이전 시그널들 조회
+exports.endSignals = async function (userIdx, userIdx2) {
+  try {
+    const params = [userIdx, userIdx2];
+    const connection = await pool.getConnection(async (conn) => conn);
+
+    const endsResult = await signalDao.endSignals(connection, params);
+    connection.release();
+
+    return endsResult;
+
+  } catch (err) {
+    logger.error(`endSignals Provider error\n: ${err.message}`);
+    return errResponse(baseResponse.DB_ERROR);
+  }
+};

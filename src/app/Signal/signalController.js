@@ -124,6 +124,7 @@ exports.patchSigStatusOn = async function (req, res) {
  */
  exports.getSignalApply = async function (req, res) {
     const userIdx = req.params.userIdx;
+    
     const result = await signalProvider.getSignalApply(userIdx);
     return res.send(response(baseResponse.SUCCESS, result));
 }
@@ -145,5 +146,17 @@ exports.patchSigStatusOn = async function (req, res) {
 }
 
 exports.cancelSignalApply = async function (req, res) {
-    const userIdx
+    const userIdx = req.params.userIdx;
+    const {applyedIdx} = req.body;
+
+    const cancelSignal = await signalService.cancelSignalApply(applyedIdx, userIdx);
+    return res.send(baseResponse.SUCCESS);
+}
+
+exports.getEndSignals = async function (req, res) {
+    const userIdx = req.params.userIdx;
+    const userIdx2 = req.params.userIdx;
+
+    const endSignals = await signalProvider.endSignals(userIdx, userIdx2);
+    return res.send(response(baseResponse.SUCCESS, endSignals));
 }

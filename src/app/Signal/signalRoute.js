@@ -6,7 +6,7 @@ module.exports = function (app) {
     // 시그널 생성
     app.post("/signal/:userIdx/list", signal.postSignal);
 
-    // 시그널 확인
+    // 켜져 있는 시그널 확인
     app.get("/signal/:userIdx/list", signal.getSignalList);
 
     // 시그널 수정
@@ -32,5 +32,8 @@ module.exports = function (app) {
 
     // 시그널 신청 취소
     app.delete("/signal/:userIdx/applylist", signal.cancelSignalApply);
+
+    // 이전 시그널 조회
+    app.get("/signal/:userIdx/listed", signal.getEndSignals);
 
 };

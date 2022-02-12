@@ -119,5 +119,18 @@ exports.signalApply = async function (signalIdx, applyedIdx, userIdx) {
         logger.error(`App - signalApply Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     }
+}
 
+// 시그널 신청 취소
+exports.cancelSignalApply = async function (applyedIdx, userIdx) {
+    try {
+        const params = [applyedIdx, userIdx];
+        const connection = await pool.getConnection(async (conn) => conn);
+        const result = await signalDao.cancelSignalApply(connection, params);
+        connection.release;
+        return result;
+    } catch (err) {
+        logger.error(`App - cancelSignalApply Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
 }
