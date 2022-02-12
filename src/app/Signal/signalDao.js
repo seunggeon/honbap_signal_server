@@ -19,7 +19,7 @@ async function insertSignal(connection, params) {
                   INSERT INTO Signaling
                   (userIdx, matchIdx, sigPromiseTime, sigPromiseArea)
                   VALUES (?, ?, ?, ?);
-                  `
+                  `;
     const [row] = await connection.query(query, params);
 
     return row;
@@ -36,7 +36,7 @@ async function selectSignalList(connection, userIdx) {
                          Signaling AS s
                   WHERE s.userIdx = ? AND s.sigStatus = 1
                   ORDER BY s.signalIdx DESC;
-                  `
+                  `;
 
     const [row] = await connection.query(query, userIdx);
     return row;
@@ -48,7 +48,7 @@ async function updateSignal(connection, params) {
                   UPDATE Signaling
                   SET sigPromiseTime = ?, sigPromiseArea = ?, sigStart = ?, updateAt = default
                   where userIdx = ? AND sigStatus = 1;
-                  `
+                  `;
     const [row] = await connection.query(query, params);
 
     return row;
@@ -60,7 +60,7 @@ async function updateSigMatch(connection, params) {
                   UPDATE Signaling
                   SET matchIdx = ?, sigStatus = 0, sigMatchStatus = 1
                   where userIdx = ? AND sigStatus = 1;
-                  `
+                  `;
     const [row] = await connection.query(query, params);
 
     return row;
@@ -114,13 +114,9 @@ async function postSignalApply(connection, params) {
 // 시그널 신청 리스트 조회 *** 9 ***
 async function getSignalApply(connection, userIdx) {
     const query =   `
-                    SELECT up.nickName 
-                    FROM UserProfile AS up,
-                         SignalApply as sa,
-                         Signaling as s
-                    WHERE   sa.userIdx = s.userIdx = ? AND 
-                            s.sigStatus = 1 AND
-                            up.userIdx = sa.applyIdx;
+                    SELECT DISTINCT nickName
+                    FROM Signaling AS s, SignalApply AS sa RIGHT JOIN UserProfile AS up ON sa.applyIdx = up.userIdx
+                    WHERE s.sigStatus = 1 AND sa.userIdx = ? ORDER BY sa.trashIdx ASC;
                     `;
     const [row] = await connection.query(query, userIdx);
     return row;
