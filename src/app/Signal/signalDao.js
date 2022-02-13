@@ -27,16 +27,15 @@ async function insertSignal(connection, params) {
 
 // 켜져 있는 시그널 조회 *** 2 ***
 async function selectSignalList(connection, userIdx) {
-    const query = `
-                  SELECT up1.nickName as userNickName, up2.nickName as matchingNickName, 
-                         s.sigPromiseTime, s.sigPromiseArea, s.sigStart, s.updateAt
-                  FROM
-                        (select nickName from UserProfile AS upa, Signaling AS s where upa.userIdx = s.userIdx) AS up1,
-                        (select nickName from UserProfile AS upb, Signaling AS s where upb.userIdx = s.matchIdx) AS up2,
-                         Signaling AS s
-                  WHERE s.userIdx = ? AND s.sigStatus = 1
-                  ORDER BY s.signalIdx DESC;
-                  `;
+    const query =   `
+                    SELECT up1.nickName as userNickName, up2.nickName as matchingNickName,
+                    s.sigPromiseTime, s.sigPromiseArea, s.sigStart, s.updateAt
+                    FROM  Signaling AS s
+                        LEFT JOIN UserProfile AS up1 ON s.userIdx = up1.userIdx
+                        LEFT JOIN UserProfile AS up2 ON s.matchIdx = up2.userIdx
+                    WHERE s.userIdx = ? AND s.sigStatus = 1
+                    ORDER BY s.signalIdx DESC;
+                    `;
 
     const [row] = await connection.query(query, userIdx);
     return row;
@@ -115,8 +114,9 @@ async function postSignalApply(connection, params) {
 async function getSignalApply(connection, userIdx) {
     const query =   `
                     SELECT DISTINCT nickName
-                    FROM Signaling AS s, SignalApply AS sa RIGHT JOIN UserProfile AS up ON sa.applyIdx = up.userIdx
-                    WHERE s.sigStatus = 1 AND sa.userIdx = ? ORDER BY sa.trashIdx ASC;
+                    FROM Signaling AS s, SignalApply AS sa, UserProfile AS up
+                    WHERE s.sigStatus = 1 AND sa.userIdx = 2 AND 
+                            sa.applyIdx = up.userIdx ORDER BY sa.trashIdx ASC;
                     `;
     const [row] = await connection.query(query, userIdx);
     return row;
