@@ -140,6 +140,11 @@ exports.patchSigStatusOn = async function (req, res) {
     return res.send(baseResponse.SUCCESS);
 }
 
+/**
+ * API No. 
+ * API Name : 시그널 신청 취소 API
+ * [DELETE] /signal/:userIdx/applylist
+ */
 exports.cancelSignalApply = async function (req, res) {
     const userIdx = req.params.userIdx;
     const {applyedIdx} = req.body;
@@ -148,6 +153,11 @@ exports.cancelSignalApply = async function (req, res) {
     return res.send(baseResponse.SUCCESS);
 }
 
+/**
+ * API No. 
+ * API Name : 이전 시그널 조회 API
+ * [GET] /signal/:userIdx/listed
+ */
 exports.getEndSignals = async function (req, res) {
     const userIdx = req.params.userIdx;
     const userIdx2 = req.params.userIdx;
