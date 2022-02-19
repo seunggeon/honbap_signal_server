@@ -22,6 +22,7 @@ module.exports = function () {
     require('../src/app/Signal/signalRoute')(app);
     require('../src/app/Comment/commentRoute')(app);
     require('../src/app/SignalFind/findRoute')(app);
+    require('../src/app/BlackList/blackRoute')(app);
     // require('../src/app/Board/boardRoute')(app);
 
     return app;
