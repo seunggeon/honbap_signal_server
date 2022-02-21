@@ -38,7 +38,7 @@ exports.getHashTag = async function (req, res) {
 exports.getHashUser = async function (req, res) {
     const hashTag = req.params.hashTag;
 
-    const getHashUser = await hashtagProvider.getHashTag(userIdx);
+    const getHashUser = await hashtagProvider.getHashTag(hashTag);
     
     return res.send(response(baseResponse.SUCCESS, getHashUser));
 }

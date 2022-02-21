@@ -1,7 +1,6 @@
 module.exports = function (app) {
     const hashtag = require("./hashtagController");
-
-
+    
     // 해시태그 생성
     app.post("/hashtag/:userIdx/hash", hashtag.postHashTag);
 
