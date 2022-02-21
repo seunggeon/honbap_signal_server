@@ -30,7 +30,7 @@ const kakao = {
  exports.signin = async function (req, res) {
   const {userId, password} = req.body;
 
-  const user = await userProvider.getUserIdx(userId); // email로 idx 얻어오기
+  //const user = await userProvider.getUserIdx(userId); // email로 idx 얻어오기
 
   const signInResponse = await userService.login(
     userId,
@@ -210,24 +210,28 @@ exports.patchUserInfo = async function (req, res) {
  * [PATCH] /app/user/mypage/:userId
  */
  exports.patchUserProfile = async function (req, res) {
+
+  const userIdxFromJwt = req.verifiedToken.userIdx
   const userIdx = req.params.userIdx;
   const {profileImg, taste, hateFood, interest, avgSpeed,
          preferArea, mbti, userIntroduce} = req.body;
+  if (userIdxFromJwt == userIdx) {
+    const updateUserProfile = await userService.updateUserProfile(
+      profileImg, 
+      taste, 
+      hateFood, 
+      interest, 
+      avgSpeed,
+      preferArea, 
+      mbti, 
+      userIntroduce,
+      userIdx
+      );
+      
+    return res.send(response(baseResponse.SUCCESS));
+  }
+ }
 
-  const updateUserProfile = await userService.updateUserProfile(
-    profileImg, 
-    taste, 
-    hateFood, 
-    interest, 
-    avgSpeed,
-    preferArea, 
-    mbti, 
-    userIntroduce,
-    userIdx
-    );
-    
-  return res.send(response(baseResponse.SUCCESS));
-}
 
 /*
  * API Name : 카카오 로그인 API
