@@ -95,15 +95,15 @@ module.exports = {
       code: 2015,
       message: "후기가 너무 짧습니다.",
     },
-    MANNER_IS_NOT_EXIST: {
+    SIGNAL_TIME_EMPTY: {
       isSuccess: false,
       code: 2016,
-      message: "존재하지 않는 매너가 포함되어 있습니다.",
+      message: "약속 시간을 정해주세요.",
     },
-    BADGE_IS_NOT_EXIST: {
+    SIGNAL_AREA_EMPTY: {
       isSuccess: false,
       code: 2017,
-      message: "존재하지 않는 배지 입니다.",
+      message: "만날 장소를 입력해주세요.",
     },
     BADGE_IS_NOT_GOLD: {
       isSuccess: false,

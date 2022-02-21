@@ -19,7 +19,7 @@ async function insertSignal(connection, params) {
                   INSERT INTO Signaling
                   (userIdx, matchIdx, sigPromiseTime, sigPromiseArea)
                   VALUES (?, ?, ?, ?);
-                  `
+                  `;
     const [row] = await connection.query(query, params);
 
     return row;
@@ -27,16 +27,15 @@ async function insertSignal(connection, params) {
 
 // 켜져 있는 시그널 조회 *** 2 ***
 async function selectSignalList(connection, userIdx) {
-    const query = `
-                  SELECT up1.nickName as userNickName, up2.nickName as matchingNickName, 
-                         s.sigPromiseTime, s.sigPromiseArea, s.sigStart, s.updateAt
-                  FROM
-                        (select nickName from UserProfile AS upa, Signaling AS s where upa.userIdx = s.userIdx) AS up1,
-                        (select nickName from UserProfile AS upb, Signaling AS s where upb.userIdx = s.matchIdx) AS up2,
-                         Signaling AS s
-                  WHERE s.userIdx = ? AND s.sigStatus = 1
-                  ORDER BY s.signalIdx DESC;
-                  `
+    const query =   `
+                    SELECT up1.nickName as userNickName, up2.nickName as matchingNickName,
+                    s.sigPromiseTime, s.sigPromiseArea, s.sigStart, s.updateAt
+                    FROM  Signaling AS s
+                        LEFT JOIN UserProfile AS up1 ON s.userIdx = up1.userIdx
+                        LEFT JOIN UserProfile AS up2 ON s.matchIdx = up2.userIdx
+                    WHERE s.userIdx = ? AND s.sigStatus = 1
+                    ORDER BY s.signalIdx DESC;
+                    `;
 
     const [row] = await connection.query(query, userIdx);
     return row;
@@ -48,7 +47,7 @@ async function updateSignal(connection, params) {
                   UPDATE Signaling
                   SET sigPromiseTime = ?, sigPromiseArea = ?, sigStart = ?, updateAt = default
                   where userIdx = ? AND sigStatus = 1;
-                  `
+                  `;
     const [row] = await connection.query(query, params);
 
     return row;
@@ -60,7 +59,7 @@ async function updateSigMatch(connection, params) {
                   UPDATE Signaling
                   SET matchIdx = ?, sigStatus = 0, sigMatchStatus = 1
                   where userIdx = ? AND sigStatus = 1;
-                  `
+                  `;
     const [row] = await connection.query(query, params);
 
     return row;
@@ -114,13 +113,10 @@ async function postSignalApply(connection, params) {
 // 시그널 신청 리스트 조회 *** 9 ***
 async function getSignalApply(connection, userIdx) {
     const query =   `
-                    SELECT up.nickName 
-                    FROM UserProfile AS up,
-                         SignalApply as sa,
-                         Signaling as s
-                    WHERE   sa.userIdx = s.userIdx = ? AND 
-                            s.sigStatus = 1 AND
-                            up.userIdx = sa.applyIdx;
+                    SELECT DISTINCT nickName
+                    FROM Signaling AS s, SignalApply AS sa, UserProfile AS up
+                    WHERE s.sigStatus = 1 AND sa.userIdx = 2 AND 
+                            sa.applyIdx = up.userIdx ORDER BY sa.trashIdx ASC;
                     `;
     const [row] = await connection.query(query, userIdx);
     return row;

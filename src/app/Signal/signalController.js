@@ -16,13 +16,13 @@ const regexEmail = require("regex-email");
  * [POST] /user/login
  */
 exports.postSignal = async function (req, res) {
-
-    const {userIdx, matchIdx, sigPromiseTime, sigPromiseArea} = req.body;
+    const userIdx = req.params.userIdx
+    const {matchIdx, sigPromiseTime, sigPromiseArea} = req.body;
     
     if(!sigPromiseArea)
-        return res.send(response(baseResponse.SIGNUP_USERID_EMPTY));
+        return res.send(response(baseResponse.SIGNAL_AREA_EMPTY));
     if(!sigPromiseTime)
-        return res.send(response(baseResponse.SIGNUP_USERID_EMPTY));
+        return res.send(response(baseResponse.SIGNAL_TIME_EMPTY));
 
     const signalup = await signalService.createSignal(
         userIdx, matchIdx, sigPromiseTime, sigPromiseArea
@@ -51,11 +51,6 @@ exports.postSignalList = async function(req, res) {
     const userIdx = req.params.userIdx;
     const {sigPromiseTime, sigPromiseArea, sigStart} = req.body;
 
-    const sigInfo = {
-        sigPromiseTime,
-        sigPromiseArea,
-        sigStart,
-    }
     const modifySigList = await signalService.modifySigList(
         sigPromiseTime,
         sigPromiseArea,
@@ -145,6 +140,11 @@ exports.patchSigStatusOn = async function (req, res) {
     return res.send(baseResponse.SUCCESS);
 }
 
+/**
+ * API No. 
+ * API Name : 시그널 신청 취소 API
+ * [DELETE] /signal/:userIdx/applylist
+ */
 exports.cancelSignalApply = async function (req, res) {
     const userIdx = req.params.userIdx;
     const {applyedIdx} = req.body;
@@ -153,6 +153,11 @@ exports.cancelSignalApply = async function (req, res) {
     return res.send(baseResponse.SUCCESS);
 }
 
+/**
+ * API No. 
+ * API Name : 이전 시그널 조회 API
+ * [GET] /signal/:userIdx/listed
+ */
 exports.getEndSignals = async function (req, res) {
     const userIdx = req.params.userIdx;
     const userIdx2 = req.params.userIdx;
