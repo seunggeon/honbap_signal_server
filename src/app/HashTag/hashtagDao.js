@@ -4,6 +4,7 @@
     ******
 */
 
+// insert
 async function insertHashTag(connection, params) {
     const query =   `
                     INSERT INTO 
@@ -14,6 +15,7 @@ async function insertHashTag(connection, params) {
     return row;
 }
 
+// delete
 async function deleteHashTag(connection, params) {
     const query =   `
                     DELETE FROM HashTag
@@ -22,3 +24,34 @@ async function deleteHashTag(connection, params) {
     const [row] = await connection.query(query, params);
     return row;
 }
+
+// check
+async function checkHashTag(connection, userIdx) {
+    const query =   `
+                    SELECT hashTag
+                    FROM HashTag
+                    WHERE userIdx = ?;
+                    `;
+    const [row] = await connection.query(query, userIdx);
+    return row;
+}
+
+// search
+async function selectHashTag(connection, params) {
+    const query =   `
+                    SELECT up.nickName 
+                    FROM HashTag AS h, UserProfile AS up
+                    WHERE h.hashTag = ? AND h.userIdx = up.userIdx;
+                    `;
+    const [row] = await connection.query(query, params);
+    return row;
+}
+
+
+
+module.exports = {
+    insertHashTag,
+    deleteHashTag,
+    checkHashTag,
+    selectHashTag,
+};

@@ -1,7 +1,6 @@
 module.exports = function (app) {
     const hashtag = require("./hashtagController");
-
-
+    
     // 해시태그 생성
     app.post("/hashtag/:userIdx/hash", hashtag.postHashTag);
 
@@ -12,6 +11,6 @@ module.exports = function (app) {
     app.get("/hashtag/:userIdx/hash", hashtag.getHashTag);
 
     // 해시태그 검색
-    app.get("/hashtag/hashlist", hashtag.getHashList);
+    app.get("/hashtag/hashlist", hashtag.getHashUser);
     
 }
