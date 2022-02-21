@@ -47,12 +47,12 @@ exports.passwordCheck = async function (userId, password) {
   const loginParams = [userId, password];
   try {
     const connection = await pool.getConnection(async (conn) => conn);
-    const phoneNumCheckResult = await userDao.checkpassword(connection, loginParams);
+    const passwordCheckResult = await userDao.checkpassword(connection, loginParams);
     connection.release();
 
-    return phoneNumCheckResult;
+    return passwordCheckResult;
   } catch (err) {
-    logger.error(`phoneNumCheck Provider error\n: ${err.message}`);
+    logger.error(`passwordCheck Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
   }
 }

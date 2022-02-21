@@ -137,11 +137,14 @@ exports.updateUserProfile = async function(profileImg, taste, hateFood, interest
 }
 
 // 로그인
-exports.login = async function (userId, password, token){
+exports.login = async function (userId, password){
     try {
         const userIdRows = await userProvider.userIdCheck(userId);
         if (userIdRows.length == 0)
             return errResponse(baseResponse.AUTHOR_ID_FORM_IS_NOT_CORRECT);
+
+        selectUserId = userIdRows[0].userId
+        console.log(selectUserId)
 
         // 비밀번호 암호화
         const hashedPassword = await crypto
@@ -151,21 +154,33 @@ exports.login = async function (userId, password, token){
 
         // 쿼리문에 사용할 변수 값을 배열 형태로 전달
 
-        const connection = await pool.getConnection(async (conn) => conn);
-
-        const passwordRows = await userProvider.passwordCheck(userId,password);
+        const passwordRows = await userProvider.passwordCheck(selectUserId, hashedPassword);
         if (passwordRows.length == 0)
             return errResponse(baseResponse.DB_ERROR);
 
-        const user = await userProvider.getUserIdx(userId);
-        const jwtToken = await jwt.sign(user);
-        connection.release();
-        return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMsg.LOGIN_SUCCESS, 
+        const userIdxRow = await userProvider.getUserIdx(userId);
+
+        console.log(userIdxRow[0].userIdx)
+
+
+        let jwtToken = await jwt.sign(
             {
-              /* 생성된 Token을 클라이언트에게 Response */
-                token: jwtToken.token
-            }));
-        console.log(`로그인 되었습니다.`)
+                userIdx : userIdxRow[0].userIdx
+            }, 
+            secret_config.jwtsecret,
+            {
+                expiresIn: "365d",
+                subject: "userInfo",
+            }
+        );
+        return response(baseResponse.SUCCESS, {'userIdx': userIdxRow[0].userIdx , 'jwt': jwtToken});
+
+        // return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMsg.LOGIN_SUCCESS, 
+        //     {
+        //       /* 생성된 Token을 클라이언트에게 Response */
+        //         token: jwtToken.token
+        //     }));
+        // console.log(`로그인 되었습니다.`)
     } catch (err) {
         logger.error(`App - login Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
