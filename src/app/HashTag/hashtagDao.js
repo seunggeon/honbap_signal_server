@@ -36,6 +36,17 @@ async function checkHashTag(connection, userIdx) {
     return row;
 }
 
+// count
+async function countHashTag(connection, userIdx) {
+    const query =   `
+                    SELECT COUNT(hashTag) AS countTag
+                    FROM HashTag
+                    WHERE userIdx = ?;
+                    `;
+    const [row] = await connection.query(query, userIdx);
+    return row;
+}
+
 // search
 async function selectHashTag(connection, params) {
     const query =   `
@@ -53,5 +64,6 @@ module.exports = {
     insertHashTag,
     deleteHashTag,
     checkHashTag,
+    countHashTag,
     selectHashTag,
 };
