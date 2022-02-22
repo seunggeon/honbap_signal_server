@@ -18,7 +18,7 @@ module.exports = function (app) {
     app.get("/user/signup/:userId", user.getUserIdx);
 
     // 5. 유저 개인정보 조회 API
-    app.get("/user/myinfo/:userIdx", user.getUserInfo);
+    app.get("/user/myinfo/:userIdx",  user.getUserInfo);
 
     // 6. 유저 프로필 조회 (마이페이지) API
     app.get("/user/mypage/:userIdx", user.getUserProfile);
@@ -34,6 +34,6 @@ module.exports = function (app) {
 
     // 10. 카카오 로그인 API
     app.get('/auth/kakao', passport.authenticate('kakao-login')); 
-    app.get('/auth/kakao/callback', passport.authenticate('kakao-login', { failureRedirect: '/user/login', successRedirect: '/home' }));
+    app.get('/auth/kakao/callback', passport.authenticate('kakao-login', { failureRedirect: '/auth/kakao', successRedirect: '/home' }));
 
 };

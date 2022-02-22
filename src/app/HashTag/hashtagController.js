@@ -33,7 +33,7 @@ exports.deleteHashTag = async function (req, res) {
 }
 
 exports.getHashTag = async function (req, res) {
-    const userIdx = req.params,userIdx;
+    const userIdx = req.params.userIdx;
 
     const getHashTag = await hashtagProvider.getHashTag(userIdx);
     

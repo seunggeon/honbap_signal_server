@@ -16,7 +16,7 @@ const passport = require("passport");
 const kakao = {
   clientID: '3a65349851f0c41d0c6038609b178594',
   //clientSecret: 'PwWQHM1dV1cdRLtyyGwmKlu3c3rrRTBv',
-  redirectUri: 'http://52.78.100.231:80/auth/kakao/callback'
+  redirectUri: 'http://15.164.98.165/auth/kakao/callback'
 }
 
 //controller : 판단 부분.
@@ -30,7 +30,7 @@ const kakao = {
  exports.signin = async function (req, res) {
   const {userId, password} = req.body;
 
-  const user = await userProvider.getUserIdx(userId); // email로 idx 얻어오기
+  //const user = await userProvider.getUserIdx(userId); // email로 idx 얻어오기
 
   const signInResponse = await userService.login(
     userId,
@@ -210,24 +210,28 @@ exports.patchUserInfo = async function (req, res) {
  * [PATCH] /app/user/mypage/:userId
  */
  exports.patchUserProfile = async function (req, res) {
+
+  const userIdxFromJwt = req.verifiedToken.userIdx
   const userIdx = req.params.userIdx;
   const {profileImg, taste, hateFood, interest, avgSpeed,
          preferArea, mbti, userIntroduce} = req.body;
+  if (userIdxFromJwt == userIdx) {
+    const updateUserProfile = await userService.updateUserProfile(
+      profileImg, 
+      taste, 
+      hateFood, 
+      interest, 
+      avgSpeed,
+      preferArea, 
+      mbti, 
+      userIntroduce,
+      userIdx
+      );
+      
+    return res.send(response(baseResponse.SUCCESS));
+  }
+ }
 
-  const updateUserProfile = await userService.updateUserProfile(
-    profileImg, 
-    taste, 
-    hateFood, 
-    interest, 
-    avgSpeed,
-    preferArea, 
-    mbti, 
-    userIntroduce,
-    userIdx
-    );
-    
-  return res.send(response(baseResponse.SUCCESS));
-}
 
 /*
  * API Name : 카카오 로그인 API
