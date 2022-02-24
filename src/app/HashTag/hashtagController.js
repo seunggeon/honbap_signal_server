@@ -16,7 +16,7 @@ exports.postHashTag = async function (req, res) {
     const countHash = await hashtagProvider.countHashTag(userIdx);
 
     if(countHash === 8)
-        return res.send(errResponse(baseResponse.HASHTAG_CANT_EXCEED))  // 2018
+        return res.send(errResponse(baseResponse.HASHTAG_CANT_EXCEED));  // 2018
         
     const postHash = await hashtagService.postHashTag(userIdx, hashIdx);
     

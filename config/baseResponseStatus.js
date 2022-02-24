@@ -110,10 +110,10 @@ module.exports = {
       code: 2018,
       message: "키워드는 8개까지 입력할 수 있습니다.",
     },
-    BADGE_IS_NOT_ACHEIVED: {
+    BLACK_ALREADY_EXIST: {
       isSuccess: false,
       code: 2019,
-      message: "획득하지 못한 배지입니다.",
+      message: "이미 블랙리스트에 있습니다.",
     },
     BADGE_IS_ALREADY_MAIN: {
       isSuccess: false,

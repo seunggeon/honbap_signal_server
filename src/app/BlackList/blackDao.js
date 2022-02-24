@@ -4,6 +4,7 @@
     ***
     */
 
+// 블랙리스트 추가
 async function insertBlack(connection, params) {
     const query =   `
                     INSERT INTO BlackList (userIdx, blackIdx, whyBlack)
@@ -13,6 +14,7 @@ async function insertBlack(connection, params) {
     return row;
 }
 
+// 블랙리스트 제거
 async function deleteBlack(connection, params) {
     const query =   `
                     DELETE FROM BlackList 
@@ -22,6 +24,7 @@ async function deleteBlack(connection, params) {
     return row;
 }
 
+// 블랙리스트 조회
 async function selectBlack(connection, userIdx) {
     const query =   `
                     SELECT up2.nickName AS blackNickName
@@ -33,6 +36,7 @@ async function selectBlack(connection, userIdx) {
     return row;
 }
 
+// 블랙리스트 상세 조회
 async function selectBlackInfo(connection, params) {
     const query =   `
                     SELECT up2.nickName AS blackNickName, b.whyBlack
@@ -44,9 +48,21 @@ async function selectBlackInfo(connection, params) {
     return row;
 }
 
+// 블랙리스트 체크
+async function checkBlackIdx(connection, params) {
+    const query =   `
+                    SELECT blackIdx
+                    FROM BlackList
+                    WHERE userIdx = ? AND blackIdx = ?;
+                    `;
+    const [row] = await connection.query(query, params);
+    return row[0];
+}
+
 module.exports = {
     insertBlack,
     deleteBlack,
     selectBlack,
-    selectBlackInfo
+    selectBlackInfo,
+    checkBlackIdx,
 };
