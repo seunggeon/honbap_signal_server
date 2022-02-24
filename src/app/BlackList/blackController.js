@@ -14,6 +14,10 @@ exports.postBlackList = async function (req, res) {
     const userIdx = req.params.userIdx;
     const {blackIdx, whyBlack} = req.body;
 
+    const checkBlackIdx = await blackProvider.checkBlackIdx(userIdx, blackIdx);
+    if(checkBlackIdx > 0)
+        return res.send(errResponse(baseResponse.BLACK_ALREADY_EXIST));     // 2019
+
     const postBlack = await blackService.postBlackList(userIdx, blackIdx, whyBlack);
     return res.send(baseResponse.SUCCESS);
 }
