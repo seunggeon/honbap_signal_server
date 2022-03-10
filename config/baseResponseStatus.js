@@ -105,15 +105,15 @@ module.exports = {
       code: 2017,
       message: "만날 장소를 입력해주세요.",
     },
-    BADGE_IS_NOT_GOLD: {
+    HASHTAG_CANT_EXCEED: {
       isSuccess: false,
       code: 2018,
-      message: "황금배지만 대표배지로 설정할 수 있습니다.",
+      message: "키워드는 8개까지 입력할 수 있습니다.",
     },
-    BADGE_IS_NOT_ACHEIVED: {
+    BLACK_ALREADY_EXIST: {
       isSuccess: false,
       code: 2019,
-      message: "획득하지 못한 배지입니다.",
+      message: "이미 블랙리스트에 있습니다.",
     },
     BADGE_IS_ALREADY_MAIN: {
       isSuccess: false,
@@ -256,6 +256,12 @@ module.exports = {
       isSuccess: false,
       code: 4002,
       message: "유저 인덱스가 존재하지 않습니다.",
+    },
+
+    IF_AGATHA_DEFEAT_KOBBOONG: {
+      isSuccess: false,
+      code: 5252,
+      message: "오이오이,, 이건 말이 안된다구,,",
     },
 
 

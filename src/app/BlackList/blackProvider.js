@@ -4,6 +4,7 @@ const { logger } = require("../../../config/winston");
 
 const blackDao = require("./blackDao");
 
+// 블랙리스트 조회
 exports.getBlackList = async function (userIdx) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
@@ -15,8 +16,9 @@ exports.getBlackList = async function (userIdx) {
         logger.error(`getBlackList Provider error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     }
-}
+};
 
+// 블랙리스트 상세 조회
 exports.getBlackPlus = async function (userIdx, blackIdx) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
@@ -29,4 +31,19 @@ exports.getBlackPlus = async function (userIdx, blackIdx) {
         logger.error(`getBlackPlus Provider error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     }
-}
+};
+
+// 블랙리스트 유/무 체크
+exports.checkBlackIdx = async function (userIdx, blackIdx) {
+    try { 
+        const connection = await pool.getConnection(async (conn) => conn);
+        const params = [userIdx, blackIdx];
+        const blackCheckResult = await blackDao.checkBlackIdx(connection, params);
+        connection.release();
+
+        return blackCheckResult;
+    } catch (err) {
+        logger.error(`checkBlackIdx Provider error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+};
