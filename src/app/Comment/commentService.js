@@ -15,20 +15,25 @@ const { connect } = require("http2");
 
 // 후기 등록
 exports.createComment = async function (signalIdx, userIdx, writerIdx, comment, star) {
+    const connection = await pool.getConnection(async (conn) => conn);
     try {
+        await connection.beginTransaction();
         const params = [signalIdx, userIdx, writerIdx, comment, star];
         const user1 = [userIdx];
         const params2 = [signalIdx, userIdx];
-        const connection = await pool.getConnection(async (conn) => conn);
+        
         
         const createCommentResult = await commentDao.insertComment(connection, params);
         const plusMannerResult = await commentDao.plusManner(connection, user1);
         const calculateMannerResult = await commentDao.forCalculateManner(connection, params2);
 
+        await connection.commit();
         connection.release();
         return response(baseResponse.SUCCESS);
     }
     catch (err) {
+        await connection.rollback();
+        connection.release();
         logger.error(`App - createComment Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     }

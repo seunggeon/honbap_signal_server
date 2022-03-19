@@ -49,16 +49,22 @@ exports.modifySigList = async function (sigPromiseTime ,sigPromiseArea, sigStart
 
 // 매칭 상대 업데이트
 exports.matching = async function (matchIdx, userIdx) {
+    const connection = await pool.getConnection(async (conn) => conn);
     try {
-        const connection = await pool.getConnection(async (conn) => conn);
+        await connection.beginTransaction();
         const params = [matchIdx, userIdx];
         const user = userIdx;
+
         const result = await signalDao.updateSigMatch(connection, params);
         const result2 = await signalDao.deleteSignalApply(connection, user);
 
-        connection.release;
+        await connection.commit();
+
+        connection.release();
         return result;
     } catch (err) {
+        await connection.rollback();
+        connection.release();
         logger.error(`App - matching Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     }
