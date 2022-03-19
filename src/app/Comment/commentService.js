@@ -22,7 +22,6 @@ exports.createComment = async function (signalIdx, userIdx, writerIdx, comment, 
         const user1 = [userIdx];
         const params2 = [signalIdx, userIdx];
         
-        
         const createCommentResult = await commentDao.insertComment(connection, params);
         const plusMannerResult = await commentDao.plusManner(connection, user1);
         const calculateMannerResult = await commentDao.forCalculateManner(connection, params2);

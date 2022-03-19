@@ -58,7 +58,7 @@ exports.createUserProfile = async function (userIdx, nickName, profileImg, taste
     const connection = await pool.getConnection(async (conn) => conn);
     try {
         await connection.beginTransaction();
-        
+
         const nickNameRows = await userProvider.nickNameCheck(nickName);
         if (nickNameRows.length > 0)
             return errResponse(baseResponse.SIGNUP_REDUNDANT_NICKNAME);
