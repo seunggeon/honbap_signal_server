@@ -69,23 +69,22 @@ async function selectARLocation(connection, signalPromiseArea) {
 // }
 
 // Signaling Table에서 장소 -> userIdx 와 sigIdx
-async function getSignalByAddress(connection, matchingAddress){
+async function getSignalByAddress(connection, param){
     const query = `
-                    SELECT signalIdx
+                    SELECT *
                     FROM Signaling
-                    WHERE sigPromiseArea IN (?) ;
+                    WHERE sigPromiseArea IN ?
+                    LIMIT ?, ?; 
                  `;
-    const [row] = await connection.query(query, matchingAddress);
+    const [row] = await connection.query(query, param);
     return row ;
     
     /*
     row
     ----------------------------------------
     [{signalidx : 8 }, {signalIdx : none} ]
-    ------------------------------------
+    ----------------------------------------
     */
-
-    return id;
 }
 
 

@@ -215,6 +215,11 @@ module.exports = {
       code: 2039,
       message: "reviewId 형식이 올바르지 않습니다.",
     },
+    LOGIN_PW_NOT_CORRECT: {
+      isSuccess: false,
+      code: 2040,
+      message: "password가 일치하지 않습니다.",
+    },
   
     // Response error
     SIGNUP_REDUNDANT_USERID : { 
