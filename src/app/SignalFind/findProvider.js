@@ -28,7 +28,6 @@ exports.getSignalList= async function (userIdx) {
       };
       var matchingAddress = []; // 내 근처 시그널의 매칭장소 
 
-
       // address = ? 에서 for문 안쓰면 주소 여러개 중에 하나만 받고 끝남.
       for(var i=0; i <Object.keys(signalPromiseArea).length; i++)
       {

@@ -30,8 +30,6 @@ const kakao = {
  exports.signin = async function (req, res) {
   const {userId, password} = req.body;
 
-  //const user = await userProvider.getUserIdx(userId); // email로 idx 얻어오기
-
   const signInResponse = await userService.login(
     userId,
     password

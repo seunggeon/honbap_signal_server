@@ -55,28 +55,34 @@ exports.createUsers = async function (userId, password, userName, birth, email, 
 
 // 유저 프로필 등록 : 데옹
 exports.createUserProfile = async function (userIdx, nickName, profileImg, taste, hateFood, interest, avgSpeed, preferArea, mbti, userIntroduce) {
-  try {
-      const nickNameRows = await userProvider.nickNameCheck(nickName);
-      if (nickNameRows.length > 0)
-          return errResponse(baseResponse.SIGNUP_REDUNDANT_NICKNAME);
+    const connection = await pool.getConnection(async (conn) => conn);
+    try {
+        await connection.beginTransaction();
 
-      // 쿼리문에 사용할 변수 값을 배열 형태로 전달
-      const insertUserProfileParams = 
-        [userIdx, nickName, profileImg, taste, hateFood, 
-            interest, avgSpeed, preferArea, mbti, userIntroduce];
-      const createUserLocation = [userIdx];
-      const createUserManner = [userIdx];
+        const nickNameRows = await userProvider.nickNameCheck(nickName);
+        if (nickNameRows.length > 0)
+            return errResponse(baseResponse.SIGNUP_REDUNDANT_NICKNAME);
 
-      const connection = await pool.getConnection(async (conn) => conn);
+        // 쿼리문에 사용할 변수 값을 배열 형태로 전달
+        const insertUserProfileParams = 
+            [userIdx, nickName, profileImg, taste, hateFood, 
+                interest, avgSpeed, preferArea, mbti, userIntroduce];
+        const createUserLocation = [userIdx];
+        const createUserManner = [userIdx];
 
-      const profileResult = await userDao.insertUserProfile(connection, insertUserProfileParams);
-      const LocationResult = await userDao.createUserLocation(connection, createUserLocation);
-      const mannerResult = await userDao.createUserManner(connection, createUserManner);
-      //console.log(`추가된 회원 : ${profileResult[0].insertId}`)
-      connection.release();
-      return response(baseResponse.SUCCESS);
+        const profileResult = await userDao.insertUserProfile(connection, insertUserProfileParams);
+        const LocationResult = await userDao.createUserLocation(connection, createUserLocation);
+        const mannerResult = await userDao.createUserManner(connection, createUserManner);
+        //console.log(`추가된 회원 : ${profileResult[0].insertId}`)
+
+        await connection.commit();
+
+        connection.release();
+        return response(baseResponse.SUCCESS);
 
   } catch (err) {
+      await connection.rollback();
+      connection.release();
       logger.error(`App - createUserProfile Service error\n: ${err.message}`);
       return errResponse(baseResponse.DB_ERROR);
   }
