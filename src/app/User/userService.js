@@ -141,7 +141,7 @@ exports.login = async function (userId, password){
     try {
         const userIdRows = await userProvider.userIdCheck(userId);
         if (userIdRows.length == 0)
-            return errResponse(baseResponse.AUTHOR_ID_FORM_IS_NOT_CORRECT);
+            return errResponse(baseResponse.USER_IS_NOT_EXIST);
 
         selectUserId = userIdRows[0].userId
         console.log(selectUserId)
@@ -156,7 +156,7 @@ exports.login = async function (userId, password){
 
         const passwordRows = await userProvider.passwordCheck(selectUserId, hashedPassword);
         if (passwordRows.length == 0)
-            return errResponse(baseResponse.DB_ERROR);
+            return errResponse(baseResponse.LOGIN_PW_NOT_CORRECT);
 
         const userIdxRow = await userProvider.getUserIdx(userId);
 
