@@ -1,6 +1,11 @@
 const { logger } = require("../../../config/winston");
 const { pool } = require("../../../config/database");
-const secret_config = require("../../../config/secret");
+// const secret_config = require("../../../config/secret");
+const secret_config = require()
+require("dotenv").config();
+process.env.JWTSECRET
+
+const jwtsecret = JWTSECRET
 
 const userProvider = require("./userProvider");
 const userDao = require("./userDao");
@@ -173,7 +178,7 @@ exports.login = async function (userId, password){
             {
                 userIdx : userIdxRow[0].userIdx
             }, 
-            secret_config.jwtsecret,
+            jwtsecret,
             {
                 expiresIn: "365d",
                 subject: "userInfo",
