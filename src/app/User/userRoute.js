@@ -12,10 +12,10 @@ module.exports = function (app) {
     app.post("/user/signup", user.postUsers);
 
     // 3. 유저 프로필 등록 API
-    app.post("/user/signup/plusinfo", jwtMiddleware, user.postUserProfile);
+    app.post("/user/signup/plusinfo", user.postUserProfile);
 
     // 4. 유저 인덱스 조회 API
-    app.get("/user/signup/:userId", jwtMiddleware, user.getUserIdx);
+    app.get("/user/signup/:userId", user.getUserIdx);
 
     // 5. 유저 개인정보 조회 API
     app.get("/user/myinfo/:userIdx", jwtMiddleware, user.getUserInfo);
