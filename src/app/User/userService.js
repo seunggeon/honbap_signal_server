@@ -1,11 +1,13 @@
+const path = require('path')
+require('dotenv').config({ path: path.resolve(__dirname, '../../../.env') })
 const { logger } = require("../../../config/winston");
 const { pool } = require("../../../config/database");
 // const secret_config = require("../../../config/secret");
-const secret_config = require()
-require("dotenv").config();
-process.env.JWTSECRET
+// const secret_config = require()
 
-const jwtsecret = JWTSECRET
+
+
+const jwtsecret = process.env.JWTSECRET
 
 const userProvider = require("./userProvider");
 const userDao = require("./userDao");
@@ -155,7 +157,8 @@ exports.login = async function (userId, password){
             return errResponse(baseResponse.USER_IS_NOT_EXIST);
 
         selectUserId = userIdRows[0].userId
-        console.log(selectUserId)
+        console.log("selectUserId :", selectUserId);
+        console.log("jwtsecret : ", jwtsecret);
 
         // 비밀번호 암호화
         const hashedPassword = await crypto
@@ -171,7 +174,7 @@ exports.login = async function (userId, password){
 
         const userIdxRow = await userProvider.getUserIdx(userId);
 
-        console.log(userIdxRow[0].userIdx)
+        console.log("userIdx in jwt: ", userIdxRow[0].userIdx)
 
 
         let jwtToken = await jwt.sign(
