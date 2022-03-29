@@ -1,7 +1,9 @@
+const path = require('path')
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
 const { errResponse } = require("./response")
 const baseResponse = require("./baseResponseStatus");
 const jwt = require('jsonwebtoken');
-const secret_config = require("./secret");
+const jwtsecret = process.env.JWTSECRET
 
 // route로 보내기 전에 검증만. 생성 X
 const jwtMiddleware = (req, res, next) => {
@@ -15,7 +17,7 @@ const jwtMiddleware = (req, res, next) => {
         // create a promise that decodes the token
         const p = new Promise(
             (resolve, reject) => {
-                jwt.verify(token, secret_config.jwtsecret, (err, verifiedToken) => {
+                jwt.verify(token, jwtsecret, (err, verifiedToken) => {
                     if(err) reject(err);
                     resolve(verifiedToken)
                 })

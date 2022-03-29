@@ -61,19 +61,34 @@ const logger = require("../../../config/winston");
   }
 /**
  * API No. 3
- * API Name : range = 3km에 해당되는 내 근처 시그널 목록 조회 API
- * [GET] /app/signalFind/list/:useridx'
+ * API Name : range = 3km에 해당되는 내 근처 시그널 목록 조회 API + paging 추가.
+ * [GET] /app/signalFind/list/:useridx/'
  */
   
   exports.getSignalList = async function (req, res) {
     var userIdx = req.params.userIdx;
     console.log(`userIdx : ${userIdx}`);
   
+    var {page, pageSize} = req.body;
+
+    // page 수
+    console.log(`offset : ${page}`);
+
+    // page size = 한번에 몇개의 데이터를 불러올 지.
+    console.log(`offset : ${pageSize}`);
+  
     // 빈 값 체크
     if(!userIdx)
     return res.send(response(baseResponse.SIGNALFIND_USERIDX_EMPTY));
-  
-    const signalListResponse = await findProvider.getSignalList(userIdx);
+    
+    if(!page)
+    return res.send(response(baseResponse.SIGNALFIND_USERIDX_EMPTY));
+    
+    if(!pageSize)
+    return res.send(response(baseResponse.SIGNALFIND_USERIDX_EMPTY));
+    
+    
+    const signalListResponse = await findProvider.getSignalList(userIdx, page, pageSize);
 
     return res.send(response(baseResponse.SUCCESS,signalListResponse));
   }

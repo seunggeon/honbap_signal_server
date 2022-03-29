@@ -6,7 +6,7 @@ const baseResponse = require("../../../config/baseResponseStatus");
 const findDao = require("./findDao");
 const haversine = require('haversine');
 
-exports.getSignalList= async function (userIdx) {
+exports.getSignalList= async function (userIdx, page, pageSize) {
     try {
       const connection = await pool.getConnection(async (conn) => conn);
 
@@ -64,13 +64,40 @@ exports.getSignalList= async function (userIdx) {
             console.log("error");
         }
       }
-     
-      const signalIdxList = findDao.getSignalByAddress(connection, [matchingAddress]); // 리스트 감싸니까 IN 먹히네.
+      /*######
+      page - end / start index 설정
+      ###############*/
+      if (page < 0) {
+        page = 1
+      }
+      else {
+        start = (page - 1) * pageSize
+        end = start + pageSize
+      }
+      /*
+      [Test 사항]
+      1.기존 꺼가 남아있을지.
+      => start는 0으로 하고 end 만 계속 늘려야되는 거 아닌지. 어차피 스크롤으로 나뉘지 않나.
+      2. 0~10, 10~20, 20~30  불러오기
+      3. page로 딱 나뉘어져있으면 상관없을 것 같은데 스크롤 내리는 거 기준으로 DB
+      불러오는 거면
+      
+      */
+
+     param = [matchingAddress,start,end]
+      const signalInfo = findDao.getSignalByAddress(connection, param); // 리스트 감싸니까 IN 먹히네.
           
-      console.log("내 근처 시그널의 signal를 반환합니다.");
+      console.log("내 근처 시그널의 signal Idx를 반환합니다.");
+
+
+      // if (page > Math.round(signalInfo[0].total / pageSize))
+      // {
+      //   console.log("지금까지 반환한 총 데이터 갯수와 (페이지 인덱스 * 사이즈)가 맞지 않습니다")
+      //   return null;
+      // }
           
       connection.release();
-      return signalIdxList;  // 현재 3km 안에 있는 시그널Idx 리스트. 없으면 []
+      return signalInfo;  // 현재 3km 안에 있는 시그널Idx 리스트. 없으면 []
     } 
     catch (err) {
       logger.error(`findProvider error\n: ${err.message}`);
