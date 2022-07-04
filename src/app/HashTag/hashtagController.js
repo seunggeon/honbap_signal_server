@@ -9,6 +9,7 @@ const logger = require("../../../config/winston");
 const crypto = require("crypto");
 const regexEmail = require("regex-email");
 
+// 해시태그 등록
 exports.postHashTag = async function (req, res) {
     const {hashIdx} = req.body;
     const userIdx = req.params.userIdx;
@@ -23,6 +24,7 @@ exports.postHashTag = async function (req, res) {
     return res.send(baseResponse.SUCCESS);
 }
 
+// 해시태그 삭제
 exports.deleteHashTag = async function (req, res) {
     const {hashIdx} = req.body;
     const userIdx = req.params.userIdx;
@@ -32,6 +34,7 @@ exports.deleteHashTag = async function (req, res) {
     return res.send(baseResponse.SUCCESS);
 }
 
+// 해시태그 정보 조회
 exports.getHashTag = async function (req, res) {
     const userIdx = req.params.userIdx;
 
@@ -40,6 +43,7 @@ exports.getHashTag = async function (req, res) {
     return res.send(response(baseResponse.SUCCESS, getHashTag));
 }
 
+// 해당 해시태그를 가진 사람 조회
 exports.getHashUser = async function (req, res) {
     const hashTag = req.params.hashTag;
 

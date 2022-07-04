@@ -9,6 +9,7 @@ const logger = require("../../../config/winston");
 const crypto = require("crypto");
 const regexEmail = require("regex-email");
 
+// 신고 등록
 exports.postReport = async function (req, res) {
     const userIdx = req.params.userIdx
     const {reportedIdx, shortReason, specificReason} = req.body;

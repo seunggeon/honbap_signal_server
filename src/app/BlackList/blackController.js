@@ -9,7 +9,7 @@ const logger = require("../../../config/winston");
 const crypto = require("crypto");
 const regexEmail = require("regex-email");
 
-
+// 블랙리스트 입력
 exports.postBlackList = async function (req, res) {
     const userIdx = req.params.userIdx;
     const {blackIdx, whyBlack} = req.body;
@@ -22,6 +22,7 @@ exports.postBlackList = async function (req, res) {
     return res.send(baseResponse.SUCCESS);
 }
 
+// 블랙리스트 삭제
 exports.deleteBlackList = async function (req, res) {
     const userIdx = req.params.userIdx;
     const {blackIdx} = req.body;
@@ -30,12 +31,14 @@ exports.deleteBlackList = async function (req, res) {
     return res.send(baseResponse.SUCCESS);
 }
 
+// 블랙리스트 리스트 가져오기
 exports.getBlackList = async function (req, res) {
     const userIdx = req.params.userIdx;
     const getListResult = await blackProvider.getBlackList(userIdx);
     return res.send(response(baseResponse.SUCCESS, getListResult));
 }
 
+// 블랙리스트 상세 정보 가져오기
 exports.getBlackPlus = async function (req, res) {
     const userIdx = req.params.userIdx;
     const {blackIdx} = req.body;

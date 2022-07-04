@@ -12,7 +12,7 @@ const { errResponse } = require("../../../config/response");
 const jwt = require("jsonwebtoken");
 const { connect } = require("http2");
 
-
+// 해시태그 등록
 exports.postHashTag = async function (userIdx, hashTag) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
@@ -27,6 +27,7 @@ exports.postHashTag = async function (userIdx, hashTag) {
     }
 }
 
+// 해시태그 삭제
 exports.deleteHashTag = async function (userIdx, hashTag) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
