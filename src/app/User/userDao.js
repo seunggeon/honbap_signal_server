@@ -104,6 +104,8 @@ async function insertUserProfile(connection, params) {
 
     return row;
 }
+
+// 유저 위치 초기 생성 (자동) *** 8_2 ***
 async function createUserLocation(connection, userIdx) {
     const query = `
                   INSERT INTO UserLocation
@@ -112,6 +114,8 @@ async function createUserLocation(connection, userIdx) {
     const [row] = await connection.query(query, userIdx);
     return row;
 }
+
+// 매너 온도 초기 설정 (자동) *** 8_3 ***
 async function createUserManner(connection, userIdx) {
     const query =   `
                     INSERT INTO Manner
