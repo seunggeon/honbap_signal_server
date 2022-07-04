@@ -22,5 +22,5 @@ async function insertReport(connection, params) {
 }
 
 module.exports = {
-    insertReport,
+    insertReport,   // 1
 };
