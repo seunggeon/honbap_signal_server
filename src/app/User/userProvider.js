@@ -1,10 +1,9 @@
 const { pool } = require("../../../config/database");
 const { errResponse } = require("../../../config/response");
 const { logger } = require("../../../config/winston");
+const baseResponse = require("../../../config/baseResponseStatus");
 
 const userDao = require("./userDao");
-
-
 
 // 회원 정보 확인
 exports.userIdCheck = async function (userId) {
@@ -34,7 +33,10 @@ exports.emailCheck = async function (email) {
 exports.phoneNumCheck = async function (phoneNum) {
   try {
     const connection = await pool.getConnection(async (conn) => conn);
-    const phoneNumCheckResult = await userDao.existUserPhone(connection, phoneNum);
+    const phoneNumCheckResult = await userDao.existUserPhone(
+      connection,
+      phoneNum
+    );
     connection.release();
 
     return phoneNumCheckResult;
@@ -47,7 +49,10 @@ exports.passwordCheck = async function (userId, password) {
   const loginParams = [userId, password];
   try {
     const connection = await pool.getConnection(async (conn) => conn);
-    const passwordCheckResult = await userDao.checkpassword(connection, loginParams);
+    const passwordCheckResult = await userDao.checkpassword(
+      connection,
+      loginParams
+    );
     connection.release();
 
     return passwordCheckResult;
@@ -55,7 +60,7 @@ exports.passwordCheck = async function (userId, password) {
     logger.error(`passwordCheck Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
   }
-}
+};
 //======================================
 //mypage
 
@@ -63,7 +68,10 @@ exports.passwordCheck = async function (userId, password) {
 exports.nickNameCheck = async function (nickName) {
   try {
     const connection = await pool.getConnection(async (conn) => conn);
-    const nickNameCheckResult = await userDao.existUserNickname(connection, nickName);
+    const nickNameCheckResult = await userDao.existUserNickname(
+      connection,
+      nickName
+    );
     connection.release();
 
     return nickNameCheckResult;
@@ -75,43 +83,45 @@ exports.nickNameCheck = async function (nickName) {
 
 // 유저 IDX 조회
 exports.getUserIdx = async function (userId) {
-    try {
-      const connection = await pool.getConnection(async (conn) => conn);
-  
-      const userIdxCheckResult = await userDao.selectUserIdx(connection, userId);
-      connection.release();
+  try {
+    const connection = await pool.getConnection(async (conn) => conn);
 
-      //console.log(userIdxCheckResult[0])
-  
-      return userIdxCheckResult[0];
+    const userIdxCheckResult = await userDao.selectUserIdx(connection, userId);
+    connection.release();
 
-    } catch (err) {
-      logger.error(`getUserIdx Provider error\n: ${err.message}`);
-      return errResponse(baseResponse.DB_ERROR);
-    }
+    //console.log(userIdxCheckResult[0])
+
+    return userIdxCheckResult[0];
+  } catch (err) {
+    logger.error(`getUserIdx Provider error\n: ${err.message}`);
+    return errResponse(baseResponse.DB_ERROR);
+  }
 };
 
 // 유저 개인정보 조회
 exports.getUserInfo = async function (userIdx) {
-    try {
-      const connection = await pool.getConnection(async (conn) => conn);
+  try {
+    const connection = await pool.getConnection(async (conn) => conn);
 
-      const userInfoResult = await userDao.selectUserInfo(connection, userIdx);
-      connection.release();
+    const userInfoResult = await userDao.selectUserInfo(connection, userIdx);
+    connection.release();
 
-      return userInfoResult[0];
-    } catch (err) {
-      logger.error(`getUserInfo Provider error\n: ${err.message}`);
-      return errResponse(baseResponse.DB_ERROR);
-    }
-}
+    return userInfoResult[0];
+  } catch (err) {
+    logger.error(`getUserInfo Provider error\n: ${err.message}`);
+    return errResponse(baseResponse.DB_ERROR);
+  }
+};
 
 // 유저 마이페이지(프로필) 조회
 exports.getUserProfile = async function (userIdx) {
   try {
     const connection = await pool.getConnection(async (conn) => conn);
-    
-    const userProfileResult = await userDao.selectUserProfile(connection, userIdx);
+
+    const userProfileResult = await userDao.selectUserProfile(
+      connection,
+      userIdx
+    );
     connection.release();
 
     return userProfileResult[0];
@@ -119,4 +129,4 @@ exports.getUserProfile = async function (userIdx) {
     logger.error(`getUserProfile Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
   }
-}
+};
