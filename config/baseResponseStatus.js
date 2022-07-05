@@ -243,7 +243,7 @@ module.exports = {
     code: 3004,
     message: "이미 존재하는 번호입니다.",
   },
-  SIGNUP_INVALID_ID: {
+  SIGNUP_INVALID_USERID: {
     isSuccess: false,
     code: 3005,
     message: "존재하지 않는 아이디입니다.",
