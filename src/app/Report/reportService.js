@@ -13,7 +13,7 @@ const jwt = require("jsonwebtoken");
 const { connect } = require("http2");
 
 
-// 시그널 등록
+// 신고 등록
 exports.createReport = async function (userIdx, reportedIdx, shortReason, specificReason) {
     try {
         const params = [userIdx, reportedIdx, shortReason, specificReason];

@@ -14,6 +14,7 @@ const crypto = require("crypto");
 const { connect } = require("http2");
 
 
+// 블랙 리스트 입력
 exports.postBlackList = async function (userIdx, blackIdx, whyBlack) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
@@ -28,6 +29,7 @@ exports.postBlackList = async function (userIdx, blackIdx, whyBlack) {
     }
 }
 
+// 블랙 리스트 삭제
 exports.deleteBlackList = async function (userIdx, blackIdx) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);

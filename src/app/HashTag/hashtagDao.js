@@ -4,7 +4,7 @@
     ******
 */
 
-// insert
+// 해시태그 입력 *** 1 ***
 async function insertHashTag(connection, params) {
     const query =   `
                     INSERT INTO 
@@ -15,7 +15,7 @@ async function insertHashTag(connection, params) {
     return row;
 }
 
-// delete
+// 해시태그 삭제 *** 2 ***
 async function deleteHashTag(connection, params) {
     const query =   `
                     DELETE FROM HashTag
@@ -25,7 +25,7 @@ async function deleteHashTag(connection, params) {
     return row;
 }
 
-// check
+// 해시태그 체크 *** 3 ***
 async function checkHashTag(connection, userIdx) {
     const query =   `
                     SELECT hashTag
@@ -36,7 +36,7 @@ async function checkHashTag(connection, userIdx) {
     return row;
 }
 
-// count
+// 해시태그 개수 체크 *** 4 ***
 async function countHashTag(connection, userIdx) {
     const query =   `
                     SELECT COUNT(hashTag) AS countTag
@@ -47,7 +47,7 @@ async function countHashTag(connection, userIdx) {
     return row;
 }
 
-// search
+// 해시태그 탐색 *** 5 ***
 async function selectHashTag(connection, params) {
     const query =   `
                     SELECT up.nickName 
@@ -61,9 +61,9 @@ async function selectHashTag(connection, params) {
 
 
 module.exports = {
-    insertHashTag,
-    deleteHashTag,
-    checkHashTag,
-    countHashTag,
-    selectHashTag,
+    insertHashTag,  // 1
+    deleteHashTag,  // 2
+    checkHashTag,   // 3
+    countHashTag,   // 4
+    selectHashTag,  // 5
 };

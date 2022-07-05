@@ -2,7 +2,7 @@
 
 const { startTimer } = require("winston");
 
-// 후기 등록
+// 후기 등록    *** 1 ***
 async function insertComment(connection, params) {
     const query =   `
                     INSERT INTO Comment
@@ -13,7 +13,7 @@ async function insertComment(connection, params) {
     return row;
 }
 
-// 후기 등록 시 해당 userIdx를 가진 row에 mannerCount를 1 더해준다.
+// 후기 등록 시 해당 userIdx를 가진 row에 mannerCount를 1 더해준다. *** 2 ***
 async function plusManner(connection, userIdx) {
     const query =   `
                     UPDATE Manner 
@@ -24,7 +24,7 @@ async function plusManner(connection, userIdx) {
     return row;
 }
 
-// 매너지수 계산
+// 매너지수 계산 *** 3 ***
 async function forCalculateManner(connection, params) {
     const query =   `
                     UPDATE Manner, (SELECT star FROM Comment WHERE signalIdx = ?) AS star
@@ -42,7 +42,7 @@ async function forCalculateManner(connection, params) {
     return row;
 }
 
-// 나에게 써진 후기 조회
+// 나에게 써진 후기 조회 *** 4 ***
 async function selectCommented(connection, userIdx) {
     const query =   `
                     SELECT nickName AS reviewer, comment, star
@@ -53,7 +53,7 @@ async function selectCommented(connection, userIdx) {
     return row;
 }
 
-// 내가 쓴 후기 조회
+// 내가 쓴 후기 조회 *** 5 ***
 async function selectCommenting(connection, writerIdx) {
     const query =   `
                     SELECT nickName AS reviewer, comment, star
@@ -65,9 +65,9 @@ async function selectCommenting(connection, writerIdx) {
 }
 
 module.exports = {
-    insertComment,
-    plusManner,
-    forCalculateManner,
-    selectCommented,
-    selectCommenting,
+    insertComment,      // 1
+    plusManner,         // 2
+    forCalculateManner, // 3
+    selectCommented,    // 4
+    selectCommenting,   // 5
 };

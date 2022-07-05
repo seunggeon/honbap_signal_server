@@ -155,6 +155,8 @@ async function endSignals(connection, params) {
     return row;
 }
 
+
+
 module.exports = {
     insertSignal, // 1
     selectSignalList, // 2
