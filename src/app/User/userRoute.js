@@ -2,9 +2,9 @@ module.exports = function (app) {
     const user = require("./userController");
     const jwtMiddleware = require("../../../config/jwtMiddleware");
     const passport = require("passport");
- 
+
     //client와 통신 부분.
-  
+
     // 1. 로그인 API
     app.post("/user/login", user.signin);
 
@@ -35,5 +35,4 @@ module.exports = function (app) {
     // 10. 카카오 로그인 API
     app.get('/auth/kakao', passport.authenticate('kakao-login')); 
     app.get('/auth/kakao/callback', passport.authenticate('kakao-login', { failureRedirect: '/auth/kakao', successRedirect: '/home' }));
-
 };

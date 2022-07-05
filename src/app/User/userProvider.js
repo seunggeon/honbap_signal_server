@@ -20,7 +20,7 @@ exports.userIdCheck = async function (userId) {
   }
 };
 
-
+// email 체크
 exports.emailCheck = async function (email) {
   try {
     const connection = await pool.getConnection(async (conn) => conn);
@@ -34,7 +34,7 @@ exports.emailCheck = async function (email) {
   }
 };
 
-
+// 전화 번호 확인
 exports.phoneNumCheck = async function (phoneNum) {
   try {
     const connection = await pool.getConnection(async (conn) => conn);
@@ -48,7 +48,7 @@ exports.phoneNumCheck = async function (phoneNum) {
   }
 };
 
-
+// 비밀 번호 확인
 exports.passwordCheck = async function (userId, password) {
   const loginParams = [userId, password];
   try {

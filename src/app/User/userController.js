@@ -143,7 +143,12 @@ exports.postUserProfile = async function (req, res) {
 exports.getUserIdx = async function (req, res) {
   const userId = req.params.userId;
 
-  if(!userId) return res.send(errResponse(baseResponse.SIGNUP_USERID_EMPTY));
+  console.log(userId)
+
+  if(userId == ":userId") {
+    console.log("실패")
+    return res.send(errResponse(baseResponse.SIGNUP_USERID_EMPTY));
+  }
 
   const userIdxResponse = await userProvider.getUserIdx(userId);
   return res.send(response(baseResponse.SUCCESS,userIdxResponse));
@@ -262,7 +267,6 @@ passport.use(
 
       console.log(kakaoProfile.data.kakao_account);
       // 여기까지 카카오 자체 로그인은 성공. 이제 우리 APP에 로그인이 가능한 지 체크.
-
 
       // client와 로그인 유지를 위한 서버의 토큰 발행. 
       // 이거 떄문에 뜨네 ... Enter text to encrypt 생성창
