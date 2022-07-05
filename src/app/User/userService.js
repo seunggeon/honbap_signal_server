@@ -5,8 +5,6 @@ const { pool } = require("../../../config/database");
 // const secret_config = require("../../../config/secret");
 // const secret_config = require()
 
-
-
 const jwtsecret = process.env.JWTSECRET
 
 const userProvider = require("./userProvider");
