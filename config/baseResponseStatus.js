@@ -221,6 +221,11 @@ module.exports = {
     code: 2040,
     message: "password가 일치하지 않습니다.",
   },
+  LOCATION_IS_NOT_IN_ARZONE: {
+    isSuccess: false,
+    code: 2041,
+    message: "sigPromiseArea가 ARzone의 location이 아닙니다.",
+  },
 
   // Response error
   SIGNUP_REDUNDANT_USERID: {
