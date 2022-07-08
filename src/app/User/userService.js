@@ -22,16 +22,16 @@ const { connect } = require("http2");
 
   // 회원가입
   // 오류 코드는 나중에 수정할 예정
-exports.createUsers = async function (userId, password, userName, birth, email, phoneNum, sex) {
+exports.createUsers = async function (email, password, userName, nickName, birth, phoneNum, sex) {
     try {
-        const userIdRows = await userProvider.userIdCheck(userId);
-        if (userIdRows.length > 0)
-            return errResponse(baseResponse.SIGNUP_REDUNDANT_USERID);
-
         const emailRows = await userProvider.emailCheck(email);
         if (emailRows.length > 0)
             return errResponse(baseResponse.SIGNUP_REDUNDANT_EMAIL);
-
+        
+        const nickNameRows = await userProvider.nickNameCheck(nickName);
+        if (nickNameRows.length > 0)
+            return errResponse(baseResponse.SIGNUP_REDUNDANT_NICKNAME);
+    
         const phoneNumRows = await userProvider.phoneNumCheck(phoneNum);
         if (phoneNumRows.length > 0)
             return errResponse(baseResponse.SIGNUP_REDUNDANT_PHONENUMBER);
@@ -43,12 +43,12 @@ exports.createUsers = async function (userId, password, userName, birth, email, 
             .digest("hex");
 
         // 쿼리문에 사용할 변수 값을 배열 형태로 전달
-        const insertUserInfoParams = [userId, hashedPassword, userName, birth, email, phoneNum, sex];
+        const insertUserInfoParams = [email, hashedPassword, userName, nickName, birth, phoneNum, sex];
 
         const connection = await pool.getConnection(async (conn) => conn);
 
-        const userIdResult = await userDao.insertUserInfo(connection, insertUserInfoParams);
-        console.log(`추가된 회원 : ${userIdResult[0].insertId}`)
+        const emailResult = await userDao.insertUserInfo(connection, insertUserInfoParams);
+        // console.log(`추가된 회원 : ${emailResult.insertEmail}`)  // emailResult 데이터 형식이 어떤지 확인 필요
         connection.release();
         return response(baseResponse.SUCCESS);
 

@@ -55,10 +55,10 @@ async function selectUserId(connection, userId) {
 async function insertUserInfo(connection, params) {
     const query = `
                   INSERT INTO 
-                  User(userId, password, userName, birth, email, phoneNum, sex)
+                  User(email, password, userName, nickName, birth, phoneNum, sex)
                   VALUES (?, ?, ?, ?, ?, ?, ?);
                   `;
-    const row = await connection.query(query, params);
+    const [row] = await connection.query(query, params);
   
     return row;
 }
