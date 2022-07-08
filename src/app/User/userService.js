@@ -148,7 +148,7 @@ exports.updateUserProfile = async function(profileImg, taste, hateFood, interest
 }
 
 // 로그인
-exports.login = async function (userId, password){
+exports.login = async function (email, password){
     try {
         const userIdRows = await userProvider.userIdCheck(userId);
         if (userIdRows.length == 0)
@@ -170,7 +170,7 @@ exports.login = async function (userId, password){
         if (passwordRows.length == 0)
             return errResponse(baseResponse.LOGIN_PW_NOT_CORRECT);
 
-        const userIdxRow = await userProvider.getUserIdx(userId);
+        const userIdxRow = await userProvider.getUserIdx(email);
 
         console.log("userIdx in jwt: ", userIdxRow[0].userIdx)
 

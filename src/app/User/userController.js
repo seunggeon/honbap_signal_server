@@ -139,13 +139,13 @@ exports.postUserProfile = async function (req, res) {
  */
 
 exports.getUserIdx = async function (req, res) {
-  const userId = req.params.userId;
+  const email = req.params.email;
 
-  if (userId == ":userId") {
-    return res.send(errResponse(baseResponse.SIGNUP_USERID_EMPTY));
+  if (email == ":email") {
+    return res.send(errResponse(baseResponse.SIGNUP_EMAIL_EMPTY));
   }
 
-  const userIdxResponse = await userProvider.getUserIdx(userId);
+  const userIdxResponse = await userProvider.getUserIdx(email);
 
   if (userIdxResponse.length <= 0)
     return res.send(errResponse(baseResponse.SIGNUP_INVALID_ID));

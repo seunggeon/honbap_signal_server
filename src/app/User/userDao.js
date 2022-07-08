@@ -64,14 +64,14 @@ async function insertUserInfo(connection, params) {
 }
 
 // 유저 인덱스 조회 *** 6 ***
-async function selectUserIdx(connection, userId) {
+async function selectUserIdx(connection, email) {
     const query = `
                   SELECT userIdx
                   FROM User
-                  WHERE userId = ?;
+                  WHERE email = ?;
                   `;
   
-    const row = await connection.query(query, userId);
+    const row = await connection.query(query, email);
   
     return row;
 }
