@@ -55,23 +55,23 @@ async function selectUserId(connection, userId) {
 async function insertUserInfo(connection, params) {
     const query = `
                   INSERT INTO 
-                  User(userId, password, userName, birth, email, phoneNum, sex)
+                  User(email, password, userName, nickName, birth, phoneNum, sex)
                   VALUES (?, ?, ?, ?, ?, ?, ?);
                   `;
-    const row = await connection.query(query, params);
+    const [row] = await connection.query(query, params);
   
     return row;
 }
 
 // 유저 인덱스 조회 *** 6 ***
-async function selectUserIdx(connection, userId) {
+async function selectUserIdx(connection, email) {
     const query = `
                   SELECT userIdx
                   FROM User
-                  WHERE userId = ?;
+                  WHERE email = ?;
                   `;
   
-    const row = await connection.query(query, userId);
+    const row = await connection.query(query, email);
   
     return row;
 }
@@ -153,7 +153,7 @@ async function selectUserInfo(connection, userIdx) {
 // 유저 마이페이지 조회 *** 11 ***
 async function selectUserProfile(connection, userIdx) {
     const query = `
-                  SELECT nickName, profileImg, taste, hateFood, interest,
+                  SELECT profileImg, taste, hateFood, interest,
                          avgSpeed, preferArea, mbti, userIntroduce, updateAt
                   FROM UserProfile
                   WHERE userIdx = ?;

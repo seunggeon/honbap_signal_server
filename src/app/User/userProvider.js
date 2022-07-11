@@ -89,11 +89,11 @@ exports.nickNameCheck = async function (nickName) {
 };
 
 // 유저 IDX 조회
-exports.getUserIdx = async function (userId) {
+exports.getUserIdx = async function (email) {
   try {
     const connection = await pool.getConnection(async (conn) => conn);
 
-    const userIdxCheckResult = await userDao.selectUserIdx(connection, userId);
+    const userIdxCheckResult = await userDao.selectUserIdx(connection, email);
     connection.release();
 
     //console.log(userIdxCheckResult[0])
