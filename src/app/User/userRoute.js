@@ -33,8 +33,8 @@ module.exports = function (app) {
     app.patch("/user/mypage/:userIdx", jwtMiddleware, user.patchUserProfile);
 
     // 10. 카카오 로그인 API
-    app.get('/auth/kakao', passport.authenticate('kakao-login')); 
-    app.get('/auth/kakao/callback', passport.authenticate('kakao-login', { failureRedirect: '/auth/kakao', successRedirect: '/home' }));
+    app.get('/auth/kakao', passport.authenticate('kakao')); 
+    app.get('/auth/kakao/callback', passport.authenticate('kakao', { failureRedirect: '/', successRedirect: '/' }));
 
     // 11. 네이버 번호 인증 API
 

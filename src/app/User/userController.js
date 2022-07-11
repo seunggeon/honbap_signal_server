@@ -14,9 +14,9 @@ const axios = require("axios");
 const passport = require("passport");
 
 const kakao = {
-  clientID: "3a65349851f0c41d0c6038609b178594",
-  //clientSecret: 'PwWQHM1dV1cdRLtyyGwmKlu3c3rrRTBv',
-  redirectUri: "http://15.164.98.165/auth/kakao/callback",
+  clientID: "35ce5fcae9e7005b5e9f41c504eff834",
+  clientSecret: "PwWQHM1dV1cdRLtyyGwmKlu3c3rrRTBv",
+  redirectUri: "/auth/kakao/callback",
 };
 
 // Naver 번호 인증 //
@@ -275,11 +275,11 @@ exports.patchUserProfile = async function (req, res) {
  */
 
 passport.use(
-  "kakao-login",
+  "kakao",
   new KakaoStrategy(
     {
       clientID: kakao.clientID,
-      //clientSecret: kakao.clientSecret,
+      clientSecret: kakao.clientSecret,
       callbackURL: kakao.redirectUri,
     },
     async (accessToken, refreshToken, profile, done) => {
@@ -290,64 +290,33 @@ passport.use(
       console.log(profile);
       console.log("-------------------------------------------------------");
       console.log(done);
-
-      kakaoProfile = await axios.get("https://kapi.kakao.com/v2/user/me", {
-        headers: {
-          Authorization: "Bearer " + accessToken,
-          "Content-Type": "application/json",
-        },
-      });
-
-      console.log(kakaoProfile.data.kakao_account);
-      // 여기까지 카카오 자체 로그인은 성공. 이제 우리 APP에 로그인이 가능한 지 체크.
-
-      // client와 로그인 유지를 위한 서버의 토큰 발행.
-      // 이거 떄문에 뜨네 ... Enter text to encrypt 생성창
-      // 함수 호출안해도 정적 할당 때문에 프로그램 돌아가자마자 다 require 관련된 거 다 호출되나보다.
-
-      let { nickname, email } = kakaoProfile.data.kakao_account.profile;
-      var nickName = nickname;
-      console.log(`해당 계정의 닉네임은 ${nickName}입니다`);
-
-      if (!email) {
-        console.log("카카오 계정의 이메일을 불러올 수 없습니다.");
-        return done(null, false, {
-          message: "이메일 정보가 없어서 로그인에 실패하였습니다.",
+      try {
+        const exUser = await User.findOne({
+           // 카카오 플랫폼에서 로그인 했고 & snsId필드에 카카오 아이디가 일치할경우
+           where: { snsId: profile.id, provider: 'kakao' },
         });
-      } else {
-        console.log(`해당 계정의 이메일은 ${email}입니다`);
-
-        const checkEmailExist = await userProvider.emailCheck(email); // 기존 유저 확인 by Email
-
-        if (checkEmailExist === 1) {
-          //const userId = await userProvider.getUserIdByEmail(email); // 유저 아이디 획득 by Email
-          //const loginData = {token, userId};
-
-          console.log("카카오 계정으로 등록된 유저 정보가 DB에 있습니다");
-
-          const user = await userProvider.getUserByUserIdx(email); // email로 idx 얻어오기
-
-          /* user의 idx을 통해 토큰을 생성! */
-          const jwtToken = await jwt.sign(user);
-
-          return res.status(statusCode.OK).send(
-            util.success(statusCode.OK, responseMsg.LOGIN_SUCCESS, {
-              /* 생성된 Token을 클라이언트에게 Response */
-              token: jwtToken.token,
-            })
-          );
+        // 이미 가입된 카카오 프로필이면 성공
+        if (exUser) {
+           done(null, exUser); // 로그인 인증 완료
+        } else {
+           // 가입되지 않는 유저면 회원가입 시키고 로그인을 시킨다
+           const newUser = await User.create({
+              email: profile._json && profile._json.kakao_account_email,
+              nick: profile.displayName,
+              snsId: profile.id,
+              provider: 'kakao',
+           });
+           done(null, newUser); // 회원가입하고 로그인 인증 완료
         }
-        // return done(null, token, { message: '로그인에 성공하였습니다.' }); }
-        else {
-          console.log(
-            "카카오 계정으로 등록된 유저 정보가 DB에 없습니다. 로그인 불가합니다."
-          );
-          return done(null, false, { message: "회원가입이 가능합니다." });
-        }
-      }
-    }
-  )
+     } catch (error) {
+        console.error(error);
+        done(error);
+     }
+  },
+),
 );
+
+
 
 
 /*
