@@ -59,18 +59,14 @@ exports.createUsers = async function (email, password, userName, nickName, birth
 };
 
 // 유저 프로필 등록 : 데옹
-exports.createUserProfile = async function (userIdx, nickName, profileImg, taste, hateFood, interest, avgSpeed, preferArea, mbti, userIntroduce) {
+exports.createUserProfile = async function (userIdx, profileImg, taste, hateFood, interest, avgSpeed, preferArea, mbti, userIntroduce) {
     const connection = await pool.getConnection(async (conn) => conn);
     try {
         await connection.beginTransaction();
 
-        const nickNameRows = await userProvider.nickNameCheck(nickName);
-        if (nickNameRows.length > 0)
-            return errResponse(baseResponse.SIGNUP_REDUNDANT_NICKNAME);
-
         // 쿼리문에 사용할 변수 값을 배열 형태로 전달
         const insertUserProfileParams = 
-            [userIdx, nickName, profileImg, taste, hateFood, 
+            [userIdx, profileImg, taste, hateFood, 
                 interest, avgSpeed, preferArea, mbti, userIntroduce];
         const createUserLocation = [userIdx];
         const createUserManner = [userIdx];

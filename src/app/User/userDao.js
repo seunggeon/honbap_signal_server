@@ -40,15 +40,15 @@ async function existUserPhone(connection, phoneNum) {
     return row;
 }
 
-// userId 회원 조회 *** 4 ***
-async function selectUserId(connection, userId) {
-    const selectUserIdQuery = `
-                   SELECT userId, userName
+// 유저 ID 조회 *** 4 ***
+async function selectUserId(connection, email) {
+    const query = `
+                   SELECT userId
                    FROM User
-                   WHERE userId = ?;
+                   WHERE email = ?;
                    `;
-    const [userRow] = await connection.query(selectUserIdQuery, userId);
-    return userRow;
+    const [row] = await connection.query(query, email);
+    return row;
   }
 
 // 회원가입 *** 5 ***
@@ -96,9 +96,9 @@ async function updateUserInfo(connection, params) {
 async function insertUserProfile(connection, params) {
     const query = `
                   INSERT INTO UserProfile 
-                  (userIdx, nickName, profileImg, taste, hateFood, interest, avgSpeed, preferArea, mbti, userIntroduce)
+                  (userIdx, profileImg, taste, hateFood, interest, avgSpeed, preferArea, mbti, userIntroduce)
                   VALUES
-                  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+                  (?, ?, ?, ?, ?, ?, ?, ?, ?);
                   `;
     const [row] = await connection.query(query, params);
 
@@ -129,7 +129,7 @@ async function createUserManner(connection, userIdx) {
 async function existUserNickname(connection, nickName) {
     const query = `
                   SELECT nickName
-                  FROM UserProfile
+                  FROM User
                   WHERE nickName = ?;
                   `;
 
