@@ -96,9 +96,9 @@ async function updateUserInfo(connection, params) {
 async function insertUserProfile(connection, params) {
     const query = `
                   INSERT INTO UserProfile 
-                  (userIdx, nickName, profileImg, taste, hateFood, interest, avgSpeed, preferArea, mbti, userIntroduce)
+                  (userIdx, profileImg, taste, hateFood, interest, avgSpeed, preferArea, mbti, userIntroduce)
                   VALUES
-                  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+                  (?, ?, ?, ?, ?, ?, ?, ?, ?);
                   `;
     const [row] = await connection.query(query, params);
 
@@ -129,7 +129,7 @@ async function createUserManner(connection, userIdx) {
 async function existUserNickname(connection, nickName) {
     const query = `
                   SELECT nickName
-                  FROM UserProfile
+                  FROM User
                   WHERE nickName = ?;
                   `;
 
