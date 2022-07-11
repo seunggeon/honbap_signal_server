@@ -35,4 +35,11 @@ module.exports = function (app) {
     // 10. 카카오 로그인 API
     app.get('/auth/kakao', passport.authenticate('kakao-login')); 
     app.get('/auth/kakao/callback', passport.authenticate('kakao-login', { failureRedirect: '/auth/kakao', successRedirect: '/home' }));
+
+    // 11. 네이버 번호 인증 API
+
+    // 문자인증 - 전송 API
+    app.post('/app/send', user.send);
+    // 문자인증 - 검증 API
+    app.post('/app/verify', user.verify);
 };
