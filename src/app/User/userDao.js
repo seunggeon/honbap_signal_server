@@ -44,9 +44,9 @@ async function existUserPhone(connection, phoneNum) {
 // email 회원 조회 *** 4 ***
 async function selectUserId(connection, email) {
     const query = `
-                   SELECT userId, userName
+                   SELECT userName, nickName
                    FROM User
-                   WHERE userId = ?;
+                   WHERE email = ?;
                    `;
     const [row] = await connection.query(query, email);
     return row;
