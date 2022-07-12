@@ -146,11 +146,12 @@ exports.updateUserProfile = async function(profileImg, taste, hateFood, interest
 // 로그인
 exports.login = async function (email, password){
     try {
-        const userIdRows = await userProvider.userIdCheck(userId);
+        const userIdRows = await userProvider.userIdCheck(email);
+
         if (userIdRows.length == 0)
             return errResponse(baseResponse.USER_IS_NOT_EXIST);
 
-        selectUserId = userIdRows[0].userId
+        selectUserId = userIdRows[0].email
         console.log("selectUserId :", selectUserId);
         console.log("jwtsecret : ", jwtsecret);
 

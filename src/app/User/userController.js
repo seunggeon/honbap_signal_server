@@ -56,9 +56,9 @@ const signature = hash.toString(CryptoJS.enc.Base64);
  */
 
 exports.signin = async function (req, res) {
-  const { userId, password } = req.body;
+  const { email, password } = req.body;
 
-  const signInResponse = await userService.login(userId, password);
+  const signInResponse = await userService.login(email, password);
 
   return res.send(signInResponse);
 };
@@ -83,7 +83,7 @@ exports.postUsers = async function (req, res) {
     return res.send(response(baseResponse.SIGNUP_EMAIL_TYPE_ERROR));
   
   // nickName
-
+  
   // 빈 값 체크
   if (!nickName) return res.send(response(baseResponse.SIGNUP_NICKNAME_EMPTY));
   // 길이 체크
@@ -137,10 +137,7 @@ exports.postUserProfile = async function (req, res) {
     userIntroduce,
   } = req.body;
   // userId checking and print error message
-
-  // nickName
-  // 빈 값 체크
-
+  
   const userProfileResponse = await userService.createUserProfile(
     userIdx,
     profileImg,

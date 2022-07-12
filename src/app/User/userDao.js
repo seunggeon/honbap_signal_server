@@ -14,6 +14,7 @@ async function existUserId(connection, userId) {
     
     return row;
 }
+
 // 이메일 체크 *** 2 ***
 async function existUserEmail(connection, email) {
     const query = `
@@ -40,16 +41,16 @@ async function existUserPhone(connection, phoneNum) {
     return row;
 }
 
-// 유저 ID 조회 *** 4 ***
+// email 회원 조회 *** 4 ***
 async function selectUserId(connection, email) {
     const query = `
-                   SELECT userId
+                   SELECT userName, nickName
                    FROM User
                    WHERE email = ?;
                    `;
     const [row] = await connection.query(query, email);
     return row;
-  }
+}
 
 // 회원가입 *** 5 ***
 async function insertUserInfo(connection, params) {
@@ -76,7 +77,7 @@ async function selectUserIdx(connection, email) {
     return row;
 }
 
-  // 유저 개인 정보 수정 *** 7 ***
+// 유저 개인 정보 수정 *** 7 ***
 async function updateUserInfo(connection, params) {
     const query = `
                   UPDATE User 
@@ -95,7 +96,7 @@ async function updateUserInfo(connection, params) {
 // 유저 프로필 입력 *** 8 ***
 async function insertUserProfile(connection, params) {
     const query = `
-                  INSERT INTO UserProfile 
+                  INSERT INTO UserProfile
                   (userIdx, profileImg, taste, hateFood, interest, avgSpeed, preferArea, mbti, userIntroduce)
                   VALUES
                   (?, ?, ?, ?, ?, ?, ?, ?, ?);
@@ -141,7 +142,7 @@ async function existUserNickname(connection, nickName) {
 // 유저 개인정보 조회 *** 10 ***
 async function selectUserInfo(connection, userIdx) {
     const query = `
-                  SELECT userId, userName, birth, email,
+                  SELECT email, userName, nickName, birth,
                          phoneNum, sex, updateAt, createAt
                   FROM User
                   WHERE userIdx = ?;
@@ -182,6 +183,10 @@ async function updateUserProfile(connection, params) {
                       interest = ?, avgSpeed = ?, preferArea = ?,
                       mbti = ?, userIntroduce = ?, updateAt = default
                   WHERE userIdx = ?;
+
+                  UPDATE User
+                  SET profileInserted = 1;
+                  WHERE userIdx = ?;
                   `
     const [row] = await connection.query(query, params);
     return row;
@@ -192,7 +197,7 @@ async function checkpassword(connection, params) {
     const query = `
                   SELECT password
                   FROM User
-                  WHERE userId = ? and password = ?;
+                  WHERE email = ? and password = ?;
                   `;
   
     const [row] = await connection.query(query, params);

@@ -6,10 +6,10 @@ const baseResponse = require("../../../config/baseResponseStatus");
 const userDao = require("./userDao");
 
 // 회원 정보 확인
-exports.userIdCheck = async function (userId) {
+exports.userIdCheck = async function (email) {
   try {
     const connection = await pool.getConnection(async (conn) => conn);
-    const userIdCheckResult = await userDao.existUserId(connection, userId);
+    const userIdCheckResult = await userDao.existUserEmail(connection, email);
     connection.release();
 
     return userIdCheckResult;
@@ -51,8 +51,8 @@ exports.phoneNumCheck = async function (phoneNum) {
 };
 
 // 비밀 번호 확인
-exports.passwordCheck = async function (userId, password) {
-  const loginParams = [userId, password];
+exports.passwordCheck = async function (email, password) {
+  const loginParams = [email, password];
   try {
     const connection = await pool.getConnection(async (conn) => conn);
     const passwordCheckResult = await userDao.checkpassword(
