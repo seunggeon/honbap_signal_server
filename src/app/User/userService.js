@@ -59,7 +59,7 @@ exports.createUsers = async function (email, password, userName, nickName, birth
 };
 
 // 유저 프로필 등록 : 데옹
-exports.createUserProfile = async function (userIdx, nickName, profileImg, taste, hateFood, interest, avgSpeed, preferArea, mbti, userIntroduce) {
+exports.createUserProfile = async function (userIdx, profileImg, taste, hateFood, interest, avgSpeed, preferArea, mbti, userIntroduce) {
     const connection = await pool.getConnection(async (conn) => conn);
     try {
         await connection.beginTransaction();
@@ -70,7 +70,7 @@ exports.createUserProfile = async function (userIdx, nickName, profileImg, taste
 
         // 쿼리문에 사용할 변수 값을 배열 형태로 전달
         const insertUserProfileParams = 
-            [userIdx, nickName, profileImg, taste, hateFood, 
+            [userIdx, profileImg, taste, hateFood, 
                 interest, avgSpeed, preferArea, mbti, userIntroduce];
         const createUserLocation = [userIdx];
         const createUserManner = [userIdx];
@@ -150,11 +150,12 @@ exports.updateUserProfile = async function(profileImg, taste, hateFood, interest
 // 로그인
 exports.login = async function (email, password){
     try {
-        const userIdRows = await userProvider.userIdCheck(userId);
+        const userIdRows = await userProvider.userIdCheck(email);
+
         if (userIdRows.length == 0)
             return errResponse(baseResponse.USER_IS_NOT_EXIST);
 
-        selectUserId = userIdRows[0].userId
+        selectUserId = userIdRows[0].email
         console.log("selectUserId :", selectUserId);
         console.log("jwtsecret : ", jwtsecret);
 
