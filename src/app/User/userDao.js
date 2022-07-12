@@ -185,7 +185,7 @@ async function updateUserProfile(connection, params) {
                   WHERE userIdx = ?;
 
                   UPDATE User
-                  SET profileInserted = 1;
+                  SET profileInserted = 1
                   WHERE userIdx = ?;
                   `
     const [row] = await connection.query(query, params);
