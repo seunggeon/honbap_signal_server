@@ -183,6 +183,10 @@ async function updateUserProfile(connection, params) {
                       interest = ?, avgSpeed = ?, preferArea = ?,
                       mbti = ?, userIntroduce = ?, updateAt = default
                   WHERE userIdx = ?;
+
+                  UPDATE User
+                  SET profileInserted = 1;
+                  WHERE userIdx = ?;
                   `
     const [row] = await connection.query(query, params);
     return row;
