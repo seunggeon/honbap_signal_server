@@ -108,13 +108,7 @@ exports.postUserProfile = async function (req, res) {
     userIntroduce,
   } = req.body;
   // userId checking and print error message
-/*
-  // nickName
-  // 빈 값 체크
-  if (!nickName) return res.send(response(baseResponse.SIGNUP_NICKNAME_EMPTY));
-  if (nickName.length > 10)
-    return res.send(response(baseResponse.SIGNUP_NICKNAME_LENGTH));
-*/
+
   const userProfileResponse = await userService.createUserProfile(
     userIdx,
     profileImg,
