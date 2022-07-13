@@ -96,7 +96,7 @@ exports.getUserIdx = async function (email) {
     const userIdxCheckResult = await userDao.selectUserIdx(connection, email);
     connection.release();
 
-    //console.log(userIdxCheckResult[0])
+    console.log(userIdxCheckResult[0])
 
     return userIdxCheckResult[0];
   } catch (err) {
@@ -137,3 +137,18 @@ exports.getUserProfile = async function (userIdx) {
     return errResponse(baseResponse.DB_ERROR);
   }
 };
+
+// 카카오 계정 조회
+exports.getKakaoId = async function (provider, id) {
+  try {
+    const connection = await pool.getConnection(async (conn) => conn);
+
+    const kakaoAccountResult = await userDao.selectKakaoId(connection, [provider, id]);
+    connection.release();
+
+    return kakaoAccountResult[0];
+  } catch (err) {
+    logger.error(`getUserProfile Provider error\n: ${err.message}`);
+    return errResponse(baseResponse.DB_ERROR);
+  }
+}
