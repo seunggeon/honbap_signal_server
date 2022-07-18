@@ -195,3 +195,35 @@ exports.login = async function (email, password){
         return errResponse(baseResponse.DB_ERROR);
     }
 }
+
+// 카카오 로그인
+exports.kakaoLogin = async function (email){
+    try {
+        const userIdxRow = await userProvider.getUserIdx(email);
+
+        console.log("userIdx in jwt: ", userIdxRow[0].userIdx);
+
+
+        let jwtToken = await jwt.sign(
+            {
+                userIdx : userIdxRow[0].userIdx
+            }, 
+            jwtsecret,
+            {
+                expiresIn: "365d",
+                subject: "userInfo",
+            }
+        );
+        return response(baseResponse.SUCCESS, {'userIdx': userIdxRow[0].userIdx , 'jwt': jwtToken});
+
+        // return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMsg.LOGIN_SUCCESS, 
+        //     {
+        //       /* 생성된 Token을 클라이언트에게 Response */
+        //         token: jwtToken.token
+        //     }));
+        // console.log(`로그인 되었습니다.`)
+    } catch (err) {
+        logger.error(`App - login Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}

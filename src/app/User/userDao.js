@@ -205,6 +205,18 @@ async function checkpassword(connection, params) {
     return row;
 }
 
+// 카카오 계정 조회 *** 15 ***
+async function selectKakaoId(connection, params) {
+    const query = `
+                SELECT id
+                FROM User
+                WHERE provider = ? and id = ?;
+                `;
+    
+    const [row] = await connection.query(query, params);
+
+    return row;
+}
 
 
 module.exports = {
@@ -224,4 +236,5 @@ module.exports = {
     updatePassword, // 12
     updateUserProfile, // 13
     checkpassword, //14
+    selectKakaoId, //15
   };
