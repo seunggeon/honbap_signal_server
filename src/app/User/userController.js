@@ -313,9 +313,6 @@ passport.use(
 ),
 );
 
-
-
-
 /*
  * API Name : 번호 인증 API
  * [POST] /app/send

@@ -31,8 +31,8 @@ async function selectSignalList(connection, userIdx) {
                     SELECT up1.nickName as userNickName, up2.nickName as matchingNickName,
                     s.sigPromiseTime, s.sigPromiseArea, s.sigStart, s.updateAt
                     FROM  Signaling AS s
-                        LEFT JOIN UserProfile AS up1 ON s.userIdx = up1.userIdx
-                        LEFT JOIN UserProfile AS up2 ON s.matchIdx = up2.userIdx
+                        LEFT JOIN User AS up1 ON s.userIdx = up1.userIdx
+                        LEFT JOIN User AS up2 ON s.matchIdx = up2.userIdx
                     WHERE s.userIdx = ? AND s.sigStatus = 1
                     ORDER BY s.signalIdx DESC;
                     `;
@@ -114,7 +114,7 @@ async function postSignalApply(connection, params) {
 async function getSignalApply(connection, userIdx) {
   const query = `
                     SELECT DISTINCT nickName
-                    FROM Signaling AS s, SignalApply AS sa, UserProfile AS up
+                    FROM Signaling AS s, SignalApply AS sa, User AS up
                     WHERE s.sigStatus = 1 AND sa.userIdx = 2 AND 
                             sa.applyIdx = up.userIdx ORDER BY sa.trashIdx ASC;
                     `;
@@ -147,8 +147,8 @@ async function endSignals(connection, params) {
   const query = `
                     SELECT up1.nickName, up2.nickName, s.sigPromiseArea, s.sigPromiseTime
                     FROM    Signaling AS s
-                            right join UserProfile AS up1 ON s.userIdx = up1.userIdx
-                            right join UserProfile AS up2 ON s.matchIdx = up2.userIdx
+                            right join User AS up1 ON s.userIdx = up1.userIdx
+                            right join User AS up2 ON s.matchIdx = up2.userIdx
                     WHERE (s.userIdx = ? OR s.matchIdx = ?) AND s.sigStatus = 0;
                     `;
   const [row] = await connection.query(query, params);
