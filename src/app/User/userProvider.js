@@ -148,7 +148,7 @@ exports.getKakaoId = async function (provider, id) {
 
     return kakaoAccountResult[0];
   } catch (err) {
-    logger.error(`getUserProfile Provider error\n: ${err.message}`);
+    logger.error(`getKakaoId Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
   }
 }

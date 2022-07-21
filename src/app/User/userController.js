@@ -22,20 +22,20 @@ const kakao = {
 // Naver 번호 인증 //
 const secret_key = require("../../../config/secret_sms");
 
-const Cache = require('memory-cache');
-const CryptoJS = require('crypto-js');
+const Cache = require("memory-cache");
+const CryptoJS = require("crypto-js");
 
 const date = Date.now().toString();
 const uri = secret_key.NCP_serviceID;
 const secretKey = secret_key.NCP_secretKey;
 const accessKey = secret_key.NCP_accessKey;
-const method = 'POST';
+const method = "POST";
 const space = " ";
 const newLine = "\n";
 const url = `https://sens.apigw.ntruss.com/sms/v2/services/${uri}/messages`;
 const url2 = `/sms/v2/services/${uri}/messages`;
 
-const  hmac = CryptoJS.algo.HMAC.create(CryptoJS.algo.SHA256, secretKey);
+const hmac = CryptoJS.algo.HMAC.create(CryptoJS.algo.SHA256, secretKey);
 
 hmac.update(method);
 hmac.update(space);
@@ -70,9 +70,10 @@ exports.signin = async function (req, res) {
  */
 
 exports.postUsers = async function (req, res) {
-  const { email, password, userName, nickName, birth, phoneNum, sex } = req.body;
+  const { email, password, userName, nickName, birth, phoneNum, sex } =
+    req.body;
   // email checking and print error message
-  
+
   // 빈 값 체크
   if (!email) return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
   // 길이 체크
@@ -81,15 +82,16 @@ exports.postUsers = async function (req, res) {
   // 형식 체크 (by 정규표현식)
   if (!regexEmail.test(email))
     return res.send(response(baseResponse.SIGNUP_EMAIL_TYPE_ERROR));
-  
+
   // nickName
-  
+
   // 빈 값 체크
   if (!nickName) return res.send(response(baseResponse.SIGNUP_NICKNAME_EMPTY));
   // 길이 체크
-  if (nickName.length > 10)  //VARCHAR(10) 이 한글로는 5자로 제한되는지 확인 필요
+  if (nickName.length > 10)
+    //VARCHAR(10) 이 한글로는 5자로 제한되는지 확인 필요
     return res.send(response(baseResponse.SIGNUP_NICKNAME_LENGTH));
-  
+
   // phoneNum
 
   // 빈 값 체크
@@ -137,7 +139,7 @@ exports.postUserProfile = async function (req, res) {
     userIntroduce,
   } = req.body;
   // userId checking and print error message
-  
+
   const userProfileResponse = await userService.createUserProfile(
     userIdx,
     profileImg,
@@ -177,12 +179,20 @@ exports.getUserIdx = async function (req, res) {
 /**
  * API No. 5
  * API Name : 유저 개인정보 조회 API
- * [GET] /app/user/myinfo/:userId
+ * [GET] /app/user/myinfo
  */
 exports.getUserInfo = async function (req, res) {
-  const userIdx = req.params.userIdx;
+  const userIdxFromJWT = req.verifiedToken.userIdx;
 
-  const userInfoResponse = await userProvider.getUserInfo(userIdx);
+  //validation
+  if (!userIdxFromJWT) {
+    return res.send(errResponse(baseResponse.USER_USERIDX_EMPTY));  //2042
+  }
+  if (userIdxFromJWT <= 0) {
+    return res.send(errResponse(baseResponse.USER_USERIDX_LENGTH));  //2043
+  }
+
+  const userInfoResponse = await userProvider.getUserInfo(userIdxFromJWT);
 
   return res.send(response(baseResponse.SUCCESS, userInfoResponse));
 };
@@ -190,12 +200,20 @@ exports.getUserInfo = async function (req, res) {
 /**
  * API No. 6
  * API Name : 유저 마이페이지(프로필) 조회 API
- * [GET] /app/user/mypage/:userId
+ * [GET] /app/user/mypage
  */
 exports.getUserProfile = async function (req, res) {
-  const userIdx = req.params.userIdx;
+  const userIdxFromJWT = req.verifiedToken.userIdx;
 
-  const userMypageResponse = await userProvider.getUserProfile(userIdx);
+  //validation
+  if (!userIdxFromJWT) {
+    return res.send(errResponse(baseResponse.USER_USERIDX_EMPTY));  //2042
+  }
+  if (userIdxFromJWT <= 0) {
+    return res.send(errResponse(baseResponse.USER_USERIDX_LENGTH));  //2043
+  }
+
+  const userMypageResponse = await userProvider.getUserProfile(userIdxFromJWT);
 
   return res.send(response(baseResponse.SUCCESS, userMypageResponse));
 };
@@ -203,13 +221,21 @@ exports.getUserProfile = async function (req, res) {
 /**
  * API No. 7
  * API Name : 유저 패스워드 수정 API
- * [PATCH] /app/user/myinfo/:userId/modifypw
+ * [PATCH] /app/user/myinfo/modifypw
  */
 exports.patchUserPassword = async function (req, res) {
-  const userIdx = req.params.userIdx;
+  const userIdxFromJWT = req.verifiedToken.userIdx;
   const { password } = req.body;
 
-  const updatePW = await userService.updatePassword(password, userIdx);
+  //validation
+  if (!userIdxFromJWT) {
+    return res.send(errResponse(baseResponse.USER_USERIDX_EMPTY));  //2042
+  }
+  if (userIdxFromJWT <= 0) {
+    return res.send(errResponse(baseResponse.USER_USERIDX_LENGTH));  //2043
+  }
+
+  const updatePW = await userService.updatePassword(password, userIdxFromJWT);
 
   return res.send(baseResponse.SUCCESS);
 };
@@ -217,16 +243,24 @@ exports.patchUserPassword = async function (req, res) {
 /**
  * API No. 8
  * API Name : 유저 개인정보 수정 API
- * [PATCH] /app/user/myinfo/:userId
+ * [PATCH] /app/user/myinfo
  */
 exports.patchUserInfo = async function (req, res) {
-  const userIdx = req.params.userIdx;
+  const userIdxFromJWT = req.verifiedToken.userIdx;
   const { userName, birth } = req.body;
+
+  //validation
+  if (!userIdxFromJWT) {
+    return res.send(errResponse(baseResponse.USER_USERIDX_EMPTY));  //2042
+  }
+  if (userIdxFromJWT <= 0) {
+    return res.send(errResponse(baseResponse.USER_USERIDX_LENGTH));  //2043
+  }
 
   const updateUserInfo = await userService.updateUserInfo(
     userName,
     birth,
-    userIdx
+    userIdxFromJWT
   );
   return res.send(baseResponse.SUCCESS);
 };
@@ -234,11 +268,10 @@ exports.patchUserInfo = async function (req, res) {
 /**
  * API No. 9
  * API Name : 유저 프로필 수정 API
- * [PATCH] /app/user/mypage/:userId
+ * [PATCH] /app/user/mypage
  */
 exports.patchUserProfile = async function (req, res) {
   const userIdxFromJwt = req.verifiedToken.userIdx;
-  const userIdx = req.params.userIdx;
   const {
     profileImg,
     taste,
@@ -249,21 +282,28 @@ exports.patchUserProfile = async function (req, res) {
     mbti,
     userIntroduce,
   } = req.body;
-  if (userIdxFromJwt == userIdx) {
-    const updateUserProfile = await userService.updateUserProfile(
-      profileImg,
-      taste,
-      hateFood,
-      interest,
-      avgSpeed,
-      preferArea,
-      mbti,
-      userIntroduce,
-      userIdx
-    );
 
-    return res.send(response(baseResponse.SUCCESS));
+  //validation
+  if (!userIdxFromJWT) {
+    return res.send(errResponse(baseResponse.USER_USERIDX_EMPTY));  //2042
   }
+  if (userIdxFromJWT <= 0) {
+    return res.send(errResponse(baseResponse.USER_USERIDX_LENGTH));  //2043
+  }
+  
+  const updateUserProfile = await userService.updateUserProfile(
+    profileImg,
+    taste,
+    hateFood,
+    interest,
+    avgSpeed,
+    preferArea,
+    mbti,
+    userIntroduce,
+    userIdxFromJwt
+  );
+
+  return res.send(response(baseResponse.SUCCESS)); 
 };
 
 /*
@@ -280,41 +320,46 @@ passport.use(
       callbackURL: kakao.redirectUri,
     },
     async (accessToken, refreshToken, profile, done) => {
-      console.log(accessToken);
-      console.log("-------------------------------------------------------");
-      console.log(refreshToken);
-      console.log("-------------------------------------------------------");
-      console.log(profile);
-      // 받아오는 정보: 
-      // profile = {
-      //   provider: 'kakao',
-      //   id: number,
-      //   username: string,
-      // }
-      console.log("-------------------------------------------------------");
-      console.log(done);
+      // console.log(accessToken);
+      // console.log("-------------------------------------------------------");
+      // console.log(refreshToken);
+      // console.log("-------------------------------------------------------");
+      // console.log(profile);
+      // // 받아오는 정보:
+      // // profile = {
+      // //   provider: 'kakao',
+      // //   id: number,
+      // //   username: string,
+      // // }
+      // console.log("-------------------------------------------------------");
+      // console.log(done);
       try {
         // 카카오 계정이 데이터베이스에 있나 확인
-        const kakaoIdResponse = await userProvider.getKakaoId(profile.provider, profile.id);
+        const kakaoIdResponse = await userProvider.getKakaoId(
+          profile.provider,
+          profile.id
+        );
         // console.log(kakaoIdResponse);
         // { id: 2337290442 }
         if (Object.keys(kakaoIdResponse).length > 0) {
           // 로그인
-          const signInResponse = await userService.kakaoLogin(profile._json.kakao_account.email);
+          const signInResponse = await userService.kakaoLogin(
+            profile._json.kakao_account.email
+          );
 
           done(null, signInResponse);
-        } /*else {
-          // 카카오 회원가입
-        }*/
-        
-     } catch (error) {
+
+        }
+        // else {
+        //   // 카카오 회원가입
+        // }
+      } catch (error) {
         console.error(error);
         done(error);
-     }
-  },
-),
+      }
+    }
+  )
 );
-
 
 /*
  * API Name : 번호 인증 API
@@ -336,35 +381,33 @@ exports.send = async function (req, res) {
     json: true,
     url: url,
     headers: {
-      'Content-Type': 'application/json',
-      'x-ncp-iam-access-key': accessKey,
-      'x-ncp-apigw-timestamp': date,
-      'x-ncp-apigw-signature-v2': signature,
+      "Content-Type": "application/json",
+      "x-ncp-iam-access-key": accessKey,
+      "x-ncp-apigw-timestamp": date,
+      "x-ncp-apigw-signature-v2": signature,
     },
     data: {
-      type: 'SMS',
-      contentType: 'COMM',
-      countryCode: '82',
-      from: '01023279226',
+      type: "SMS",
+      contentType: "COMM",
+      countryCode: "82",
+      from: "01023279226",
       content: `[Milli] 인증번호 [${verifyCode}]를 입력해주세요.`,
       messages: [
         {
           to: `${phoneNumber}`,
         },
       ],
-    }, 
-    })
-  .then(function (res) {
-    res.send(response(baseResponse.SMS_SEND_SUCCESS));
+    },
   })
-  .catch((err) => {
-    if(err.res == undefined){
+    .then(function (res) {
       res.send(response(baseResponse.SMS_SEND_SUCCESS));
-    }
-    else res.sned(errResponse(baseResponse.SMS_SEND_FAILURE));
-  });
+    })
+    .catch((err) => {
+      if (err.res == undefined) {
+        res.send(response(baseResponse.SMS_SEND_SUCCESS));
+      } else res.sned(errResponse(baseResponse.SMS_SEND_FAILURE));
+    });
 };
-
 
 /*
  * API Name : 번호 인증 API
@@ -380,9 +423,9 @@ exports.verify = async function (req, res) {
   if (!CacheData) {
     return res.send(errResponse(baseResponse.FAILURE_SMS_AUTHENTICATION));
   } else if (CacheData !== verifyCode) {
-      return res.send(errResponse(baseResponse.FAILURE_SMS_AUTHENTICATION));
+    return res.send(errResponse(baseResponse.FAILURE_SMS_AUTHENTICATION));
   } else {
     Cache.del(phoneNumber);
-    return res.send(response(baseResponse.SMS_VERIFY_SUCCESS));     
+    return res.send(response(baseResponse.SMS_VERIFY_SUCCESS));
   }
 };
