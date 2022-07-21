@@ -46,7 +46,7 @@ async function forCalculateManner(connection, params) {
 async function selectCommented(connection, userIdx) {
     const query =   `
                     SELECT nickName AS reviewer, comment, star
-                    FROM UserProfile AS up, Comment AS c
+                    FROM User AS up, Comment AS c
                     WHERE c.userIdx = ? AND up.userIdx = c.writerIdx;
                     `;
     const [row] = await connection.query(query, userIdx);
@@ -57,7 +57,7 @@ async function selectCommented(connection, userIdx) {
 async function selectCommenting(connection, writerIdx) {
     const query =   `
                     SELECT nickName AS reviewer, comment, star
-                    FROM UserProfile AS up, Comment AS c
+                    FROM User AS up, Comment AS c
                     WHERE c.writerIdx = ? AND up.userIdx = c.userIdx;
                     `;
     const [row] = await connection.query(query, writerIdx);

@@ -29,7 +29,7 @@ async function selectBlack(connection, userIdx) {
     const query =   `
                     SELECT up2.nickName AS blackNickName
                     FROM BlackList AS b
-                        RIGHT JOIN UserProfile AS up2 ON up2.userIdx = b.blackIdx
+                        RIGHT JOIN User AS up2 ON up2.userIdx = b.blackIdx
                     WHERE b.userIdx = ?; 
                     `;
     const [row] = await connection.query(query, userIdx);
@@ -41,7 +41,7 @@ async function selectBlackInfo(connection, params) {
     const query =   `
                     SELECT up2.nickName AS blackNickName, b.whyBlack
                     FROM BlackList AS b
-                        RIGHT JOIN UserProfile AS up2 ON up2.userIdx = b.blackIdx
+                        RIGHT JOIN User AS up2 ON up2.userIdx = b.blackIdx
                     WHERE b.userIdx = ? AND b.blackIdx = ?;
                     `;
     const [row] = await connection.query(query, params);

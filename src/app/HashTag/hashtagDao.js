@@ -51,7 +51,7 @@ async function countHashTag(connection, userIdx) {
 async function selectHashTag(connection, params) {
     const query =   `
                     SELECT up.nickName 
-                    FROM HashTag AS h, UserProfile AS up
+                    FROM HashTag AS h, User AS up
                     WHERE h.hashTag = ? AND h.userIdx = up.userIdx;
                     `;
     const [row] = await connection.query(query, params);
