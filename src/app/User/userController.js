@@ -348,7 +348,6 @@ passport.use(
           );
 
           done(null, signInResponse);
-
         }
         // else {
         //   // 카카오 회원가입
