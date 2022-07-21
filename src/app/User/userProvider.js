@@ -19,6 +19,7 @@ exports.userIdCheck = async function (email) {
   }
 };
 
+
 // email 체크
 exports.emailCheck = async function (email) {
   try {
