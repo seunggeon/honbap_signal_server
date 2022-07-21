@@ -179,12 +179,20 @@ exports.getUserIdx = async function (req, res) {
 /**
  * API No. 5
  * API Name : 유저 개인정보 조회 API
- * [GET] /app/user/myinfo/:userId
+ * [GET] /app/user/myinfo
  */
 exports.getUserInfo = async function (req, res) {
-  const userIdx = req.params.userIdx;
+  const userIdxFromJWT = req.verifiedToken.userIdx;
 
-  const userInfoResponse = await userProvider.getUserInfo(userIdx);
+  //validation
+  if (!userIdxFromJWT) {
+    return res.send(errResponse(baseResponse.USER_USERIDX_EMPTY));  //2042
+  }
+  if (userIdxFromJWT <= 0) {
+    return res.send(errResponse(baseResponse.USER_USERIDX_LENGTH));  //2043
+  }
+
+  const userInfoResponse = await userProvider.getUserInfo(userIdxFromJWT);
 
   return res.send(response(baseResponse.SUCCESS, userInfoResponse));
 };
@@ -192,12 +200,20 @@ exports.getUserInfo = async function (req, res) {
 /**
  * API No. 6
  * API Name : 유저 마이페이지(프로필) 조회 API
- * [GET] /app/user/mypage/:userId
+ * [GET] /app/user/mypage
  */
 exports.getUserProfile = async function (req, res) {
-  const userIdx = req.params.userIdx;
+  const userIdxFromJWT = req.verifiedToken.userIdx;
 
-  const userMypageResponse = await userProvider.getUserProfile(userIdx);
+  //validation
+  if (!userIdxFromJWT) {
+    return res.send(errResponse(baseResponse.USER_USERIDX_EMPTY));  //2042
+  }
+  if (userIdxFromJWT <= 0) {
+    return res.send(errResponse(baseResponse.USER_USERIDX_LENGTH));  //2043
+  }
+
+  const userMypageResponse = await userProvider.getUserProfile(userIdxFromJWT);
 
   return res.send(response(baseResponse.SUCCESS, userMypageResponse));
 };
@@ -205,13 +221,21 @@ exports.getUserProfile = async function (req, res) {
 /**
  * API No. 7
  * API Name : 유저 패스워드 수정 API
- * [PATCH] /app/user/myinfo/:userId/modifypw
+ * [PATCH] /app/user/myinfo/modifypw
  */
 exports.patchUserPassword = async function (req, res) {
-  const userIdx = req.params.userIdx;
+  const userIdxFromJWT = req.verifiedToken.userIdx;
   const { password } = req.body;
 
-  const updatePW = await userService.updatePassword(password, userIdx);
+  //validation
+  if (!userIdxFromJWT) {
+    return res.send(errResponse(baseResponse.USER_USERIDX_EMPTY));  //2042
+  }
+  if (userIdxFromJWT <= 0) {
+    return res.send(errResponse(baseResponse.USER_USERIDX_LENGTH));  //2043
+  }
+
+  const updatePW = await userService.updatePassword(password, userIdxFromJWT);
 
   return res.send(baseResponse.SUCCESS);
 };
@@ -219,16 +243,24 @@ exports.patchUserPassword = async function (req, res) {
 /**
  * API No. 8
  * API Name : 유저 개인정보 수정 API
- * [PATCH] /app/user/myinfo/:userId
+ * [PATCH] /app/user/myinfo
  */
 exports.patchUserInfo = async function (req, res) {
-  const userIdx = req.params.userIdx;
+  const userIdxFromJWT = req.verifiedToken.userIdx;
   const { userName, birth } = req.body;
+
+  //validation
+  if (!userIdxFromJWT) {
+    return res.send(errResponse(baseResponse.USER_USERIDX_EMPTY));  //2042
+  }
+  if (userIdxFromJWT <= 0) {
+    return res.send(errResponse(baseResponse.USER_USERIDX_LENGTH));  //2043
+  }
 
   const updateUserInfo = await userService.updateUserInfo(
     userName,
     birth,
-    userIdx
+    userIdxFromJWT
   );
   return res.send(baseResponse.SUCCESS);
 };
@@ -236,11 +268,10 @@ exports.patchUserInfo = async function (req, res) {
 /**
  * API No. 9
  * API Name : 유저 프로필 수정 API
- * [PATCH] /app/user/mypage/:userId
+ * [PATCH] /app/user/mypage
  */
 exports.patchUserProfile = async function (req, res) {
   const userIdxFromJwt = req.verifiedToken.userIdx;
-  const userIdx = req.params.userIdx;
   const {
     profileImg,
     taste,
@@ -251,21 +282,28 @@ exports.patchUserProfile = async function (req, res) {
     mbti,
     userIntroduce,
   } = req.body;
-  if (userIdxFromJwt == userIdx) {
-    const updateUserProfile = await userService.updateUserProfile(
-      profileImg,
-      taste,
-      hateFood,
-      interest,
-      avgSpeed,
-      preferArea,
-      mbti,
-      userIntroduce,
-      userIdx
-    );
 
-    return res.send(response(baseResponse.SUCCESS));
+  //validation
+  if (!userIdxFromJWT) {
+    return res.send(errResponse(baseResponse.USER_USERIDX_EMPTY));  //2042
   }
+  if (userIdxFromJWT <= 0) {
+    return res.send(errResponse(baseResponse.USER_USERIDX_LENGTH));  //2043
+  }
+  
+  const updateUserProfile = await userService.updateUserProfile(
+    profileImg,
+    taste,
+    hateFood,
+    interest,
+    avgSpeed,
+    preferArea,
+    mbti,
+    userIntroduce,
+    userIdxFromJwt
+  );
+
+  return res.send(response(baseResponse.SUCCESS)); 
 };
 
 /*

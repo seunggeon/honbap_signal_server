@@ -18,23 +18,23 @@ module.exports = function (app) {
   app.get("/user/signup/:email", user.getUserIdx);
 
   // 5. 유저 개인정보 조회 API
-  app.get("/user/myinfo/:userIdx", jwtMiddleware, user.getUserInfo);
+  app.get("/user/myinfo", jwtMiddleware, user.getUserInfo);
 
   // 6. 유저 프로필 조회 (마이페이지) API
-  app.get("/user/mypage/:userIdx", jwtMiddleware, user.getUserProfile);
+  app.get("/user/mypage", jwtMiddleware, user.getUserProfile);
 
   // 7. 유저 패스워드 수정 API
   app.patch(
-    "/user/myinfo/:userIdx/modifypw",
+    "/user/myinfo/modifypw",
     jwtMiddleware,
     user.patchUserPassword
   );
 
   // 8. 유저 개인정보 수정 API
-  app.patch("/user/myinfo/:userIdx", jwtMiddleware, user.patchUserInfo);
+  app.patch("/user/myinfo", jwtMiddleware, user.patchUserInfo);
 
   // 9. 유저 프로필 수정 (마이페이지) API
-  app.patch("/user/mypage/:userIdx", jwtMiddleware, user.patchUserProfile);
+  app.patch("/user/mypage", jwtMiddleware, user.patchUserProfile);
 
   // 10. 카카오 로그인 API
   app.get("/auth/kakao", passport.authenticate("kakao"));
