@@ -35,9 +35,9 @@ async function selectUserLocation(connection, userIdx) {
 // Siganling Table에서 활성화된 시그널의 SignalArea 정보 가져오기
 async function selectSignalLocation(connection) {
     const query = `
-                SELECT sigPromiseArea
+                SELECT latitude, longitude
                 FROM Signaling
-                WHERE sigStatus = '1' ; # " "이 아니라 ' '하니까 되네;;
+                WHERE userIdx = ? ; # " "이 아니라 ' '하니까 되네;;
                   `;
     const [row] = await connection.query(query);
 
@@ -45,16 +45,16 @@ async function selectSignalLocation(connection) {
 }
 
 // AR zone Table에서 장소 -> 위도, 경도 받아오기
-async function selectARLocation(connection, signalPromiseArea) {
-    const query = `
-                    SELECT latitude, longitude
-                    FROM ARzone
-                    WHERE address = ? ;
-                  `;
-    const [row] = await connection.query(query, signalPromiseArea);
+// async function selectARLocation(connection, signalPromiseArea) {
+//     const query = `
+//                     SELECT latitude, longitude
+//                     FROM ARzone
+//                     WHERE address = ? ;
+//                   `;
+//     const [row] = await connection.query(query, signalPromiseArea);
 
-    return row;
-}
+//     return row;
+// }
 
 //AR zone Table에서 위도, 경도 -> 장소
 // async function getAddressByLocation(connection, params){
@@ -87,13 +87,31 @@ async function getSignalByAddress(connection, param){
     */
 }
 
+async function getSignalStatus(connection, param){
+    const query = `
+                    SELECT userIdx
+                    FROM Signaling
+                    WHERE sigStatus = '1';
+                 `;
+    const [row] = await connection.query(query, param);
+    return row ;
+    
+    /*
+    row
+    ----------------------------------------
+    [{signalidx : 8 }, {signalIdx : none} ]
+    ----------------------------------------
+    */
+}
+
 
 module.exports = {
     insertUserLocation, // 1
     updateLocation, // 2
     selectUserLocation, // 3
     selectSignalLocation, // 4
-    selectARLocation, // 5
+    // selectARLocation, // 5
     // getAddressByLocation, // 6
-    getSignalByAddress // 7
+    getSignalByAddress, // 7
+    getSignalStatus // 8
 };

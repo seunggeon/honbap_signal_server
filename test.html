@@ -1,0 +1,19 @@
+
+
+<!-- 카카오 아이디로로그인 버튼 노출 영역 -->
+<a id="custom-login-btn" href="javascript:loginWithKakao()">
+	<img
+	  src="//k.kakaocdn.net/14/dn/btqCn0WEmI3/nijroPfbpCa4at5EIsjyf0/o.jpg"
+	  width="222"
+	/>
+</a>
+
+<script type="text/javascript">
+		/*  카카오아이디로로그인 Script */
+		function loginWithKakao() {
+			Kakao.Auth.authorize({
+				redirectUri: 'http://localhost:3001/auth/kakao/callback',  /* redirect되는 URL */
+				scope: 'phone_number'  /* 전달 받을 정보 */
+			})
+		}
+</script>

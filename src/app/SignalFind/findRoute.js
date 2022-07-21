@@ -1,8 +1,8 @@
 module.exports = function (app) {
     const find = require("./findController");
 
-    // 1. 내 위치 전송 API (초깃값)
-    app.post('/signalFind', find.postMyLocation);
+    // 1. 내 위치 전송 API (초깃값) , 위치 허용 시
+    // app.post('/signalFind', find.postMyLocation);
 
     // 2. 내 위치 업데이트 API
     app.patch('/signalFind/:userIdx',find.patchMyLocation);

@@ -69,26 +69,11 @@ const logger = require("../../../config/winston");
     var userIdx = req.params.userIdx;
     console.log(`userIdx : ${userIdx}`);
   
-    var {page, pageSize} = req.body;
-
-    // page 수
-    console.log(`offset : ${page}`);
-
-    // page size = 한번에 몇개의 데이터를 불러올 지.
-    console.log(`offset : ${pageSize}`);
-  
     // 빈 값 체크
     if(!userIdx)
     return res.send(response(baseResponse.SIGNALFIND_USERIDX_EMPTY));
-    
-    if(!page)
-    return res.send(response(baseResponse.SIGNALFIND_USERIDX_EMPTY));
-    
-    if(!pageSize)
-    return res.send(response(baseResponse.SIGNALFIND_USERIDX_EMPTY));
-    
-    
-    const signalListResponse = await findProvider.getSignalList(userIdx, page, pageSize);
 
+    const params = [userIdx];
+    const signalListResponse = await findProvider.getSignalList(params);
     return res.send(response(baseResponse.SUCCESS,signalListResponse));
   }
