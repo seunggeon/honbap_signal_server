@@ -303,9 +303,9 @@ passport.use(
           const signInResponse = await userService.kakaoLogin(profile._json.kakao_account.email);
 
           done(null, signInResponse);
-        } else {
+        } /*else {
           // 카카오 회원가입
-        }
+        }*/
         
      } catch (error) {
         console.error(error);
