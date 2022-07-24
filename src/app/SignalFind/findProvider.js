@@ -24,20 +24,28 @@ exports.getSignalList= async function (userIdx)
       // const signalPromiseArea = await findDao.selectSignalLocation(connection);
       // console.log(`signalPromiseArea ${signalPromiseArea[2].sigPromiseArea}`);
       // ARzone Table에서 위도, 경도 받아오기
-      
+
+      console.log(signalOnUserIdxList.length)
       /* 전역 변수 선언 */
+
+      userOnList = [];
 
       // address = ? 에서 for문 안쓰면 주소 여러개 중에 하나만 받고 끝남.
       for(var i=0; i < signalOnUserIdxList.length; i++)
       {
-        const userLocation = await findDao.selectSignalLocation(connection, signalOnUser[i]); 
+        const userLocation  = await findDao.selectSignalLocation(connection, signalOnUserIdxList[i].userIdx); 
         // status =1 인 sigPromiseArea 
+        console.log(signalOnUserIdxList[i].userIdx)
+        console.log(userLocation[0])
 
-        distance = haversine(myLocationResult[0], userLocation);
+        distance = haversine(myLocationResult[0], userLocation[0]);
 
         if(distance == 10 || distance < 10 ) // range = 10km
         {
-          userOnList.push(signalOnUserIdxList[i]);
+          if(signalOnUserIdxList[i].userIdx != userIdx)
+          {
+            userOnList.push(signalOnUserIdxList[i].userIdx);
+          }
         }
         else if(distance > 10)
         {
@@ -46,11 +54,13 @@ exports.getSignalList= async function (userIdx)
         }
         else
         {
-            console.log("error");
+          console.log("error");
         }
         
         // status =1 인 sigPromiseArea의 위도, 경도 리스트화
       }
+
+      
       connection.release();
       return userOnList ;
     }

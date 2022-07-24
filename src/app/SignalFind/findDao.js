@@ -19,7 +19,7 @@ async function updateLocation(connection, params) {
     return row;
 }
 
-// userLocation Table에서 내 최신 위치 정보 불러오기 
+// userLocation Table에서 내 최신 위치 정보 불러오기 " "이 아니라 ' '하니까 되네;;
 async function selectUserLocation(connection, userIdx) {
     const query = `
                     SELECT latitude, longitude
@@ -33,13 +33,13 @@ async function selectUserLocation(connection, userIdx) {
 
 
 // Siganling Table에서 활성화된 시그널의 SignalArea 정보 가져오기
-async function selectSignalLocation(connection) {
+async function selectSignalLocation(connection,params) {
     const query = `
                 SELECT latitude, longitude
-                FROM Signaling
-                WHERE userIdx = ? ; # " "이 아니라 ' '하니까 되네;;
+                FROM UserLocation
+                WHERE userIdx = ? ; 
                   `;
-    const [row] = await connection.query(query);
+    const [row] = await connection.query(query,params);
 
     return row;
 }
@@ -57,43 +57,43 @@ async function selectSignalLocation(connection) {
 // }
 
 //AR zone Table에서 위도, 경도 -> 장소
-// async function getAddressByLocation(connection, params){
-//     const query = `
-//                     SELECT latitude, longitude
-//                     FROM ARzone
-//                     WHERE latitude = ? AND longitude = ?;
-//                   `;
-//     const [row] = await connection.query(query, params);
-
-//     return row;
-// }
-
-// Signaling Table에서 장소 -> userIdx 와 sigIdx
-async function getSignalByAddress(connection, param){
+async function getAddressByLocation(connection, params){
     const query = `
-                    SELECT *
-                    FROM Signaling
-                    WHERE sigPromiseArea IN ?
-                    LIMIT ?, ?; 
-                 `;
-    const [row] = await connection.query(query, param);
-    return row ;
-    
-    /*
-    row
-    ----------------------------------------
-    [{signalidx : 8 }, {signalIdx : none} ]
-    ----------------------------------------
-    */
+                    SELECT latitude, longitude
+                    FROM ARzone
+                    WHERE latitude = ? AND longitude = ?;
+                  `;
+    const [row] = await connection.query(query, params);
+
+    return row;
 }
 
-async function getSignalStatus(connection, param){
+// Signaling Table에서 장소 -> userIdx 와 sigIdx
+// async function getSignalByAddress(connection, param){
+//     const query = `
+//                     SELECT *
+//                     FROM Signaling
+//                     WHERE sigPromiseArea IN ?
+//                     LIMIT ?, ?; 
+//                  `;
+//     const [row] = await connection.query(query, param);
+//     return row ;
+    
+//     /*
+//     row
+//     ----------------------------------------
+//     [{signalidx : 8 }, {signalIdx : none} ]
+//     ----------------------------------------
+//     */
+// }
+
+async function getSignalStatus(connection){
     const query = `
                     SELECT userIdx
                     FROM Signaling
                     WHERE sigStatus = '1';
                  `;
-    const [row] = await connection.query(query, param);
+    const [row] = await connection.query(query);
     return row ;
     
     /*
@@ -112,6 +112,6 @@ module.exports = {
     selectSignalLocation, // 4
     // selectARLocation, // 5
     // getAddressByLocation, // 6
-    getSignalByAddress, // 7
+    // getSignalByAddress, // 7
     getSignalStatus // 8
 };
