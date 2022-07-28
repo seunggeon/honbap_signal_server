@@ -54,4 +54,10 @@ module.exports = function (app) {
   app.post("/app/send", user.send);
   // 문자인증 - 검증 API
   app.post("/app/verify", user.verify);
+
+
+  // socket Test 
+  app.get('/', function(req, res){
+    res.sendFile( __dirname + '/test_socket.html')
+  })
 };
