@@ -146,13 +146,13 @@ exports.updateUserProfile = async function(profileImg, taste, hateFood, interest
 // 로그인
 exports.login = async function (email, password){
     try {
-        const userIdRows = await userProvider.userIdCheck(email);
+        const emailRows = await userProvider.emailCheck(email);
 
-        if (userIdRows.length == 0)
+        if (emailRows.length == 0)
             return errResponse(baseResponse.USER_IS_NOT_EXIST);
 
-        selectUserId = userIdRows[0].email
-        console.log("selectUserId :", selectUserId);
+        selectUserEmail = emailRows[0].email
+        console.log("selectUserId :", selectUserEmail);
         console.log("jwtsecret : ", jwtsecret);
 
         // 비밀번호 암호화
