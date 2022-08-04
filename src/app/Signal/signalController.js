@@ -3,6 +3,7 @@ const baseResponse = require("../../../config/baseResponseStatus");
 
 const signalProvider = require("../../app/Signal/signalProvider");
 const signalService = require("../../app/Signal/signalService");
+const chatService = require("../../app/Chat/chatService");
 
 const { response, errResponse } = require("../../../config/response");
 const logger = require("../../../config/winston");
@@ -76,6 +77,9 @@ exports.postSigMatch = async function (req, res) {
   const { matchIdx } = req.body;
 
   const matching = await signalService.matching(matchIdx, userIdx);
+  console.log("here1")
+  const createChat = await chatService.createChatRoom(userIdx, matchIdx);
+  console.log("here2")
   return res.send(baseResponse.SUCCESS);
 };
 

@@ -5,3 +5,5 @@ log/*
 package.json
 package-lock.json
 log\.*
+/log
+*-audit.json
