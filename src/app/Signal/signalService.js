@@ -56,7 +56,7 @@ exports.matching = async function (matchIdx, userIdx) {
         const user = userIdx;
 
         const result = await signalDao.updateSigMatch(connection, params);
-        const result2 = await signalDao.deleteSignalApply(connection, user);
+        //const result2 = await signalDao.deleteSignalApply(connection, user);
 
         await connection.commit();
 

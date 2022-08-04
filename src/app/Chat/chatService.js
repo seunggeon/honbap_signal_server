@@ -24,17 +24,19 @@ const { connect } = require("http2");
 exports.createChatRoom = async function (userIdx, matchIdx) {
     try {
       const roomName = userIdx + '_' + matchIdx;
+      console.log(roomName)
+
       const params = [userIdx, matchIdx, roomName];
 
       const connection = await pool.getConnection(async (conn) => conn);
 
-      const createChatRoom = await chatDao.createChatRoom(params);
-      
+      const createChatRoom = await chatDao.createChatRoom(connection, params);
+
       connection.release();
       return response(baseResponse.SUCCESS);
 
     } catch (err) {
-        logger.error(`App - createUsers Service error\n: ${err.message}`);
+        logger.error(`App - createChatRoom Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     }
 };
