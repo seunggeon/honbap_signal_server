@@ -1,7 +1,7 @@
 const express = require("./config/express");
 const { logger } = require("./config/winston");
-const util = require('util');
-const { Server } = require("http2");
+// const { Server } = require("http2");
+const { chatSocket } = require("./src/app/Chat/chatSocket");
 
 let port;
 
@@ -15,4 +15,4 @@ if (process.env.NODE_ENV === "development") {
 const webserver = express().listen(port);
 logger.info(`${process.env.NODE_ENV} - API Server Start At Port ${port}`);
 
-module.exports = {webserver};
+chatSocket(webserver);
