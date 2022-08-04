@@ -3,18 +3,23 @@ const { errResponse } = require("../../../config/response");
 const { logger } = require("../../../config/winston");
 const baseResponse = require("../../../config/baseResponseStatus");
 
-const userDao = require("./chatDao");
+const chatDao = require("./chatDao");
 
-// 회원 정보 확인
+// 방 이름 가져오기
 exports.getRooms = async function (userIdx) {
   try {
     const connection = await pool.getConnection(async (conn) => conn);
-    const userIdCheckResult = await userDao.existUserEmail(connection, email);
+    const getRoomsResult = await chatDao.getRooms(connection, [userIdx, userIdx]);
     connection.release();
 
-    return userIdCheckResult;
+    let roomNameList = [];
+    getRoomsResult.map(room => {
+      roomNameList.push(room.roomName);
+    })
+
+    return roomNameList;
   } catch (err) {
-    logger.error(`userIdCheck Provider error\n: ${err.message}`);
+    logger.error(`getRooms Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
   }
 };
