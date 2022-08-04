@@ -1,10 +1,11 @@
-const webserver = require("../../../index");
+const util = require('util');
 
+function chatSocket(webserver) {
 /*
   Socket 통신 부분 : 따로 포트 열지 않고 3001번 포트로 진행
 */
-var io = require('socket.io')(webserver)
-;
+var io = require('socket.io')(webserver);
+
 io.sockets.on('connection', (socket, opt) => {
   socket.emit('message', {msg: 'Welcome' + socket.id});
 
@@ -44,3 +45,8 @@ io.sockets.on('connection', (socket, opt) => {
     util.log("disconnecting >> ", socket.id)
   })
 });
+}
+
+module.exports = {
+  chatSocket
+}
