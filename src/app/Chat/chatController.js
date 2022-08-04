@@ -31,5 +31,5 @@ exports.getRooms = async function (req, res) {
 
   const getRoomsResponse = await chatProvider.getRooms(userIdxFromJWT);
 
-  return res.send(getRoomsResponse);
+  return res.send(response(baseResponse.SUCCESS, getRoomsResponse));
 };
