@@ -306,6 +306,28 @@ exports.patchUserProfile = async function (req, res) {
   return res.send(response(baseResponse.SUCCESS)); 
 };
 
+/**
+ * API No. 12
+ * API Name : 유저 닉네임 중복 체크 API
+ * [GET] /app/user/:nickName
+ */
+ exports.getUserNickName = async function (req, res) {
+  const nickName = req.params.nickName;
+
+  //validation
+  if (!nickName) {
+    return res.send(errResponse(baseResponse.SIGNUP_NICKNAME_EMPTY));  //2003
+  }
+
+  const getUserNickNameResponse = await userProvider.nickNameCheck(nickName);
+   
+  if (getUserNickNameResponse.length > 0)
+    return res.send(errResponse(baseResponse.SIGNUP_REDUNDANT_NICKNAME));
+
+  return res.send(response(baseResponse.SUCCESS));
+};
+
+
 /*
  * API Name : 카카오 로그인 API
  * [GET] /app/auth/kakao

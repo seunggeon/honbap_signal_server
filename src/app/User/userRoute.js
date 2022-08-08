@@ -36,6 +36,9 @@ module.exports = function (app) {
   // 9. 유저 프로필 수정 (마이페이지) API
   app.patch("/user/mypage", jwtMiddleware, user.patchUserProfile);
 
+  // 12. 유저 닉네임 중복 체크
+  app.get("/user/:nickName", user.getUserNickName)
+
   // 10. 카카오 로그인 API
   app.get("/auth/kakao", passport.authenticate("kakao"));
   app.get(
