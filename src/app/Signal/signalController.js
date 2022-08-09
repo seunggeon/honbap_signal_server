@@ -19,6 +19,7 @@ const regexEmail = require("regex-email");
 exports.postSignal = async function (req, res) {
   const userIdx = req.params.userIdx;
   const { sigPromiseTime, sigPromiseArea} = req.body;
+  // 주석처리 한 부분은 나중에 다시 수정할 예정
 /*
   if (!sigPromiseArea)
     return res.send(response(baseResponse.SIGNAL_AREA_EMPTY));
