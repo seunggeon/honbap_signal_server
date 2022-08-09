@@ -16,7 +16,7 @@ const { connect } = require("http2");
 // 시그널 등록
 exports.createSignal = async function (userIdx, sigPromiseTime, sigPromiseArea) {
     try {
-        const checkSigWrite = 1;
+        let checkSigWrite = 1;
 
         if(sigPromiseTime == "" && sigPromiseArea == "") {
             checkSigWrite = 0;
