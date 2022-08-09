@@ -29,7 +29,7 @@ async function insertSignal(connection, params) {
 async function selectSignalList(connection, userIdx) {
   const query = `
                     SELECT up1.nickName as userNickName, up2.nickName as matchingNickName,
-                    s.sigPromiseTime, s.sigPromiseArea, s.sigStart, s.updateAt
+                    s.sigPromiseTime, s.sigPromiseArea, s.checkSigWirte, s.sigStart, s.updateAt
                     FROM  Signaling AS s
                         LEFT JOIN User AS up1 ON s.userIdx = up1.userIdx
                         LEFT JOIN User AS up2 ON s.matchIdx = up2.userIdx
