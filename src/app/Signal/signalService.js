@@ -16,7 +16,13 @@ const { connect } = require("http2");
 // 시그널 등록
 exports.createSignal = async function (userIdx, sigPromiseTime, sigPromiseArea) {
     try {
-        const signalRows = [userIdx, sigPromiseTime, sigPromiseArea];
+        let checkSigWrite = 1;
+
+        if(sigPromiseTime == "" && sigPromiseArea == "") {
+            checkSigWrite = 0;
+        }
+
+        const signalRows = [userIdx, sigPromiseTime, sigPromiseArea, checkSigWrite];
         const connection = await pool.getConnection(async (conn) => conn);
         
         const createSignalResult = await signalDao.insertSignal(connection, signalRows);

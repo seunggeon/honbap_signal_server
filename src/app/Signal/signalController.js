@@ -18,8 +18,9 @@ const regexEmail = require("regex-email");
  */
 exports.postSignal = async function (req, res) {
   const userIdx = req.params.userIdx;
-  const { sigPromiseTime, sigPromiseArea } = req.body;
-
+  const { sigPromiseTime, sigPromiseArea} = req.body;
+  // 주석처리 한 부분은 나중에 다시 수정할 예정
+/*
   if (!sigPromiseArea)
     return res.send(response(baseResponse.SIGNAL_AREA_EMPTY));
   if (!sigPromiseTime)
@@ -28,7 +29,7 @@ exports.postSignal = async function (req, res) {
   const arzoneListResult = await signalProvider.arzoneList(sigPromiseArea);
   if (arzoneListResult.length <= 0)
     return res.send(response(baseResponse.LOCATION_IS_NOT_IN_ARZONE));
-
+*/
   const signalup = await signalService.createSignal(
     userIdx,
     sigPromiseTime,
