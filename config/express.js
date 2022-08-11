@@ -25,6 +25,7 @@ module.exports = function () {
     require('../src/app/BlackList/blackRoute')(app);
     require('../src/app/HashTag/hashtagRoute')(app);
     require('../src/app/Chat/chatRoute')(app);
+    require('../src/app/Message/msgRoute')(app);
     // require('../src/app/Board/boardRoute')(app);
 
     return app;

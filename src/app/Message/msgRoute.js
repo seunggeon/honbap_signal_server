@@ -1,12 +1,13 @@
 module.exports = function (app) {
-    const mgs = require("./msgController");
+    const msgController = require("./msgController");
     
+    // 쪽지 방 생성
+    app.post("/msg/:userIdx", msgController.createMsgRoom);
+
     // 쪽지 보내기
-    app.post("/msg/수정", msg.msgController);
+    app.post("/msg/room/:roomId", msgController.sendMsg);
 
-    // 쪽지 확인 for userIdx
-    app.get("msg/수정", msg.msgController);
+    // 쪽지 확인
+    app.get("/msg/roomcheck/:userIdx", msgController.getMsg);
 
-    // 쪽지 확인 for matchIdx
-    app.get("msg/수정", msg.msgController);
 };
