@@ -18,7 +18,7 @@ const regexEmail = require("regex-email");
  */
 exports.postSignal = async function (req, res) {
   const userIdxFromJWT = req.verifiedToken.userIdx;
-  // const { sigPromiseTime, sigPromiseArea} = req.body;
+  const { sigPromiseTime, sigPromiseArea} = req.body;
   // 주석처리 한 부분은 나중에 다시 수정할 예정
 /*
   if (!sigPromiseArea)
@@ -32,8 +32,8 @@ exports.postSignal = async function (req, res) {
 */
   const signalup = await signalService.createSignal(
     userIdxFromJWT,
-    // sigPromiseTime,
-    // sigPromiseArea
+    sigPromiseTime,
+    sigPromiseArea
   );
 
   return res.send(baseResponse.SUCCESS);
@@ -87,9 +87,9 @@ exports.postSigMatch = async function (req, res) {
 /**
  * API No. 5
  * API Name : 시그널 OFF API
- * [PATCH] /signal/list/off
+ * [DELETE] /signal/list/off
  */
-exports.patchSigStatusOff = async function (req, res) {
+exports.SigStatusOff = async function (req, res) {
   const userIdxFromJWT = req.verifiedToken.userIdx;
 
   const signalOff = await signalService.signalOff(userIdxFromJWT);

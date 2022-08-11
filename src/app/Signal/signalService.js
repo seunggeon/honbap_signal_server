@@ -17,10 +17,8 @@ const { connect } = require("http2");
 exports.createSignal = async function (userIdx, sigPromiseTime, sigPromiseArea) {
     try {
         let checkSigWrite = 1;
-        let sigPromiseTime = "" ;
-        let sigPromiseArea = "" ;
 
-        if(sigPromiseTime == "" || sigPromiseArea == "") {
+        if(sigPromiseTime == "" && sigPromiseArea == "") {
             checkSigWrite = 0;
         }
 
