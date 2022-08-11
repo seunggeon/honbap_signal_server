@@ -27,15 +27,14 @@ async function sendMsg(connection, params) {
 // 쪽지 확인 *** 3 ***
 async function getMsg(connection, params) {
     const query = `
-                  SELECT 
-                        (SELECT text FROM Message
-                         WHERE roomId = ? AND senderIdx = ?) AS sendText,
-                        (SELECT text FROM Message
-                         WHERE roomId = ? AND senderIdx = ?) AS receiveText,
-                         sendAt
-                  FROM Message
-                  WHERE roomId = ?
-                  ORDER BY sendAt DESC;
+                    (SELECT text, sendAt FROM Message
+                     WHERE roomId = ? AND senderIdx = ?
+                     )
+                    UNION ALL
+                    (SELECT text, sendAt FROM Message
+                     WHERE roomId = ? AND senderIdx = ?
+                     )
+                     ORDER BY sendAt ASC;
                   `;
   
     const [row] = await connection.query(query, params);
