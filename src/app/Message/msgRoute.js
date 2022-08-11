@@ -1,4 +1,5 @@
 module.exports = function (app) {
+
     const msgController = require("./msgController");
     
     // 쪽지 방 생성
@@ -15,4 +16,5 @@ module.exports = function (app) {
 
     // 쪽지 방 삭제
     app.patch("/msg/deleteroom/:userIdx", msgController.deleteMsg);
+    
 };

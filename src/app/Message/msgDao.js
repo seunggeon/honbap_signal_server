@@ -1,5 +1,5 @@
 
-// 쪽지함 생성 *** 1 ***
+// 쪽지 방 생성 *** 1 ***
 async function createMsgRoom(connection, params) {
     const query =   `
                     INSERT INTO MessageRoom(userIdx, matchIdx, roomId)
@@ -11,8 +11,18 @@ async function createMsgRoom(connection, params) {
     return row;
 }
 
+// 쪽지 방 확인 *** 2 ***
+async function getMsgRoom(connection, params) {
+    const query =   `
+                    SELECT roomId
+                    FROM MessageRoom
+                    WHERE userIdx = ? OR matchIdx = ?;
+                    `
+    const [row] = await connection.query(query, params);
+    return row;
+}
 
-// 쪽지 보내기 *** 2 ***
+// 쪽지 보내기 *** 3 ***
 async function sendMsg(connection, params) {
     const query =   `
                     INSERT INTO Message(roomId, senderIdx, text)
@@ -24,7 +34,7 @@ async function sendMsg(connection, params) {
     return row;
 }
 
-// 쪽지 확인 *** 3 ***
+// 쪽지 확인 *** 4 ***
 async function getMsg(connection, params) {
     const query =   `
                     SELECT 
@@ -39,17 +49,6 @@ async function getMsg(connection, params) {
   
     const [row] = await connection.query(query, params);
     
-    return row;
-}
-
-// 쪽지 방 삭제 *** 4 ***
-async function deleteMsg(connection, roomId) {
-    const query =   `
-                    DELETE FROM MessageRoom
-                    WHERE roomId = ?;
-                    `;
-    const [row] = await connection.query(query, roomId);
-
     return row;
 }
 
@@ -75,23 +74,23 @@ async function updateExitUserIdx(connection, params) {
     return row;
 }
 
-// 쪽지 방 확인 *** 7 ***
-async function getMsgRoom(connection, params) {
+// 쪽지 방 삭제 *** 7 ***
+async function deleteMsg(connection, roomId) {
     const query =   `
-                    SELECT roomId
-                    FROM MessageRoom
-                    WHERE userIdx = ? OR matchIdx = ?;
-                    `
-    const [row] = await connection.query(query, params);
+                    DELETE FROM MessageRoom
+                    WHERE roomId = ?;
+                    `;
+    const [row] = await connection.query(query, roomId);
+
     return row;
 }
 
 module.exports = {
     createMsgRoom,      // 1
-    sendMsg,            // 2
-    getMsg,             // 3
-    deleteMsg,          // 4
+    getMsgRoom,         // 2
+    sendMsg,            // 3
+    getMsg,             // 4
     getRoomIdx,         // 5
     updateExitUserIdx,  // 6
-    getMsgRoom,         // 7
+    deleteMsg,          // 7
 };

@@ -8,7 +8,7 @@ const baseResponse = require("../../../config/baseResponseStatus");
 const { response } = require("../../../config/response");
 const { errResponse } = require("../../../config/response");
 
-// 채팅방 생성
+// 쪽지 방 생성
 exports.createMsgRoom = async function (userIdx, matchIdx, roomId) {
     try {
         const params = [userIdx, matchIdx, roomId];
