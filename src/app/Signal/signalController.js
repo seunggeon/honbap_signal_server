@@ -18,7 +18,7 @@ const regexEmail = require("regex-email");
  */
 exports.postSignal = async function (req, res) {
   const userIdxFromJWT = req.verifiedToken.userIdx;
-  const { sigPromiseTime, sigPromiseArea} = req.body;
+  // const { sigPromiseTime, sigPromiseArea} = req.body;
   // 주석처리 한 부분은 나중에 다시 수정할 예정
 /*
   if (!sigPromiseArea)
@@ -32,8 +32,8 @@ exports.postSignal = async function (req, res) {
 */
   const signalup = await signalService.createSignal(
     userIdxFromJWT,
-    sigPromiseTime,
-    sigPromiseArea
+    // sigPromiseTime,
+    // sigPromiseArea
   );
 
   return res.send(baseResponse.SUCCESS);
@@ -175,4 +175,20 @@ exports.getEndSignals = async function (req, res) {
 
   const endSignals = await signalProvider.endSignals(userIdxFromJWT, userIdxFromJWT);  //userIdx1, 2가 어차피 같아서 이렇게 처리합니다.
   return res.send(response(baseResponse.SUCCESS, endSignals));
+};
+
+/**
+ * API No. 12
+ * API Name : 주황색 유저를 위한 signalPromise Area, Time 수정
+ * [PATCH] /signal/list/orange
+ */
+
+exports.patchSignalContents = async function (req, res) {
+  const userIdxFromJWT = req.verifiedToken.userIdx;
+  const { sigPromiseTime, sigPromiseArea} = req.body;
+
+  const signalContents = await signalService.signalContents(userIdxFromJWT
+    ,sigPromiseTime,
+    sigPromiseArea);
+  return res.send(baseResponse.SUCCESS);
 };

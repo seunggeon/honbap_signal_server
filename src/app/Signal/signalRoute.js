@@ -3,7 +3,7 @@ module.exports = function (app) {
     const jwtMiddleware = require("../../../config/jwtMiddleware");
     //client와 통신 부분.
   
-    // 시그널 생성 1
+    // 시그널 생성 1 -> 회원가입 완료 후 바로 생성
     app.post("/signal/list", jwtMiddleware, signal.postSignal);
 
     // 켜져 있는 시그널 확인 2
@@ -35,5 +35,8 @@ module.exports = function (app) {
 
     // 이전 시그널 조회 11
     app.get("/signal/listed", jwtMiddleware, signal.getEndSignals);
+
+    // 주황색 유저를 위한 Signal Promise 및 time 수정
+    app.patch("/signal/list/orange", jwtMiddleware, signal.patchSignalContents);
 
 };
