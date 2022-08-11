@@ -15,7 +15,8 @@
 async function insertReport(connection, params) {
     const query =   `
                     INSERT INTO Report
-                    VALUES (?,?,?,?);
+                    (userIdx, reportedIdx, shortReason, specificReason)
+                    VALUES (?, ?, ?, ?);
                     `;
     const [row] = await connection.query(query, params);
     return row;
