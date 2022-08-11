@@ -56,7 +56,7 @@ async function selectCommented(connection, userIdx) {
 // 내가 쓴 후기 조회 *** 5 ***
 async function selectCommenting(connection, writerIdx) {
     const query =   `
-                    SELECT nickName AS reviewer, comment, star
+                    SELECT nickName AS reviewee, comment, star
                     FROM User AS up, Comment AS c
                     WHERE c.writerIdx = ? AND up.userIdx = c.userIdx;
                     `;

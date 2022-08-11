@@ -395,6 +395,8 @@ exports.send = async function (req, res) {
   //인증번호 생성
   const verifyCode = Math.floor(Math.random() * (999999 - 100000)) + 100000;
 
+  console.log(verifyCode);
+
   Cache.put(phoneNumber, verifyCode.toString());
 
   axios({
@@ -412,7 +414,7 @@ exports.send = async function (req, res) {
       contentType: "COMM",
       countryCode: "82",
       from: "01023279226",
-      content: `[Milli] 인증번호 [${verifyCode}]를 입력해주세요.`,
+      content: `[honbap-signal] 인증번호 [${verifyCode}]를 입력해주세요.`,
       messages: [
         {
           to: `${phoneNumber}`,
