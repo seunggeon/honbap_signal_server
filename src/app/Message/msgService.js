@@ -64,9 +64,9 @@ exports.updateExitUserIdx = async function (roomId, remain, type) {
         var params;
 
         if(type == 1) {
-            params = [remain, 7, roomId];
-        } else if(type == 2) {
             params = [7, remain, roomId];
+        } else if(type == 2) {
+            params = [remain, 7, roomId];
         }
 
         const connection = await pool.getConnection(async (conn) => conn);

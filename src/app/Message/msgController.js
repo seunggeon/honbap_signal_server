@@ -74,13 +74,13 @@ exports.deleteMsg = async function (req, res) {
   const MsgRoomUserIdx = getRoomIdxResult[0].userIdx;
   const MsgRoomMatchIdx = getRoomIdxResult[0].matchIdx;
 
-  if(userIdx == userIdxAtRoom) {
+  if(MsgRoomUserIdx == 7 || MsgRoomMatchIdx == 7) {
+    const result = await msgService.deleteMsg(roomId);
+  } else if(userIdx == userIdxAtRoom) {
     const result = await msgService.updateExitUserIdx(roomId, MsgRoomUserIdx, 1);
   } else if(userIdx == matchIdxAtRoom) {
     const result = await msgService.updateExitUserIdx(roomId, MsgRoomMatchIdx, 2);
-  } else if(MsgRoomUserIdx == 7 && MsgRoomMatchIdx == 7) {
-    const result = await msgService.deleteMsg(roomId);
-  }
+  } 
 
   return res.send(baseResponse.SUCCESS);
 }

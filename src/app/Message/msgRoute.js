@@ -15,6 +15,6 @@ module.exports = function (app) {
     app.get("/msg/roomcheck/:userIdx", msgController.getMsg);
 
     // 쪽지 방 삭제
-    app.patch("/msg/deleteroom/:userIdx", msgController.deleteMsg);
+    app.delete("/msg/deleteroom/:userIdx", msgController.deleteMsg);
     
 };
