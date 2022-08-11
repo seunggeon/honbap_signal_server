@@ -46,7 +46,7 @@ async function updateSignal(connection, params) {
   const query = `
                   UPDATE Signaling
                   SET sigPromiseTime = ?, sigPromiseArea = ?, sigStart = ?, updateAt = default
-                  where userIdx = ? AND sigStatus = 1;
+                  WHERE userIdx = ? AND sigStatus = 1;
                   `;
   const [row] = await connection.query(query, params);
 
@@ -58,7 +58,7 @@ async function updateSigMatch(connection, params) {
   const query = `
                   UPDATE Signaling
                   SET matchIdx = ?, sigStatus = 0, sigMatchStatus = 1
-                  where userIdx = ? AND sigStatus = 1;
+                  WHERE userIdx = ? AND sigStatus = 1;
                   `;
   const [row] = await connection.query(query, params);
 

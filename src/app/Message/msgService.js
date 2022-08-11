@@ -43,18 +43,41 @@ exports.sendMsg = async function (roomId, senderIdx, text) {
 }
 
 // 쪽지 방 삭제
-exports.deleteMsg = async function (roomId, user) {
+exports.deleteMsg = async function (roomId) {
     try {
-        const params = [roomId, user];
         const connection = await pool.getConnection(async (conn) => conn);
         
-        const deleteMsgResult = await msgDao.deleteMsg(connection, params);
+        const deleteMsgResult = await msgDao.deleteMsg(connection, roomId);
 
         connection.release();
         return response(baseResponse.SUCCESS);
     }
     catch (err) {
         logger.error(`App - deleteMsg Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}
+
+// 쪽지 나간 사람 dummy로 변경
+exports.updateExitUserIdx = async function (roomId, remain, type) {
+    try {
+        var params;
+
+        if(type == 1) {
+            params = [remain, 7, roomId];
+        } else if(type == 2) {
+            params = [7, remain, roomId];
+        }
+
+        const connection = await pool.getConnection(async (conn) => conn);
+        
+        const updateExitUserIdx = await msgDao.updateExitUserIdx(connection, params);
+
+        connection.release();
+        return response(baseResponse.SUCCESS);
+    }
+    catch (err) {
+        logger.error(`App - updateExitUserIdx Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     }
 }

@@ -6,7 +6,7 @@ const msgService = require("../../app/Message/msgService");
 
 const { response, errResponse } = require("../../../config/response");
 
-
+// 쪽지 내용 확인
 exports.getMsg = async function (req, res) {
   const userIdxFromJWT = req.params.userIdx;
   const roomId = req.body.roomId;
@@ -14,7 +14,6 @@ exports.getMsg = async function (req, res) {
   const arr = roomId.split("_");
   const userIdx = arr[0];
   const matchIdx = arr[1];
-
 
   // 보낸/받는 사람 구별
   if (userIdxFromJWT == userIdx) {
@@ -63,14 +62,26 @@ exports.deleteMsg = async function (req, res) {
   const userIdxAtRoom = arr[0];
   const matchIdxAtRoom = arr[1];
 
+  const getRoomIdxResult = await msgProvider.getRoomIdx(roomId);
+  const MsgRoomUserIdx = getRoomIdxResult[0].userIdx;
+  const MsgRoomMatchIdx = getRoomIdxResult[0].matchIdx;
+
   if(userIdx == userIdxAtRoom) {
-    let user = userIdxAtRoom;
-    const result = await msgService.deleteMsg(roomId, user);
-    return res.send(baseResponse.SUCCESS);
+    const result = await msgService.updateExitUserIdx(roomId, MsgRoomUserIdx, 1);
   } else if(userIdx == matchIdxAtRoom) {
-    let user = matchIdxAtRoom;
-    const result = await msgService.deleteMsg(roomId, user);
-    return res.send(baseResponse.SUCCESS);
+    const result = await msgService.updateExitUserIdx(roomId, MsgRoomMatchIdx, 2);
+  } else if(MsgRoomUserIdx == 7 && MsgRoomMatchIdx == 7) {
+    const result = await msgService.deleteMsg(roomId);
   }
-  
+
+  return res.send(baseResponse.SUCCESS);
+}
+
+// 쪽지 방 조회
+exports.getMsgRoom = async function (req, res) {
+  const userIdx = req.params.userIdx;
+
+  const result = await msgProvider.getMsgRoom(userIdx);
+
+  return res.send(response(baseResponse.SUCCESS, result));
 }
