@@ -38,7 +38,7 @@ const logger = require("../../../config/winston");
   
   exports.patchMyLocation = async function (req, res) {
     var {latitude, longitude} = req.body;
-    var userIdx = req.params.userIdx;
+    const userIdx = req.verifiedToken.userIdx;
 
     console.log(`latitude : ${latitude}`);
     console.log(`longitude: ${longitude}`);
@@ -66,7 +66,7 @@ const logger = require("../../../config/winston");
  */
   
   exports.getSignalList = async function (req, res) {
-    var userIdx = req.params.userIdx;
+    const userIdx = req.verifiedToken.userIdx;
     console.log(`userIdx : ${userIdx}`);
   
     // 빈 값 체크
