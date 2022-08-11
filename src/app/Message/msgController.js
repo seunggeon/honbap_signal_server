@@ -77,9 +77,9 @@ exports.deleteMsg = async function (req, res) {
   if(MsgRoomUserIdx == 7 || MsgRoomMatchIdx == 7) {
     const result = await msgService.deleteMsg(roomId);
   } else if(userIdx == userIdxAtRoom) {
-    const result = await msgService.updateExitUserIdx(roomId, MsgRoomUserIdx, 1);
+    const result = await msgService.updateExitUserIdx(roomId, MsgRoomMatchIdx, 1);
   } else if(userIdx == matchIdxAtRoom) {
-    const result = await msgService.updateExitUserIdx(roomId, MsgRoomMatchIdx, 2);
+    const result = await msgService.updateExitUserIdx(roomId, MsgRoomUserIdx, 2);
   } 
 
   return res.send(baseResponse.SUCCESS);
