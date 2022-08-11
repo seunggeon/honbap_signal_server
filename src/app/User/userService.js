@@ -152,7 +152,7 @@ exports.login = async function (email, password){
             return errResponse(baseResponse.USER_IS_NOT_EXIST);
 
         selectUserEmail = emailRows[0].email
-        console.log("selectUserId :", selectUserEmail);
+        console.log("selectUserEmail :", selectUserEmail);
         console.log("jwtsecret : ", jwtsecret);
 
         // 비밀번호 암호화
@@ -163,7 +163,7 @@ exports.login = async function (email, password){
 
         // 쿼리문에 사용할 변수 값을 배열 형태로 전달
 
-        const passwordRows = await userProvider.passwordCheck(selectUserId, hashedPassword);
+        const passwordRows = await userProvider.passwordCheck(selectUserEmail, hashedPassword);
         if (passwordRows.length == 0)
             return errResponse(baseResponse.LOGIN_PW_NOT_CORRECT);
 
