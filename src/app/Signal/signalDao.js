@@ -68,9 +68,8 @@ async function updateSigMatch(connection, params) {
 // 시그널 OFF *** 5 ***
 async function signalOff(connection, userIdx) {
   const query = `
-                  UPDATE Signaling
-                  SET sigStatus = 0
-                  WHERE sigStatus = 1 AND userIdx = ?;
+                  DELETE FROM Signaling
+                  WHERE sigStatus = 1 AND userIdx = ? AND sigMatchStatus = 0;
                   `;
 
   const [row] = await connection.query(query, userIdx);

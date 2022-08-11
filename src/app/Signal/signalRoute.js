@@ -3,7 +3,7 @@ module.exports = function (app) {
     const jwtMiddleware = require("../../../config/jwtMiddleware");
     //client와 통신 부분.
   
-    // 시그널 생성 1 -> 회원가입 완료 후 바로 생성
+    // 시그널 생성 1 
     app.post("/signal/list", jwtMiddleware, signal.postSignal);
 
     // 켜져 있는 시그널 확인 2
@@ -15,10 +15,10 @@ module.exports = function (app) {
     // 시그널 매칭 잡혔을 때 4
     app.patch("/signal/list/matching", jwtMiddleware, signal.postSigMatch);
 
-    // 시그널 OFF 5
-    app.patch("/signal/list/off", jwtMiddleware, signal.patchSigStatusOff);
+    // 매칭된 거 제외 삭제 = 시그널 OFF 5
+    app.delete("/signal/list/off", jwtMiddleware, signal.SigStatusOff);
 
-    // 시그널 삭제 6
+    // 모든 시그널 삭제 가능 6
     app.delete("/signal/list", jwtMiddleware, signal.deleteSignal);
 
     // 시그널 다시 ON 7
