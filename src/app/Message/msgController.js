@@ -53,3 +53,24 @@ exports.sendMsg = async function (req, res) {
   const result = await msgService.sendMsg(roomId, senderIdx, text);
   return res.send(baseResponse.SUCCESS);
 }
+
+// 쪽지 방 삭제
+exports.deleteMsg = async function (req, res) {
+  const userIdx = req.params.userIdx;
+  const roomId = req.body.roomId;
+
+  const arr = roomId.split("_");
+  const userIdxAtRoom = arr[0];
+  const matchIdxAtRoom = arr[1];
+
+  if(userIdx == userIdxAtRoom) {
+    let user = userIdxAtRoom;
+    const result = await msgService.deleteMsg(roomId, user);
+    return res.send(baseResponse.SUCCESS);
+  } else if(userIdx == matchIdxAtRoom) {
+    let user = matchIdxAtRoom;
+    const result = await msgService.deleteMsg(roomId, user);
+    return res.send(baseResponse.SUCCESS);
+  }
+  
+}

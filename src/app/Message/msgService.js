@@ -41,3 +41,20 @@ exports.sendMsg = async function (roomId, senderIdx, text) {
         return errResponse(baseResponse.DB_ERROR);
     }
 }
+
+// 쪽지 방 삭제
+exports.deleteMsg = async function (roomId, user) {
+    try {
+        const params = [roomId, user];
+        const connection = await pool.getConnection(async (conn) => conn);
+        
+        const deleteMsgResult = await msgDao.deleteMsg(connection, params);
+
+        connection.release();
+        return response(baseResponse.SUCCESS);
+    }
+    catch (err) {
+        logger.error(`App - deleteMsg Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}

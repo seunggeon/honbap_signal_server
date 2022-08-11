@@ -7,7 +7,7 @@ const msgDao = require("./msgDao");
 
 exports.getMsg = async function (roomId, sender, receiver) {
     try {
-        const params = [roomId, sender, roomId, receiver, roomId];
+        const params = [sender, receiver, roomId];
         const connection = await pool.getConnection(async (conn) => conn);
 
         getMsgResult = await msgDao.getMsg(connection, params);
