@@ -12,12 +12,12 @@ const regexEmail = require("regex-email");
 //controller : 판단 부분.
 
 /**
- * API No.
- * API Name : 시그널 등록 API
- * [POST] /user/login
+ * API No. 1
+ * API Name : 시그널 생성 API
+ * [POST] /signal/list
  */
 exports.postSignal = async function (req, res) {
-  const userIdx = req.params.userIdx;
+  const userIdxFromJWT = req.verifiedToken.userIdx;
   const { sigPromiseTime, sigPromiseArea} = req.body;
   // 주석처리 한 부분은 나중에 다시 수정할 예정
 /*
@@ -31,7 +31,7 @@ exports.postSignal = async function (req, res) {
     return res.send(response(baseResponse.LOCATION_IS_NOT_IN_ARZONE));
 */
   const signalup = await signalService.createSignal(
-    userIdx,
+    userIdxFromJWT,
     sigPromiseTime,
     sigPromiseArea
   );
@@ -40,138 +40,139 @@ exports.postSignal = async function (req, res) {
 };
 
 /**
- * API No.
- * API Name : 시그널 조회 API
- * [POST] /user/login
+ * API No. 2
+ * API Name : 켜져 있는 시그널 확인 API
+ * [GET] /signal/list
  */
 exports.getSignalList = async function (req, res) {
-  const userIdx = req.params.userIdx;
-  const result = await signalProvider.getSignalList(userIdx);
+  const userIdxFromJWT = req.verifiedToken.userIdx;
+  const result = await signalProvider.getSignalList(userIdxFromJWT);
   return res.send(response(baseResponse.SUCCESS, result));
 };
 
 /**
- * API No.
- * API Name : 시그널 정보 수정 API
- * [POST] /user/login
+ * API No. 3
+ * API Name : 시그널 수정 API
+ * [PATCH] /signal/list
  */
 exports.postSignalList = async function (req, res) {
-  const userIdx = req.params.userIdx;
+  const userIdxFromJWT = req.verifiedToken.userIdx;
   const { sigPromiseTime, sigPromiseArea, sigStart } = req.body;
 
   const modifySigList = await signalService.modifySigList(
     sigPromiseTime,
     sigPromiseArea,
     sigStart,
-    userIdx
+    userIdxFromJWT
   );
   return res.send(baseResponse.SUCCESS);
 };
 
 /**
- * API No.
- * API Name : 시그널 매칭 잡힘 API
- * [POST] /signal/:userIdx/list/matching
+ * API No. 4
+ * API Name : 시그널 매칭 잡혔을 때 API
+ * [PATCH] /signal/list/matching
  */
 exports.postSigMatch = async function (req, res) {
-  const userIdx = req.params.userIdx;
+  const userIdxFromJWT = req.verifiedToken.userIdx;
   const { matchIdx } = req.body;
 
-  const matching = await signalService.matching(matchIdx, userIdx);
+  const matching = await signalService.matching(matchIdx, userIdxFromJWT);
   console.log("here1")
-  const createChat = await chatService.createChatRoom(userIdx, matchIdx);
+  const createChat = await chatService.createChatRoom(userIdxFromJWT, matchIdx);
   console.log("here2")
   return res.send(baseResponse.SUCCESS);
 };
 
 /**
- * API No.
+ * API No. 5
  * API Name : 시그널 OFF API
- * [PATCH] /signal/:userIdx/list/off
+ * [PATCH] /signal/list/off
  */
 exports.patchSigStatusOff = async function (req, res) {
-  const userIdx = req.params.userIdx;
+  const userIdxFromJWT = req.verifiedToken.userIdx;
 
-  const signalOff = await signalService.signalOff(userIdx);
+  const signalOff = await signalService.signalOff(userIdxFromJWT);
   return res.send(baseResponse.SUCCESS);
 };
 
 /**
- * API No.
+ * API No. 6
  * API Name : 시그널 삭제 API
- * [DELETE] /signal/:userIdx/lis
+ * [DELETE] /signal/list
  */
 exports.deleteSignal = async function (req, res) {
-  const userIdx = req.params.userIdx;
+  const userIdxFromJWT = req.verifiedToken.userIdx;
   const { signalIdx } = req.body;
 
-  const deleteSignal = await signalService.deleteSignalList(signalIdx, userIdx);
+  const deleteSignal = await signalService.deleteSignalList(signalIdx, userIdxFromJWT);
   return res.send(baseResponse.SUCCESS);
 };
 
 /**
- * API No.
- * API Name : 시그널 등록 API
- * [PATCH] /signal/:userIdx/list/on
+ * API No. 7
+ * API Name : 시그널 다시 ON API
+ * [PATCH] /signal/list/on
  */
 exports.patchSigStatusOn = async function (req, res) {
-  const userIdx = req.params.userIdx;
+  const userIdxFromJWT = req.verifiedToken.userIdx;
 
-  const signalOn = await signalService.signalOn(userIdx);
+  const signalOn = await signalService.signalOn(userIdxFromJWT);
   return res.send(baseResponse.SUCCESS);
 };
 
 /**
- * API No.
+ * API No. 8
  * API Name : 시그널 신청 목록 조회 API
- * [GET] /signal/:userIdx/applylist
+ * [GET] /signal/applylist
  */
 exports.getSignalApply = async function (req, res) {
-  const userIdx = req.params.userIdx;
+  const userIdxFromJWT = req.verifiedToken.userIdx;
 
-  const result = await signalProvider.getSignalApply(userIdx);
+  const result = await signalProvider.getSignalApply(userIdxFromJWT);
   return res.send(response(baseResponse.SUCCESS, result));
 };
 
 /**
- * API No.
+ * API No. 9
  * API Name : 시그널 신청 API
- * [POST] /signal/:userIdx/applylist
+ * [POST] /signal/applylist
  */
 exports.postSignalApply = async function (req, res) {
-  const userIdx = req.params.userIdx;
+  const userIdxFromJWT = req.verifiedToken.userIdx;
   const { signalIdx, applyedIdx } = req.body;
 
-  const apply = await signalService.signalApply(signalIdx, applyedIdx, userIdx);
+  const apply = await signalService.signalApply(signalIdx, applyedIdx, userIdxFromJWT);
 
   return res.send(baseResponse.SUCCESS);
 };
 
 /**
- * API No.
+ * API No. 10
  * API Name : 시그널 신청 취소 API
- * [DELETE] /signal/:userIdx/applylist
+ * [DELETE] /signal/applylist
  */
 exports.cancelSignalApply = async function (req, res) {
-  const userIdx = req.params.userIdx;
+  const userIdxFromJWT = req.verifiedToken.userIdx;
   const { applyedIdx } = req.body;
 
   const cancelSignal = await signalService.cancelSignalApply(
     applyedIdx,
-    userIdx
+    userIdxFromJWT
   );
   return res.send(baseResponse.SUCCESS);
 };
 
 /**
- * API No.
+ * API No. 11
  * API Name : 이전 시그널 조회 API
- * [GET] /signal/:userIdx/listed
+ * [GET] /signal/listed
  */
 exports.getEndSignals = async function (req, res) {
-  const userIdx = req.params.userIdx;
-  const userIdx2 = req.params.userIdx;
+  const userIdxFromJWT = req.verifiedToken.userIdx;
+  // const userIdx = req.params.userIdx;
+  // const userIdx2 = req.params.userIdx;
 
-  const endSignals = await signalProvider.endSignals(userIdx, userIdx2);
+  const endSignals = await signalProvider.endSignals(userIdxFromJWT, userIdxFromJWT);  //userIdx1, 2가 어차피 같아서 이렇게 처리합니다.
   return res.send(response(baseResponse.SUCCESS, endSignals));
 };
