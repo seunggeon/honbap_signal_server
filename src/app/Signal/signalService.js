@@ -17,8 +17,10 @@ const { connect } = require("http2");
 exports.createSignal = async function (userIdx, sigPromiseTime, sigPromiseArea) {
     try {
         let checkSigWrite = 1;
+        let sigPromiseTime = "" ;
+        let sigPromiseArea = "" ;
 
-        if(sigPromiseTime == "" && sigPromiseArea == "") {
+        if(sigPromiseTime == "" || sigPromiseArea == "") {
             checkSigWrite = 0;
         }
 
@@ -143,6 +145,20 @@ exports.cancelSignalApply = async function (applyedIdx, userIdx) {
         return result;
     } catch (err) {
         logger.error(`App - cancelSignalApply Service error\n: ${err.message}`);
+        return errResponse(baseResponse.DB_ERROR);
+    }
+}
+
+// Signal Promise Area, Time 수정
+exports.signalContents = async function (userIdx, sigPromiseTime, sigPromiseArea) {
+    try {
+        const params = [sigPromiseTime, sigPromiseArea, userIdx];
+        const connection = await pool.getConnection(async (conn) => conn);
+        const result = await signalDao.modifySignalContents(connection, params);
+        connection.release;
+        return result;
+    } catch (err) {
+        logger.error(`App - modifySignalContents Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
     }
 }

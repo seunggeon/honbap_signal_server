@@ -166,6 +166,19 @@ async function arzoneList(connection, arzoneList) {
   return row;
 }
 
+
+async function modifySignalContents(connection, params){
+  const query = `
+                  UPDATE Signaling
+                  SET sigPromiseTime = ?, sigPromiseArea = ?
+                  where userIdx = ?;
+                `;
+  const [row] = await connection.query(query, params);
+  return row;
+}
+
+
+
 module.exports = {
   insertSignal, // 1
   selectSignalList, // 2
@@ -180,4 +193,5 @@ module.exports = {
   cancelSignalApply, // 11
   endSignals, // 12
   arzoneList, // 13
+  modifySignalContents //14
 };
