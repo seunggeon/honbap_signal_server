@@ -114,7 +114,7 @@ async function getSignalApply(connection, userIdx) {
   const query = `
                     SELECT DISTINCT nickName
                     FROM Signaling AS s, SignalApply AS sa, User AS up
-                    WHERE s.sigStatus = 1 AND sa.userIdx = 2 AND 
+                    WHERE s.sigStatus = 1 AND sa.userIdx = ? AND 
                             sa.applyedIdx = up.userIdx ORDER BY sa.trashIdx ASC;
                     `;
   const [row] = await connection.query(query, userIdx);
