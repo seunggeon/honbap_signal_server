@@ -102,7 +102,7 @@ async function signalOn(connection, userIdx) {
 async function postSignalApply(connection, params) {
   const query = `
                     INSERT INTO SignalApply
-                    (signalIdx, userIdx, applyIdx) 
+                    (signalIdx, applyedIdx, userIdx) 
                     VALUES (?, ?, ?);
                     `;
   const [row] = await connection.query(query, params);
