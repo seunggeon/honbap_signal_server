@@ -10,7 +10,7 @@ module.exports = function (app) {
 
     // 쪽지 보내기
     app.post("/msg/room/:roomId", msgController.sendMsg);
-
+    
     // 쪽지 확인
     app.get("/msg/roomcheck/:userIdx", msgController.getMsg);
 

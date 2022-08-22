@@ -13,6 +13,11 @@ exports.createMsgRoom = async function (req, res) {
 
   const roomId = userIdx + '_' + matchIdx;
 
+  // *********************임시방편 에러코드(수정해야됨)********************
+  if(!matchIdx) {
+    return res.send(response(baseResponse.IF_AGATHA_DEFEAT_KOBBOONG));
+  }
+
   const result = await msgService.createMsgRoom(userIdx, matchIdx, roomId);
   return res.send(baseResponse.SUCCESS);
 }
@@ -20,13 +25,12 @@ exports.createMsgRoom = async function (req, res) {
 // 쪽지 방 조회
 exports.getMsgRoom = async function (req, res) {
   const userIdx = req.params.userIdx;
-
   const result = await msgProvider.getMsgRoom(userIdx);
 
   return res.send(response(baseResponse.SUCCESS, result));
 }
 
-// 채팅 보내기
+// 쪽지 보내기
 exports.sendMsg = async function (req, res) {
   const roomId = req.params.roomId;
   const {senderIdx, text} = req.body;
@@ -46,17 +50,11 @@ exports.getMsg = async function (req, res) {
 
   // 보낸/받는 사람 구별
   if (userIdxFromJWT == userIdx) {
-    const sender = userIdx;
-    const receiver = matchIdx;
-
-    const result = await msgProvider.getMsg(roomId, sender, receiver);
+    const result = await msgProvider.getMsg(roomId, userIdx, matchIdx);
     return res.send(response(baseResponse.SUCCESS, result));
   }
   else if (userIdxFromJWT == matchIdx) {
-    const sender = matchIdx;
-    const receiver = userIdx;
-
-    const result = await msgProvider.getMsg(roomId, sender, receiver);
+    const result = await msgProvider.getMsg(roomId, matchIdx, userIdx);
     return res.send(response(baseResponse.SUCCESS, result));
   }
 };
