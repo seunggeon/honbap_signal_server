@@ -8,15 +8,14 @@ const { response, errResponse } = require("../../../config/response");
 
 // 쪽지 방 생성
 exports.createMsgRoom = async function (req, res) {
-  const userIdx = req.params.userIdx;    // 나중에 jwt로 변경
+  const userIdx = req.verifiedToken.userIdx;    // 나중에 jwt로 변경
   const matchIdx = req.body.matchIdx;
 
   const roomId = userIdx + '_' + matchIdx;
 
-  // *********************임시방편 에러코드(수정해야됨)********************
   if(!matchIdx) {
-    return res.send(response(baseResponse.IF_AGATHA_DEFEAT_KOBBOONG));
-  }
+    return res.send(response(baseResponse.MSG_MATCHIDX_EMPTY));
+  } // matchIdx 값이 들어오지 않았습니다.
 
   const result = await msgService.createMsgRoom(userIdx, matchIdx, roomId);
   return res.send(baseResponse.SUCCESS);
@@ -24,7 +23,7 @@ exports.createMsgRoom = async function (req, res) {
 
 // 쪽지 방 조회
 exports.getMsgRoom = async function (req, res) {
-  const userIdx = req.params.userIdx;
+  const userIdx = req.verifiedToken.userIdx;
   const result = await msgProvider.getMsgRoom(userIdx);
 
   return res.send(response(baseResponse.SUCCESS, result));
@@ -41,7 +40,7 @@ exports.sendMsg = async function (req, res) {
 
 // 쪽지 내용 확인
 exports.getMsg = async function (req, res) {
-  const userIdxFromJWT = req.params.userIdx;
+  const userIdxFromJWT = req.verifiedToken.userIdx;
   const roomId = req.body.roomId;
 
   const arr = roomId.split("_");
@@ -61,7 +60,7 @@ exports.getMsg = async function (req, res) {
 
 // 쪽지 방 삭제
 exports.deleteMsg = async function (req, res) {
-  const userIdx = req.params.userIdx;
+  const userIdx = req.verifiedToken.userIdx;
   const roomId = req.body.roomId;
 
   const arr = roomId.split("_");

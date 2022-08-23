@@ -263,6 +263,11 @@ module.exports = {
     code: 3005,
     message: "존재하지 않는 아이디입니다.",
   },
+  MSG_MATCHIDX_EMPTY: {
+    isSuccess: false,
+    code: 3006,
+    message: "matchIdx 값이 들어오지 않았습니다.",
+  },
 
   MODIFY_REDUNDANT_NICKNAME: {
     isSuccess: false,
