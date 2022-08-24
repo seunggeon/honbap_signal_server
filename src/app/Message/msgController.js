@@ -24,6 +24,7 @@ exports.createMsgRoom = async function (req, res) {
 // 쪽지 방 조회
 exports.getMsgRoom = async function (req, res) {
   const userIdx = req.verifiedToken.userIdx;
+
   const result = await msgProvider.getMsgRoom(userIdx);
 
   return res.send(response(baseResponse.SUCCESS, result));
@@ -34,6 +35,13 @@ exports.sendMsg = async function (req, res) {
   const roomId = req.params.roomId;
   const {senderIdx, text} = req.body;
 
+  if(!senderIdx) {
+    return res.send(response(baseResponse.MSG_SENDERIDX_EMPTY));
+  }
+  if(!text) {
+    return res.send(response(baseResponse.MSG_TEXT_EMPTY));
+  }
+
   const result = await msgService.sendMsg(roomId, senderIdx, text);
   return res.send(baseResponse.SUCCESS);
 }
@@ -42,6 +50,10 @@ exports.sendMsg = async function (req, res) {
 exports.getMsg = async function (req, res) {
   const userIdxFromJWT = req.verifiedToken.userIdx;
   const roomId = req.body.roomId;
+
+  if(!roomId) {
+    return res.send(response(baseResponse.MSG_ROOMID_EMPTY));
+  }
 
   const arr = roomId.split("_");
   const userIdx = arr[0];
@@ -62,6 +74,10 @@ exports.getMsg = async function (req, res) {
 exports.deleteMsg = async function (req, res) {
   const userIdx = req.verifiedToken.userIdx;
   const roomId = req.body.roomId;
+
+  if(!roomId) {
+    return res.send(response(baseResponse.MSG_ROOMID_EMPTY));
+  }
 
   const arr = roomId.split("_");
   const userIdxAtRoom = arr[0];

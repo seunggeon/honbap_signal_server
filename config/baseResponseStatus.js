@@ -263,10 +263,27 @@ module.exports = {
     code: 3005,
     message: "존재하지 않는 아이디입니다.",
   },
+
+  // 쪽지
   MSG_MATCHIDX_EMPTY: {
     isSuccess: false,
     code: 3006,
     message: "matchIdx 값이 들어오지 않았습니다.",
+  },
+  MSG_SENDERIDX_EMPTY: {
+    isSuccess: false,
+    code: 3007,
+    message: "senderIdx 값이 들어오지 않았습니다.",
+  },
+  MSG_TEXT_EMPTY: {
+    isSuccess: false,
+    code: 3008,
+    message: "텍스트를 입력해주세요.",
+  },
+  MSG_ROOMID_EMPTY: {
+    isSuccess: false,
+    code: 3009,
+    message: "roomId 값이 들어오지 않았습니다.",
   },
 
   MODIFY_REDUNDANT_NICKNAME: {
