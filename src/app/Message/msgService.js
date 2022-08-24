@@ -1,7 +1,6 @@
 const { logger } = require("../../../config/winston");
 const { pool } = require("../../../config/database");
 
-//const reportProvider = require("./reportProvider");
 const msgDao = require("./msgDao");
 
 const baseResponse = require("../../../config/baseResponseStatus");
