@@ -49,7 +49,7 @@ exports.sendMsg = async function (req, res) {
 // 쪽지 내용 확인
 exports.getMsg = async function (req, res) {
   const userIdxFromJWT = req.verifiedToken.userIdx;
-  const roomId = req.body.roomId;
+  const roomId = req.params.roomId;
 
   if(!roomId) {
     return res.send(response(baseResponse.MSG_ROOMID_EMPTY));
