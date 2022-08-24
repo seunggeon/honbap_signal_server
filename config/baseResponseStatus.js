@@ -16,7 +16,7 @@ module.exports = {
   },
   TOKEN_VERIFICATION_SUCCESS: {
     isSuccess: true,
-    code: 1001,
+    code: 1002,
     message: "JWT 토큰 검증 성공",
   }, // ?
 
