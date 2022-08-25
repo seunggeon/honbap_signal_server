@@ -37,7 +37,10 @@ module.exports = function (app) {
   app.patch("/user/mypage", jwtMiddleware, user.patchUserProfile);
 
   // 12. 유저 닉네임 중복 체크
-  app.get("/user/:nickName", user.getUserNickName)
+  app.get("/user/:nickName", user.getUserNickName);
+
+  // 13. jwt에서 userIdx 반환
+  app.get("/user/getIdx", jwtMiddleware, user.getUserIdxFromJWT);
 
   // 10. 카카오 로그인 API
   app.get("/auth/kakao", passport.authenticate("kakao"));

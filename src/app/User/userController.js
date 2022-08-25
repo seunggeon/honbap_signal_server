@@ -325,7 +325,28 @@ exports.patchUserProfile = async function (req, res) {
     return res.send(errResponse(baseResponse.SIGNUP_REDUNDANT_NICKNAME));
 
   return res.send(response(baseResponse.SUCCESS));
-};
+ };
+
+/**
+ * API No. 13
+ * API Name : jwt에서 userIdx 반환
+ * [GET] /app/user/getIdx
+ */
+exports.getUserIdxFromJWT = async function (req, res) {
+  const userIdxFromJWT = req.verifiedToken.userIdx;
+  
+  //validation
+  if (!userIdxFromJWT) {
+    return res.send(errResponse(baseResponse.USER_USERIDX_EMPTY));  //2042
+  }
+  if (userIdxFromJWT <= 0) {
+    return res.send(errResponse(baseResponse.USER_USERIDX_LENGTH));  //2043
+  }
+
+  console.log("userIdx:", userIdxFromJWT);
+ 
+  return res.send(response(baseResponse.SUCCESS, {userIdx: userIdxFromJWT}));
+}
 
 
 /*
