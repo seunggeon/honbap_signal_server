@@ -54,6 +54,21 @@ exports.endSignals = async function (userIdx, userIdx2) {
   }
 };
 
+exports.mySignal = async function (userIdx) {
+  try {
+    const params = [userIdx];
+    const connection = await pool.getConnection(async (conn) => conn);
+
+    const endsResult = await signalDao.mySignal(connection, params);
+    connection.release();
+
+    return endsResult;
+  } catch (err) {
+    logger.error(`mySignal Provider error\n: ${err.message}`);
+    return errResponse(baseResponse.DB_ERROR);
+  }
+};
+
 exports.arzoneList = async function (sigPromiseArea) {
   try {
     const connection = await pool.getConnection(async (conn) => conn);

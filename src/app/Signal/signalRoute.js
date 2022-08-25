@@ -36,7 +36,11 @@ module.exports = function (app) {
     // 이전 시그널 조회 11
     app.get("/signal/listed", jwtMiddleware, signal.getEndSignals);
 
+
     // 주황색 유저를 위한 Signal Promise 및 time 수정
     app.patch("/signal/list/orange", jwtMiddleware, signal.patchSignalContents);
+
+    // 내 시그널 ID 조회 13
+    app.get("/mysignal", jwtMiddleware, signal.getMySignal);
 
 };

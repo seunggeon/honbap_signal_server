@@ -194,3 +194,10 @@ exports.patchSignalContents = async function (req, res) {
     sigPromiseArea);
   return res.send(baseResponse.SUCCESS);
 };
+
+
+exports.getMySignal = async function (req, res) {
+  const userIdxFromJWT = req.verifiedToken.userIdx;
+  const mySignal = await signalProvider.mySignal(userIdxFromJWT);
+  return res.send(response(baseResponse.SUCCESS, mySignal));
+};
