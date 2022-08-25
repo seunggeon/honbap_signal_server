@@ -154,6 +154,16 @@ async function endSignals(connection, params) {
   return row;
 }
 
+async function mySignal(connection, params) {
+  const query = `
+                    SELECT signalIdx
+                    FROM  Signaling 
+                    WHERE userIdx = ? AND sigMatchStatus = 0;
+                    `;
+  const [row] = await connection.query(query, params);
+  return row;
+}
+
 // ARzone locations에 sigPromiseArea가 있는지 조회 ***13***
 async function arzoneList(connection, arzoneList) {
   const query = `
@@ -191,6 +201,8 @@ module.exports = {
   deleteSignalApply, // 10
   cancelSignalApply, // 11
   endSignals, // 12
-  arzoneList, // 13
-  modifySignalContents //14
+  mySignal, // 13
+  arzoneList, // 14
+  modifySignalContents //15
+  
 };
