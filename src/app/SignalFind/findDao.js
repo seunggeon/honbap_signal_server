@@ -87,13 +87,13 @@ async function getAddressByLocation(connection, params){
 //     */
 // }
 
-async function getSignalStatus(connection){
+async function getSignalStatus(connection, params){
     const query = `
-                    SELECT userIdx
-                    FROM Signaling
-                    WHERE sigStatus = '1';
+                    SELECT up.*, u.nickName, s.signalIdx, s.sigPromiseArea, s.sigPromiseTime, s.checkSigWrite
+                    FROM Signaling AS s, User AS u, UserProfile AS up
+                    WHERE s.sigStatus = 1 AND s.userIdx = ? AND up.userIdx = ? AND u.userIdx = ?;
                  `;
-    const [row] = await connection.query(query);
+    const [row] = await connection.query(query, params);
     return row ;
     
     /*

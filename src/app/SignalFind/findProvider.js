@@ -11,12 +11,13 @@ exports.getSignalList= async function (userIdx)
     try 
     {
       const connection = await pool.getConnection(async (conn) => conn);
-
+      const params = [userIdx, userIdx, userIdx];
       // status = on 인 사람 조회하기 
-      const signalOnUserIdxList = await findDao.getSignalStatus(connection)
+      const signalOnUserIdxList = await findDao.getSignalStatus(connection, params);
 
       // userLocation Table에서 내 최신 위치 정보 불러오기
       const myLocationResult = await findDao.selectUserLocation(connection, userIdx);
+      
 
       console.log(`myLocationResult ${myLocationResult[0].latitude}, ${myLocationResult[0].longitude}`);
   
@@ -26,9 +27,9 @@ exports.getSignalList= async function (userIdx)
       // ARzone Table에서 위도, 경도 받아오기
 
       console.log(signalOnUserIdxList.length)
-      /* 전역 변수 선언 */
+      // 전역 변수 선언 
 
-      userOnList = [];
+      let userOnList = [];
 
       // address = ? 에서 for문 안쓰면 주소 여러개 중에 하나만 받고 끝남.
       for(var i=0; i < signalOnUserIdxList.length; i++)
@@ -38,13 +39,13 @@ exports.getSignalList= async function (userIdx)
         console.log(signalOnUserIdxList[i].userIdx)
         console.log(userLocation[0])
 
-        distance = haversine(myLocationResult[0], userLocation[0]);
+        const distance = haversine(myLocationResult[0], userLocation[0]);
 
         if(distance == 10 || distance < 10 ) // range = 10km
         {
           if(signalOnUserIdxList[i].userIdx != userIdx)
           {
-            userOnList.push(signalOnUserIdxList[i].userIdx);
+            userOnList.push(signalOnUserIdxList[i]);
           }
         }
         else if(distance > 10)
@@ -62,7 +63,8 @@ exports.getSignalList= async function (userIdx)
 
       
       connection.release();
-      return userOnList ;
+      //return userOnList ;
+      return signalOnUserIdxList;
     }
       
 
