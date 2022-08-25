@@ -55,7 +55,7 @@ async function updateSignal(connection, params) {
 
 // 시그널 매칭 상대 업데이트 *** 4 ***
 async function updateSigMatch(connection, params) {
-  const query = `
+  const query =   `
                   UPDATE Signaling
                   SET matchIdx = ?, sigStatus = 0, sigMatchStatus = 1
                   WHERE userIdx = ? AND sigStatus = 1;
@@ -115,7 +115,7 @@ async function getSignalApply(connection, userIdx) {
                     SELECT DISTINCT nickName
                     FROM Signaling AS s, SignalApply AS sa, User AS up
                     WHERE s.sigStatus = 1 AND sa.userIdx = ? AND 
-                            sa.applyedIdx = up.userIdx ORDER BY sa.trashIdx ASC;
+                            sa.applyedIdx = up.userIdx ORDER BY sa.applyTime ASC;
                     `;
   const [row] = await connection.query(query, userIdx);
   return row;

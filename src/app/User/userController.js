@@ -344,8 +344,9 @@ exports.getUserIdxFromJWT = async function (req, res) {
   }
 
   console.log("userIdx:", userIdxFromJWT);
+  const userIdx = userIdxFromJWT;
  
-  return res.send(response(baseResponse.SUCCESS, {userIdx: userIdxFromJWT}));
+  return res.send(response(baseResponse.SUCCESS, userIdx));
 }
 
 

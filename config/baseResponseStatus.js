@@ -285,6 +285,11 @@ module.exports = {
     code: 3009,
     message: "roomId 값이 들어오지 않았습니다.",
   },
+  MSG_TEXT_OVER: {
+    isSuccess: false,
+    code: 3010,
+    message: "한글 500자, 영어 1000자 미만으로 입력하세요.",
+  },
 
   MODIFY_REDUNDANT_NICKNAME: {
     isSuccess: false,
