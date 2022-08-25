@@ -32,14 +32,18 @@ exports.getMsgRoom = async function (req, res) {
 
 // 쪽지 보내기
 exports.sendMsg = async function (req, res) {
+  const senderIdx = req.verifiedToken.userIdx;
   const roomId = req.params.roomId;
-  const {senderIdx, text} = req.body;
+  const text = req.body;
 
   if(!senderIdx) {
     return res.send(response(baseResponse.MSG_SENDERIDX_EMPTY));
   }
   if(!text) {
     return res.send(response(baseResponse.MSG_TEXT_EMPTY));
+  }
+  if(text > 500) {
+    return res.send(response(baseResponse.MSG_TEXT_OVER));
   }
 
   const result = await msgService.sendMsg(roomId, senderIdx, text);

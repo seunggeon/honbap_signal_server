@@ -78,9 +78,11 @@ exports.postSigMatch = async function (req, res) {
   const { matchIdx } = req.body;
 
   const matching = await signalService.matching(matchIdx, userIdxFromJWT);
-  console.log("here1")
+  
+  /*console.log("here1")
   const createChat = await chatService.createChatRoom(userIdxFromJWT, matchIdx);
-  console.log("here2")
+  console.log("here2")*/
+  
   return res.send(baseResponse.SUCCESS);
 };
 
