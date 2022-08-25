@@ -90,8 +90,10 @@ async function getAddressByLocation(connection, params){
 async function getSignalStatus(connection, params){
     const query = `
                     SELECT up.*, u.nickName, s.signalIdx, s.sigPromiseArea, s.sigPromiseTime, s.checkSigWrite
-                    FROM Signaling AS s, User AS u, UserProfile AS up
-                    WHERE s.sigStatus = 1 AND s.userIdx = ? AND up.userIdx = ? AND u.userIdx = ?;
+                    FROM Signaling AS s
+                            LEFT JOIN User AS u ON s.userIdx = u.userIdx AND s.sigStatus = 1
+                            LEFT JOIN UserProfile AS up ON s.userIdx = up.userIdx AND s.sigStatus = 1
+                    WHERE s.sigStatus = 1;
                  `;
     const [row] = await connection.query(query, params);
     return row ;
