@@ -207,7 +207,7 @@ exports.getMySignal = async function (req, res) {
 /**
  * API No. 14
  * API Name : 해당 닉네임의 유저 정보 조회
- * [PATCH] /signal/info
+ * [GET] /signal/info
  */
  exports.getInfoFromNickName = async function (req, res) {
    const nickName = req.body.nickName;
