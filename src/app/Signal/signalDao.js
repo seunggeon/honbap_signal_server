@@ -189,15 +189,12 @@ async function modifySignalContents(connection, params){
 // 해당 닉네임의 유저 정보 조회 ***16***
 async function getInfoFromNickName(connection, nickName) {
   const query = `
-                SELECT up.taste, up.hateFood, up.interest, up.avgSpeed, up.preferArea,
-                    up.mbti, up.userIntroduce, up.updateAt,
-                    u.nickName,
-                    s.signalIdx, s.sigPromiseArea, s.sigPromiseTime, s.checkSigWrite
+                SELECT up.profileImg, up.taste, up.hateFood, up.interest, up.avgSpeed,
+                    up.preferArea, up.mbti, up.userIntroduce, up.updateAt,
+                    u.nickName
                 FROM User as u
-                    left join (select up.taste, up.hateFood, up.interest, up.avgSpeed, up.preferArea, up.mbti,
+                    left join (select up.profileImg, up.taste, up.hateFood, up.interest, up.avgSpeed, up.preferArea, up.mbti,
                                       up.userIntroduce, up.updateAt, up.userIdx from UserProfile as up) up on up.userIdx = u.userIdx
-                    left join (select s.signalIdx, s.sigPromiseArea, s.sigPromiseTime,
-                                      s.checkSigWrite, s.matchIdx from Signaling as s) s on s.matchIdx = u.userIdx
                 WHERE u.nickName = ?;
   `
   const [row] = await connection.query(query, nickName);
