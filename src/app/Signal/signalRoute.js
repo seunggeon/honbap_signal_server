@@ -43,4 +43,6 @@ module.exports = function (app) {
     // 내 시그널 ID 조회 13
     app.get("/mysignal", jwtMiddleware, signal.getMySignal);
 
+    // 해당 닉네임의 유저 정보 조회 14
+    app.get("/signal/info", signal.getInfoFromNickName);
 };

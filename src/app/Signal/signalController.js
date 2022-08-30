@@ -4,6 +4,7 @@ const baseResponse = require("../../../config/baseResponseStatus");
 const signalProvider = require("../../app/Signal/signalProvider");
 const signalService = require("../../app/Signal/signalService");
 const chatService = require("../../app/Chat/chatService");
+const userProvider = require("../User/userProvider");
 
 const { response, errResponse } = require("../../../config/response");
 const logger = require("../../../config/winston");
@@ -200,4 +201,25 @@ exports.getMySignal = async function (req, res) {
   const userIdxFromJWT = req.verifiedToken.userIdx;
   const mySignal = await signalProvider.mySignal(userIdxFromJWT);
   return res.send(response(baseResponse.SUCCESS, mySignal));
+};
+
+
+/**
+ * API No. 14
+ * API Name : 해당 닉네임의 유저 정보 조회
+ * [PATCH] /signal/info
+ */
+ exports.getInfoFromNickName = async function (req, res) {
+   const nickName = req.body.nickName;
+
+  //validation: 해당 유저의 닉네임이 존재하지 않는 경우
+  const resultNickName = await userProvider.nickNameCheck(nickName);
+  console.log(resultNickName.length);
+  if (!resultNickName.length) {
+    return res.send(errResponse(baseResponse.USER_IS_NOT_EXIST));
+  }
+   
+  const resultInfo = await signalProvider.getInfoFromNickName(nickName);
+
+  return res.send(response(baseResponse.SUCCESS, resultInfo));
 };

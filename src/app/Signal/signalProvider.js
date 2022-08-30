@@ -82,3 +82,18 @@ exports.arzoneList = async function (sigPromiseArea) {
     return errResponse(baseResponse.DB_ERROR);
   }
 };
+
+// 닉네임으로 유저 정보 조회
+exports.getInfoFromNickName = async function (nickName) {
+  try {
+    const connection = await pool.getConnection(async (conn) => conn);
+
+    const [getInfoResult] = await signalDao.getInfoFromNickName(connection, nickName);
+    connection.release();
+
+    return getInfoResult;
+  } catch (err) {
+    logger.error(`getInfoFromNickName Provider error\n: ${err.message}`);
+    return errResponse(baseResponse.DB_ERROR);
+  }
+}
