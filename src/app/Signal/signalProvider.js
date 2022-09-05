@@ -59,10 +59,10 @@ exports.mySignal = async function (userIdx) {
     const params = [userIdx];
     const connection = await pool.getConnection(async (conn) => conn);
 
-    const endsResult = await signalDao.mySignal(connection, params);
+    const mySignalResult = await signalDao.mySignal(connection, params);
     connection.release();
 
-    return endsResult;
+    return mySignalResult;
   } catch (err) {
     logger.error(`mySignal Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);

@@ -41,7 +41,7 @@ exports.getSignalList= async function (userIdx)
 
         const distance = haversine(myLocationResult[0], userLocation[0]);
 
-        if(distance == 10 || distance < 10 ) // range = 10km
+        if(distance > 0 || distance < 10 ) // range = 10km
         {
           if(signalOnUserIdxList[i].userIdx != userIdx)
           {
