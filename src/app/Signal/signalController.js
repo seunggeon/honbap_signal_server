@@ -196,6 +196,11 @@ exports.patchSignalContents = async function (req, res) {
   return res.send(baseResponse.SUCCESS);
 };
 
+/**
+ * API No. 13
+ * API Name : 로그인한 유저의 signalIdx 조회
+ * [GET] /mysignal
+ */
 
 exports.getMySignal = async function (req, res) {
   const userIdxFromJWT = req.verifiedToken.userIdx;

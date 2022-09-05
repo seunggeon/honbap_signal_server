@@ -157,7 +157,7 @@ async function endSignals(connection, params) {
 async function mySignal(connection, params) {
   const query = `
                     SELECT signalIdx
-                    FROM  Signaling 
+                    FROM  Signaling
                     WHERE userIdx = ? AND sigMatchStatus = 0;
                     `;
   const [row] = await connection.query(query, params);
