@@ -112,11 +112,11 @@ async function postSignalApply(connection, params) {
 // 시그널 신청 리스트 조회 *** 9 ***
 async function getSignalApply(connection, userIdx) {
   const query = `
-                    SELECT DISTINCT nickName
-                    FROM Signaling AS s, SignalApply AS sa, User AS up
-                    WHERE s.sigStatus = 1 AND sa.userIdx = ? AND 
-                            sa.applyedIdx = up.userIdx ORDER BY sa.applyTime ASC;
-                    `;
+                  SELECT DISTINCT nickName
+                  FROM Signaling AS s, SignalApply AS sa, User AS up
+                  WHERE s.sigStatus = 1 AND sa.userIdx = ? AND 
+                          sa.applyedIdx = up.userIdx ORDER BY sa.applyTime ASC;
+                `;
   const [row] = await connection.query(query, userIdx);
   return row;
 }
