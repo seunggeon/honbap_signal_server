@@ -8,16 +8,16 @@ const { response, errResponse } = require("../../../config/response");
 
 // 쪽지 방 생성
 exports.createMsgRoom = async function (req, res) {
-  const userIdx = req.verifiedToken.userIdx;    // 나중에 jwt로 변경
+  const userIdxFromJWT = req.verifiedToken.userIdx;
   const matchIdx = req.body.matchIdx;
 
-  const roomId = userIdx + '_' + matchIdx;
+  const roomId = userIdxFromJWT + '_' + matchIdx;
 
   if(!matchIdx) {
     return res.send(response(baseResponse.MSG_MATCHIDX_EMPTY));
   } // matchIdx 값이 들어오지 않았습니다.
 
-  const result = await msgService.createMsgRoom(userIdx, matchIdx, roomId);
+  const result = await msgService.createMsgRoom(userIdxFromJWT, matchIdx, roomId);
   return res.send(baseResponse.SUCCESS);
 }
 
