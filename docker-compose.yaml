@@ -1,0 +1,25 @@
+version: "3.7" 
+services:
+  blog-app:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
+    environment:
+      DEBUG: knex*
+    depends_on:
+      - mysql
+
+  mysql: 
+    image: mysql:8.0
+    restart: always
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: blog_app
+    volumes:
+      - ./db/mysql:/var/lib/mysql
+      - ./mysql/:/docker-entrypoint-initdb.d/

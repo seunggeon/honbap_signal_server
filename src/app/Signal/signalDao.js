@@ -186,6 +186,18 @@ async function modifySignalContents(connection, params){
   return row;
 }
 
+// 해당 닉네임의 유저 정보 조회 ***16***
+async function getInfoFromNickName(connection, nickName) {
+  const query = `
+                SELECT up.*, u.nickName
+                FROM User as u
+                    left join (select up.* from UserProfile as up) up on up.userIdx = u.userIdx
+                WHERE u.nickName = ?;
+  `
+  const [row] = await connection.query(query, nickName);
+  return row;
+}
+
 
 
 module.exports = {
@@ -203,6 +215,6 @@ module.exports = {
   endSignals, // 12
   mySignal, // 13
   arzoneList, // 14
-  modifySignalContents //15
-  
+  modifySignalContents, //15
+  getInfoFromNickName, //16
 };

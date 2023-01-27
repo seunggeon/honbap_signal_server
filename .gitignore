@@ -1,9 +1,7 @@
 node_modules/*
 config/database.js
 config/secret.js
-log/*
 package.json
 package-lock.json
-log\.*
-/log
 *-audit.json
+config/instantclient_19_8/*
