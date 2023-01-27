@@ -1,66 +1,68 @@
-const request = require('supertest')
-const app = require('../app')
+// jest.mock('jsonwebtoken');
+const jwt = require('jsonwebtoken');
+const oracledb = require('oracledb');
+
+const request = require('supertest');
+const express = require('../../../config/express');
+
+const app = express();
+const findDao = require('./findDao');
+const database = require('../../../config/database');
+
+// const { logger } = require('../../../config/winston');
 
 describe('시그널 찾기 통합 테스트', () => {
   describe('PATCH /signalFind', () => {
-      test('내 위치가 수정되는지 확인', async () => {
-        const res = await request(app)
-        .patch('/signalFind')
-        .set('Accept', 'application/json') //header field
-        .then((res) => {
-          expect(res.body[i].is_reported).toEqual(0);
-        });
+    test('JWT을 이용한 API 통신 상태 확인', async () => {
+      const testData = 1;
+      const latitude = 1;
+      const longitude = 1;
+      // JWT 생성
+      const testToken = jwt.sign({
+        userIdx: 1
+      }, process.env.JWTSECRET, {
+        expiresIn: '1m'
       });
-  });
 
-  describe('GET /signalFind/list', () => {
-      test('거리 범위 외 시그널도 리스트에 뜨는지 확인', async () => {
-        const res = await request(app)
-        .get('/signalFind/list')
-        .set('Accept', 'application/json')
-        .then((res) => {
-          expect(res.status).toEqual(200);
-          expect(res.headers['content-type']).toMatch('/json');
-          for (let i = 0; i < res.body.length; i++) {
-              expect(res.body[i].is_reported).toEqual(0);
-          }
+      console.log(testToken);
+      await request(app)
+        .patch('/signalFind')
+        .set('Authorization',`${testToken}`)
+        .send({
+          latitude,
+          longitude
         })
+        .expect(200)
+    });
+
+    test('API로 내 현재 위치가 수정되는지 확인', async () => {
+      const testData2 = 2;
+      const testUserIdx = 2;
+      const testToken = jwt.sign({
+        userIdx: 2,
+      }, process.env.JWTSECRET, {
+        expiresIn: '10m',
       });
-      test('거리 범위 외 시그널도 리스트에 뜨는지 확인', async () => {
-        const res = await request(app)
-        .get('/signalFind/list')
-        .set('Accept', 'application/json')
-        .then((res) => {
-              expect(res.status).toEqual(200);
-              expect(res.headers['content-type']).toMatch('/json');
-              for (let i = 0; i < res.body.length; i++) {
-                expect(res.body[i].is_reported).toEqual(0);
-              }
-        })
-      });
-      test('꺼진 시그널도 리스트에 뜨는지 확인', async () => {
-        const res = await request(app)
-        .get('/signalFind/list')
-        .set('Accept', 'application/json')
-        .then((res) => {
-            expect(res.status).toEqual(200);
-            expect(res.headers['content-type']).toMatch('/json');
-            for (let i = 0; i < res.body.length; i++) {
-              expect(res.body[i].is_draft).toEqual(0);
-            }
+
+      await request(app)
+        .patch('/signalFind')
+        .set('Authorization',`${testToken}`)
+        .auth(testToken)
+        .send({
+          latitude: '2',
+          longitude: '2',
         });
-      });
-      test('시그널이 최신 순으로 뜨는지 확인', async () => {
-        const res = await request(app)
-        .get('/signalFind/list')
-        .set('Accept', 'application/json')
-        .then((res) => {
-          expect(res.status).toEqual(200);
-          expect(res.headers['content-type']).toMatch('/json');
-          for (let i = 0; i < res.body.length; i++) {
-              expect(res.body[i].is_draft).toEqual(0);
-          }
-        });
+
+      const connection = await oracledb.getConnection(database);
+      const result = await findDao.getUserLocation(connection, [testUserIdx]);
+      
+      const result_latitude = result["rows"][0][0];
+      const result_longitude = result["rows"][0][1];
+      connection.close();
+
+      expect(result_latitude).toEqual(testData2);
+      expect(result_longitude).toEqual(testData2);
+      
     });
   });
-})
+});

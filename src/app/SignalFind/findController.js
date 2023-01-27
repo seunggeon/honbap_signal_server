@@ -2,7 +2,7 @@ const findProvider = require('./findProvider');
 const findService = require('./findService');
 const baseResponse = require('../../../config/baseResponseStatus');
 const { response } = require('../../../config/response');
-const logger = require('../../../config/winston');
+const { logger } = require('../../../config/winston');
 
 /**
  * API No. 1
@@ -30,12 +30,8 @@ exports.postMyLocation = async function (req, res) {
 
 exports.patchMyLocation = async function (req, res) {
   const [latitude, longitude] = [req.body.latitude, req.body.longitude];
-  // const [userIdx] = req.verifiedToken.userIdx;
-  const userIdx = 1;
-
-  console.log(`latitude : ${latitude}`);
-  console.log(`longitude: ${longitude}`);
-  console.log(`userIdx : ${userIdx}`);
+  const userIdx = req.verifiedToken.userIdx;
+  logger.info(userIdx);
 
   // 빈 값 체크
   if (!latitude) return res.send(response(baseResponse.SIGNALFIND_LATITUDE_EMPTY));

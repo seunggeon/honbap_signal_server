@@ -4,9 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "NODE_ENV=development node index.js",
-    "prod": "NODE_ENV=production node index.js"
+    "prod": "NODE_ENV=production node index.js",
+    "start": "docker compose up --build",
+    "test:int": "jest tests/",
+    "test:unit": "jest src/",
+    "test": "jest",
+    "lint": "eslint ./src/app/SignalFind --fix"
   },
   "repository": {
     "type": "git",
