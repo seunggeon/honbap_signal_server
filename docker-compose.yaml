@@ -9,14 +9,14 @@ services:
     environment:
       DEBUG: knex*
     depends_on:
-      - mysql
+      - oracle
 
-  mysql: 
-    image: mysql:8.0
+  oracle: 
+    image: oracle-xe-11g:latest
     restart: always
-    container_name: mysql
+    container_name: oracle
     ports:
-      - "3306:3306"
+      - "1521:1521"
     environment:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: blog_app
