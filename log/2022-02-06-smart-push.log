@@ -1,7 +1,0 @@
-{"level":"info","message":"undefined - API Server Start At Port 3001","timestamp":"2022-02-06 00:10:07"}
-{"level":"info","message":"undefined - API Server Start At Port 3001","timestamp":"2022-02-06 05:09:18"}
-{"level":"info","message":"undefined - API Server Start At Port 3001","timestamp":"2022-02-06 05:13:41"}
-{"level":"info","message":"undefined - API Server Start At Port 3001","timestamp":"2022-02-06 05:15:32"}
-{"level":"error","message":"App - createUserLocation Service error\n: Cannot add or update a child row: a foreign key constraint fails (`MadMax`.`UserLocation`, CONSTRAINT `UserLocation_User__fk` FOREIGN KEY (`userIdx`) REFERENCES `User` (`userIdx`))","timestamp":"2022-02-06 05:15:36"}
-{"level":"error","message":"App - createUserLocation Service error\n: Cannot add or update a child row: a foreign key constraint fails (`MadMax`.`UserLocation`, CONSTRAINT `UserLocation_User__fk` FOREIGN KEY (`userIdx`) REFERENCES `User` (`userIdx`))","timestamp":"2022-02-06 05:20:58"}
-{"level":"error","message":"App - createUserLocation Service error\n: Cannot add or update a child row: a foreign key constraint fails (`MadMax`.`UserLocation`, CONSTRAINT `UserLocation_User__fk` FOREIGN KEY (`userIdx`) REFERENCES `User` (`userIdx`))","timestamp":"2022-02-06 05:24:35"}
