@@ -29,8 +29,7 @@ exports.getNearSignalONList = async function (userIdx) {
       }
     });
     return onRangeUsers;
-  } 
-  catch (err) {
+  } catch (err) {
     logger.error(`App - get nearby signal ON DB error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
   }

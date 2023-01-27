@@ -33,12 +33,10 @@ exports.updateLocation = async function (latitude, longitude, userIdx) {
   try {
     const result = await findDao.updateLocation(connection, Params);
     return result;
-  } 
-  catch (err) {
+  } catch (err) {
     logger.error(`App - updateLocation Service error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
-  } 
-  finally {
+  } finally {
     connection.close();
   }
 };

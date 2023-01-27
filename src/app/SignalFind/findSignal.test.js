@@ -14,25 +14,24 @@ const database = require('../../../config/database');
 describe('시그널 찾기 통합 테스트', () => {
   describe('PATCH /signalFind', () => {
     test('JWT을 이용한 API 통신 상태 확인', async () => {
-      const testData = 1;
       const latitude = 1;
       const longitude = 1;
       // JWT 생성
       const testToken = jwt.sign({
-        userIdx: 1
+        userIdx: 1,
       }, process.env.JWTSECRET, {
-        expiresIn: '1m'
+        expiresIn: '1m',
       });
 
       console.log(testToken);
       await request(app)
         .patch('/signalFind')
-        .set('Authorization',`${testToken}`)
+        .set('Authorization', `${testToken}`)
         .send({
           latitude,
-          longitude
+          longitude,
         })
-        .expect(200)
+        .expect(200);
     });
 
     test('API로 내 현재 위치가 수정되는지 확인', async () => {
@@ -46,7 +45,7 @@ describe('시그널 찾기 통합 테스트', () => {
 
       await request(app)
         .patch('/signalFind')
-        .set('Authorization',`${testToken}`)
+        .set('Authorization', `${testToken}`)
         .auth(testToken)
         .send({
           latitude: '2',
@@ -55,14 +54,13 @@ describe('시그널 찾기 통합 테스트', () => {
 
       const connection = await oracledb.getConnection(database);
       const result = await findDao.getUserLocation(connection, [testUserIdx]);
-      
-      const result_latitude = result["rows"][0][0];
-      const result_longitude = result["rows"][0][1];
+
+      const resultLatitude = result.rows[0][0];
+      const resultLongitude = result.rows[0][1];
       connection.close();
 
-      expect(result_latitude).toEqual(testData2);
-      expect(result_longitude).toEqual(testData2);
-      
+      expect(resultLatitude).toEqual(testData2);
+      expect(resultLongitude).toEqual(testData2);
     });
   });
 });

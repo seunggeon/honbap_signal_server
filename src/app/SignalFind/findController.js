@@ -30,7 +30,7 @@ exports.postMyLocation = async function (req, res) {
 
 exports.patchMyLocation = async function (req, res) {
   const [latitude, longitude] = [req.body.latitude, req.body.longitude];
-  const userIdx = req.verifiedToken.userIdx;
+  const { userIdx } = req.verifiedToken;
   logger.info(userIdx);
 
   // 빈 값 체크
