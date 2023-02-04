@@ -16,7 +16,8 @@ exports.createUserLocation = async function (latitude, longitude) {
 
     logger.log(`유저 위치 등록 시 등록된 유저 index : ${locationResult[0].userIdx}`);
     return response(baseResponse.SUCCESS);
-  } catch (err) {
+  } 
+  catch (err) {
     logger.error(`App - createUserLocation Service error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);
   } finally {
@@ -28,10 +29,10 @@ exports.updateLocation = async function (latitude, longitude, userIdx) {
   // const connection = await pool.getConnection(async (conn) => conn);
   const connection = await oracledb.getConnection(database);
   oracledb.autoCommit = true;
-  const Params = { idx: userIdx, latit: latitude, longit: longitude };
+  const params = { idx: userIdx, latit: latitude, longit: longitude };
 
   try {
-    const result = await findDao.updateLocation(connection, Params);
+    const result = await findDao.updateLocation(connection, params);
     return result;
   } catch (err) {
     logger.error(`App - updateLocation Service error\n: ${err.message}`);

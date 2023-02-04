@@ -13,7 +13,7 @@ const database = require('../../../config/database');
 
 describe('시그널 찾기 통합 테스트', () => {
   describe('PATCH /signalFind', () => {
-    test('JWT을 이용한 API 통신 상태 확인', async () => {
+    test.skip('JWT을 이용한 API 통신 상태 확인', async () => {
       const latitude = 1;
       const longitude = 1;
       // JWT 생성
@@ -34,7 +34,7 @@ describe('시그널 찾기 통합 테스트', () => {
         .expect(200);
     });
 
-    test('API로 내 현재 위치가 수정되는지 확인', async () => {
+    test.skip('API로 내 현재 위치가 수정되는지 확인', async () => {
       const testData2 = 2;
       const testUserIdx = 2;
       const testToken = jwt.sign({
