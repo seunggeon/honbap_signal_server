@@ -30,8 +30,8 @@ exports.postMyLocation = async function (req, res) {
 
 exports.patchMyLocation = async function (req, res) {
   const [latitude, longitude] = [req.body.latitude, req.body.longitude];
-  const userIdx = req.verifiedToken.userIdx;
-  logger.info(userIdx);
+  // const { userIdx } = req.verifiedToken;
+  userIdx =1;
 
   // 빈 값 체크
   if (!latitude) return res.send(response(baseResponse.SIGNALFIND_LATITUDE_EMPTY));

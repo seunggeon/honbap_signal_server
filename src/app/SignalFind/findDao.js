@@ -4,36 +4,26 @@ async function insertUserLocation(connection, params) {
                   VALUES(?,?);
                   `;
   const row = await connection.execute(query, params);
-
   return row;
 }
 
 async function updateLocation(connection, params) {
   const query = `
-                    UPDATE location
-                    SET latitude = :latit, longitude = :longit
-                    WHERE useridx = :idx
-                  `;
-
-  // console.log(params);
+                  UPDATE location
+                  SET latitude = :latit, longitude = :longit
+                  WHERE useridx = :idx
+                `;
   const row = await connection.execute(query, params);
-
-  // const row = await connection.execute(`
-  //             SELECT *
-  //             FROM location
-  //         `);
-  // TEST 성공
-
   return row;
 }
 
 // userLocation Table에서 내 최신 위치 정보 불러오기 " "이 아니라 ' '하니까 되네;;
 async function getUserLocation(connection, idx) {
   const query = `
-                    SELECT latitude, longitude
-                    FROM location
-                    WHERE useridx = :idx
-                  `;
+                  SELECT latitude, longitude
+                  FROM location
+                  WHERE useridx = :idx
+                `;
   const row = await connection.execute(query, idx);
 
   return row;
@@ -47,7 +37,7 @@ async function getSignalStatus(connection, params) {
                             LEFT JOIN UserProfile AS up ON s.userIdx = up.userIdx
                     WHERE s.sigStatus = 1;
                  `;
-  const [row] = await connection.execute(query, params);
+  const row = await connection.execute(query, params);
 
   return row;
 }
