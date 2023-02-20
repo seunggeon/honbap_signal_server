@@ -16,6 +16,7 @@ function calculateDistnace(loginUserLocation, siganlOnUsersLocation) {
   signalOnUser.longitude = Object.values(siganlOnUsersLocation)[1][0][1];
  
   const result = haversine(loginUser, signalOnUser);
+  logger.info(`${result}`);
   return result;
 }
 
@@ -34,7 +35,7 @@ exports.getNearSignalONList = async function (userIdx, Users) {
     // const params = [loginUserIdx, loginUserIdx, loginUserIdx];
     // const signalOnUsers = await findDao.getSignalStatus(connection, params);
     
-    let onRangeUsers = [];
+    let onRangeUsers = new Array(100);
 
     signalOnUsers.map(async (signalOnUser) => {
 
@@ -43,18 +44,23 @@ exports.getNearSignalONList = async function (userIdx, Users) {
   
       if (distanceBetweenUsers > 0 && distanceBetweenUsers < 10) {
         if (signalOnUser.userIdx !== loginUserIdx){
-          const result = new Object;
+          let result = new Object;
           result.userIdx = signalOnUser.userIdx;
           result.distance = distanceBetweenUsers;
           // result.signalCreatedAt = signalOnUser.시그널생성시간;
           onRangeUsers.push(result);
+          logger.info(`test2 : ${JSON.stringify(onRangeUsers[0])[0]}`);
+          
+          // logger.info(`${onRangeUsers[0]}`);
         } 
       }
-    });
+    })
+    logger.info(`test : ${JSON.stringify(onRangeUsers[0]).userIdx}`);
     return onRangeUsers;
-  } catch (err) {
+  } 
+  catch (err) {
     logger.error(`App - get nearby signal ON DB error\n: ${err.message}`);
-    return errResponse(baseResponse.DB_ERROR);
+    // return errResponse(baseResponse.DB_ERROR);
   }
 };
 
