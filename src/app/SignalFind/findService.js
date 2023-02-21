@@ -1,4 +1,3 @@
-const oracledb = require('oracledb');
 const { errResponse } = require('../../../config/response');
 const { logger } = require('../../../config/winston');
 const { baseResponse } = require('../../../config/baseResponseStatus');

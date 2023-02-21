@@ -9,5 +9,5 @@ module.exports = function (app) {
   app.patch('/signalFind', findController.patchMyLocation);
 
   // 3. range에 해당되는 내 근처 시그널 목록 조회 API
-  app.get('/signalFind/list', jwtMiddleware, findController.getSignalList);
+  app.get('/signalFind/list', findController.getSignalList);
 };

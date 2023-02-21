@@ -1,0 +1,10 @@
+2023-02-21 17:08:57 error: App - get nearby signal ON DB error
+: Unknown column 'updatedAt' in 'field list'
+2023-02-21 17:12:01 error: App - get nearby signal ON DB error
+: Unknown column 'updatedAt' in 'field list'
+2023-02-21 17:25:54 error: App - get nearby signal ON DB error
+: Include unexpected. Element has to be either a Model, an Association or an object.
+2023-02-21 17:52:24 error: App - get nearby signal ON DB error
+: Include unexpected. Element has to be either a Model, an Association or an object.
+2023-02-21 17:52:45 error: App - get nearby signal ON DB error
+: Unknown column 'updatedAt' in 'field list'
