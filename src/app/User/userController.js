@@ -72,7 +72,7 @@ exports.signin = async function (req, res) {
  */
 
 exports.postUsers = async function (req, res) {
-  const { email, password, userName, nickName, birth, phoneNum, sex } =
+  const { email, password, nickName, birth, phoneNum, sex } =
     req.body;
   // email checking and print error message
 
@@ -105,7 +105,7 @@ exports.postUsers = async function (req, res) {
 
   // 빈 값 체크
   if (!password) return res.send(response(baseResponse.SIGNUP_PASSWORD_EMPTY)); // 2010
-  if (!userName) return res.send(response(baseResponse.SIGNUP_USERNAME_EMPTY)); // 2011
+  // if (!userName) return res.send(response(baseResponse.SIGNUP_USERNAME_EMPTY)); // 2011
   if (!birth) return res.send(response(baseResponse.SIGNUP_BIRTH_EMPTY)); // 2012
   if (!sex) return res.send(response(baseResponse.SIGNUP_SEX_EMPTY)); // 2013
 
@@ -123,7 +123,7 @@ exports.postUsers = async function (req, res) {
     userId : 'test',
     email: email,
     password: password,
-    userName: userName,
+    // userName: userName,
     nickName: nickName,
     birth: birth,
     phoneNum: phoneNum,
