@@ -1,4 +1,4 @@
-log/*
+config/logs/*
 node_modules
 config/database.js
 config/secret.js

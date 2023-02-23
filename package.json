@@ -10,7 +10,8 @@
     "test:int": "jest tests/",
     "test:unit": "jest src/",
     "test": "jest",
-    "lint": "eslint ./src/app/SignalFind --fix"
+    "lint": "eslint ./src/app/SignalFind --fix",
+    "sequelize-auto": "npx sequelize-auto -h 152.69.230.128 -d newschema -u root -x Madmax12345678! -p 3306 -o ./models"
   },
   "repository": {
     "type": "git",

@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('User', {
     userIdx: {
+      autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
@@ -41,10 +42,18 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     sequelize,
     tableName: 'User',
-    timestamps: false,
+    timestamps: true,
     indexes: [
       {
         name: "PRIMARY",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "userIdx" },
+        ]
+      },
+      {
+        name: "userIdx_UNIQUE",
         unique: true,
         using: "BTREE",
         fields: [

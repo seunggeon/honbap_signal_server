@@ -13,3 +13,8 @@
 2023-02-23 15:39:11 info: undefined - API Server Start At Port 3001
 2023-02-23 15:39:15 error: notNull Violation: User.userIdx cannot be null
 2023-02-23 15:39:47 info: undefined - API Server Start At Port 3001
+2023-02-23 17:10:04 info: undefined - API Server Start At Port 3001
+2023-02-23 17:10:32 error: Validation error
+2023-02-23 17:10:54 info: undefined - API Server Start At Port 3001
+2023-02-23 17:10:57 error: Validation error
+2023-02-23 17:45:54 info: undefined - API Server Start At Port 3001
