@@ -31,12 +31,12 @@ async function getUserLocation(connection, idx) {
 
 async function getSignalStatus(connection, params) {
   const query = `
-                    SELECT up.*, u.nickName, s.signalIdx, s.sigPromiseArea, s.sigPromiseTime, s.checkSigWrite
-                    FROM Signaling AS s
-                            LEFT JOIN User AS u ON s.userIdx = u.userIdx
-                            LEFT JOIN UserProfile AS up ON s.userIdx = up.userIdx
-                    WHERE s.sigStatus = 1;
-                 `;
+                  SELECT up.*, u.nickName, s.signalIdx, s.sigPromiseArea, s.sigPromiseTime, s.checkSigWrite
+                  FROM Signaling AS s
+                          LEFT JOIN User AS u ON s.userIdx = u.userIdx
+                          LEFT JOIN UserProfile AS up ON s.userIdx = up.userIdx
+                  WHERE s.sigStatus = 1;
+                `;
   const row = await connection.execute(query, params);
 
   return row;
