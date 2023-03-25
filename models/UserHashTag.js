@@ -1,19 +1,27 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('HashTag', {
+  return sequelize.define('UserHashTag', {
     hashIdx: {
-      autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
+      references: {
+        model: 'HashTag',
+        key: 'hashIdx'
+      }
     },
-    hashTagName: {
-      type: DataTypes.STRING(45),
-      allowNull: true
+    userIdx: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      references: {
+        model: 'UserProfile',
+        key: 'userIdx'
+      }
     }
   }, {
     sequelize,
-    tableName: 'HashTag',
+    tableName: 'UserHashTag',
     timestamps: false,
     indexes: [
       {
@@ -22,14 +30,14 @@ module.exports = function(sequelize, DataTypes) {
         using: "BTREE",
         fields: [
           { name: "hashIdx" },
+          { name: "userIdx" },
         ]
       },
       {
-        name: "HashTag_hashIdx_uindex",
-        unique: true,
+        name: "FK_UserProfile_TO_UserHashTag_1",
         using: "BTREE",
         fields: [
-          { name: "hashIdx" },
+          { name: "userIdx" },
         ]
       },
     ]

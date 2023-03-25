@@ -72,10 +72,10 @@ exports.signin = async function (req, res) {
  */
 
 exports.postUsers = async function (req, res) {
-  const { email, password, nickName, birth, phoneNum, sex } =
+  const { userId, email, password, userName, birth, phoneNum, sex } =
     req.body;
   // email checking and print error message
-
+ 
   // 빈 값 체크
   if (!email) return res.send(response(baseResponse.SIGNUP_EMAIL_EMPTY));
   // 길이 체크
@@ -85,12 +85,12 @@ exports.postUsers = async function (req, res) {
   if (!regexEmail.test(email))
     return res.send(response(baseResponse.SIGNUP_EMAIL_TYPE_ERROR));
 
-  // nickName
+  // userName
 
   // 빈 값 체크
-  if (!nickName) return res.send(response(baseResponse.SIGNUP_NICKNAME_EMPTY));
+  if (!userName) return res.send(response(baseResponse.SIGNUP_NICKNAME_EMPTY));
   // 길이 체크
-  if (nickName.length > 10)
+  if (userName.length > 10)
     //VARCHAR(10) 이 한글로는 5자로 제한되는지 확인 필요
     return res.send(response(baseResponse.SIGNUP_NICKNAME_LENGTH));
 
@@ -119,15 +119,13 @@ exports.postUsers = async function (req, res) {
     // sex
   // );
   User.create({
-    userIdx : 5,
-    userId : 'test',
+    userId : userId,
     email: email,
     password: password,
-    // userName: userName,
-    nickName: nickName,
+    userName: userName,
     birth: birth,
     phoneNum: phoneNum,
-    sex: sex
+    sex: sex,
   }).then( result => {
     return res.send(response(baseResponse.SUCCESS));
   })
