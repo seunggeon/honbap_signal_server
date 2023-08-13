@@ -10,6 +10,7 @@ exports.getBlackList = async function (userIdx) {
   try {
     const connection = await pool.getConnection(async (conn) => conn);
     const getResult = await blackDao.selectBlack(connection, userIdx);
+    console.log(userIdx)
     connection.release();
 
     return getResult;

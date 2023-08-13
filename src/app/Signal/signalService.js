@@ -136,7 +136,7 @@ exports.signalApply = async function (signalIdx, applyedIdx, userIdx) {
 // 시그널 신청 취소
 exports.cancelSignalApply = async function (applyedIdx, userIdx) {
     try {
-        const params = [applyedIdx, userIdx];
+        const params = [userIdx,applyedIdx];
         const connection = await pool.getConnection(async (conn) => conn);
         const result = await signalDao.cancelSignalApply(connection, params);
         connection.release;

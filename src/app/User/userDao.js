@@ -9,22 +9,22 @@ async function existUserId(connection, userId) {
                   FROM User
                   WHERE userId = ?;
                   `;
-  
+
     const [row] = await connection.query(query, userId);
-    
+
     return row;
 }
 
 // 이메일 체크 *** 2 ***
 async function existUserEmail(connection, email) {
+
     const query = `
-                  SELECT email
+                  SELECT User.email
                   FROM User
-                  WHERE email = ?;
+                  WHERE User.email = ?;
                   `;
-  
+
     const [row] = await connection.query(query, email);
-  
     return row;
 }
 
@@ -35,16 +35,16 @@ async function existUserPhone(connection, phoneNum) {
                   FROM User
                   WHERE phoneNum = ?;
                   `;
-  
+
     const [row] = await connection.query(query, phoneNum);
-  
+
     return row;
 }
 
 // email 회원 조회 *** 4 ***
 async function selectUserId(connection, email) {
     const query = `
-                   SELECT userName, nickName
+                   SELECT userName
                    FROM User
                    WHERE email = ?;
                    `;
@@ -55,12 +55,13 @@ async function selectUserId(connection, email) {
 // 회원가입 *** 5 ***
 async function insertUserInfo(connection, params) {
     const query = `
-                  INSERT INTO 
-                  User(email, password, userName, nickName, birth, phoneNum, sex)
-                  VALUES (?, ?, ?, ?, ?, ?, ?);
-                  `;
+        INSERT INTO
+            User(email, password, userName, birth, phoneNum, sex)
+        VALUES (?, ?, ?, ?, ?, ?);
+    `;
+
     const [row] = await connection.query(query, params);
-  
+
     return row;
 }
 
@@ -71,9 +72,9 @@ async function selectUserIdx(connection, email) {
                   FROM User
                   WHERE email = ?;
                   `;
-  
+
     const row = await connection.query(query, email);
-  
+
     return row;
 }
 
@@ -127,14 +128,14 @@ async function createUserManner(connection, userIdx) {
 }
 
 // 닉네임 체크 *** 9 ***
-async function existUserNickname(connection, nickName) {
+async function existUserNickname(connection, userName) {
     const query = `
-                  SELECT nickName
+                  SELECT userName
                   FROM User
-                  WHERE nickName = ?;
+                  WHERE userName = ?;
                   `;
-
-    const [row] = await connection.query(query, nickName);
+    console.log(userName)
+    const [row] = await connection.query(query, userName);
 
     return row;
 }
@@ -142,7 +143,7 @@ async function existUserNickname(connection, nickName) {
 // 유저 개인정보 조회 *** 10 ***
 async function selectUserInfo(connection, userIdx) {
     const query = `
-                  SELECT email, userName, nickName, birth,
+                  SELECT email, userName, userId, birth,
                          phoneNum, sex, updateAt, createAt
                   FROM User
                   WHERE userIdx = ?;
@@ -183,13 +184,13 @@ async function updateUserProfile(connection, params) {
                       interest = ?, avgSpeed = ?, preferArea = ?,
                       mbti = ?, userIntroduce = ?, updateAt = default
                   WHERE userIdx = ?;
-
-                  UPDATE User
-                  SET profileInserted = 1
-                  WHERE userIdx = ?;
-                  `
+                  `;
     const [row] = await connection.query(query, params);
     return row;
+    //USER 테이블에 없는 코드
+    //UPDATE User
+    //SET profileInserted = 1
+    //WHERE userIdx = ?;
 }
 
 // 비밀번호 검사 *** 14 ***
@@ -199,9 +200,9 @@ async function checkpassword(connection, params) {
                   FROM User
                   WHERE email = ? and password = ?;
                   `;
-  
+
     const [row] = await connection.query(query, params);
-    
+
     return row;
 }
 
@@ -212,7 +213,7 @@ async function selectKakaoId(connection, params) {
                 FROM User
                 WHERE provider = ? and id = ?;
                 `;
-    
+
     const [row] = await connection.query(query, params);
 
     return row;

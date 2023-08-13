@@ -6,7 +6,7 @@ signal table -  userIdx : User.userIdx
                 sigStatus : 시그널 on/off 확인
                 sigMatchStatus : 시그널 숨김/열림 확인
                 sigStart : 시그널 시작 시간
-                sigPromiseTime : 약속 시간
+                sigPromiseTime : 약속 시간pmw
                 sigPromiseArea : 약속 장소
                 createAt
                 updateAt
@@ -28,7 +28,7 @@ async function insertSignal(connection, params) {
 // 켜져 있는 시그널 조회 *** 2 ***
 async function selectSignalList(connection, userIdx) {
   const query = `
-                    SELECT up1.nickName as userNickName, up2.nickName as matchingNickName,
+                    SELECT up1.userName as userNickName, up2.userName as matchingNickName,
                     s.sigPromiseTime, s.sigPromiseArea, s.checkSigWrite, s.sigStart, s.updateAt
                     FROM  Signaling AS s
                         LEFT JOIN User AS up1 ON s.userIdx = up1.userIdx
@@ -110,12 +110,14 @@ async function postSignalApply(connection, params) {
 }
 
 // 시그널 신청 리스트 조회 *** 9 ***
+// 닉네임이라는 거 없어서 테스트 위해서 userName 으로 변경후 실행
+// applyIdx 와 applyTime 차이점이 있는건지 모르겟음.. 일단 applytTime 속성 없어서 정렬 제외하고 실행
 async function getSignalApply(connection, userIdx) {
   const query = `
-                  SELECT DISTINCT nickName
+                  SELECT DISTINCT userName
                   FROM Signaling AS s, SignalApply AS sa, User AS up
                   WHERE s.sigStatus = 1 AND sa.userIdx = ? AND 
-                          sa.applyedIdx = up.userIdx ORDER BY sa.applyTime ASC;
+                          sa.applyedIdx = up.userIdx;
                 `;
   const [row] = await connection.query(query, userIdx);
   return row;
