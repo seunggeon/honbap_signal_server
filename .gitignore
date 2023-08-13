@@ -9,3 +9,5 @@ Dockerfile
 config/instantclient_19_8
 .DS_STORE
 config/logs
+config/logs/2023-02-23.log
+config/logs/error/2023-02-23.error.log
