@@ -1,5 +1,0 @@
-2023-02-23 15:38:24 error: notNull Violation: User.userIdx cannot be null
-2023-02-23 15:39:15 error: notNull Violation: User.userIdx cannot be null
-2023-02-23 17:10:32 error: Validation error
-2023-02-23 17:10:57 error: Validation error
-2023-02-23 18:14:31 error: Unknown column 'updatedAt' in 'field list'
