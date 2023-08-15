@@ -44,10 +44,11 @@ exports.getHashTag = async function (req, res) {
 }
 
 // 해당 해시태그를 가진 사람 조회
-exports.getHashUser = async function (req, res) {
-    const hashTag = req.params.hashTag;
+exports.getHashUser = async function (req, res){
 
-    const getHashUser = await hashtagProvider.getHashTag(hashTag);
+    const {hashTag} = req.body;
+
+    const getHashUser = await hashtagProvider.getHashUser(hashTag);
     
     return res.send(response(baseResponse.SUCCESS, getHashUser));
 }

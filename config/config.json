@@ -3,7 +3,6 @@
     "username": "root",
     "database": "newschema",
     "host": "152.69.230.128",
-    "port": 3306,
     "password": "Madmax12345678!",
     "dialect": "mysql"
   },

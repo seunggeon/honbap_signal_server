@@ -6,7 +6,7 @@ const { response, errResponse } = require("../../../config/response");
 const { logger } = require('../../../config/winston');
 const crypto = require("crypto");
 const regexEmail = require("regex-email");
-const { User } = require('../../../models');
+// const { User } = require('../../../models');
 
 //const secret_config = require('secret') // 이거 때문에 Enter text to encrypt 입력창 생성.
 const jwt = require("../../../modules/jwt");
@@ -72,8 +72,7 @@ exports.signin = async function (req, res) {
  */
 
 exports.postUsers = async function (req, res) {
-  const { email, password, nickName, birth, phoneNum, sex } =
-    req.body;
+  const { email, password, userName, birth, phoneNum, sex } = req.body;
   // email checking and print error message
 
   // 빈 값 체크
@@ -85,13 +84,13 @@ exports.postUsers = async function (req, res) {
   if (!regexEmail.test(email))
     return res.send(response(baseResponse.SIGNUP_EMAIL_TYPE_ERROR));
 
-  // nickName
+  // userName
 
   // 빈 값 체크
-  if (!nickName) return res.send(response(baseResponse.SIGNUP_NICKNAME_EMPTY));
+  if (!userName) return res.send(response(baseResponse.SIGNUP_NICKNAME_EMPTY));
   // 길이 체크
-  if (nickName.length > 10)
-    //VARCHAR(10) 이 한글로는 5자로 제한되는지 확인 필요
+  if (userName.length > 10)
+      //VARCHAR(10) 이 한글로는 5자로 제한되는지 확인 필요
     return res.send(response(baseResponse.SIGNUP_NICKNAME_LENGTH));
 
   // phoneNum
@@ -105,36 +104,21 @@ exports.postUsers = async function (req, res) {
 
   // 빈 값 체크
   if (!password) return res.send(response(baseResponse.SIGNUP_PASSWORD_EMPTY)); // 2010
-  // if (!userName) return res.send(response(baseResponse.SIGNUP_USERNAME_EMPTY)); // 2011
+  if (!userName) return res.send(response(baseResponse.SIGNUP_USERNAME_EMPTY)); // 2011
   if (!birth) return res.send(response(baseResponse.SIGNUP_BIRTH_EMPTY)); // 2012
   if (!sex) return res.send(response(baseResponse.SIGNUP_SEX_EMPTY)); // 2013
 
-  // const signUpResponse = await userService.createUsers(
-    // email,
-    // password,
-    // userName,
-    // nickName,
-    // birth,
-    // phoneNum,
-    // sex
-  // );
-  User.create({
-    userIdx : 5,
-    userId : 'test',
-    email: email,
-    password: password,
-    // userName: userName,
-    nickName: nickName,
-    birth: birth,
-    phoneNum: phoneNum,
-    sex: sex
-  }).then( result => {
-    return res.send(response(baseResponse.SUCCESS));
-  })
-  .catch( err => {
-    logger.error(err);
-    // return res.send(errResponse(baseResponse.SIGNUP_INVALID_ID));
-  })
+  const signUpResponse = await userService.createUsers(
+      // userId,
+      email,
+      password,
+      userName,
+      birth,
+      phoneNum,
+      sex
+  );
+
+  return res.send(response(signUpResponse));
 };
 
 /**
@@ -200,6 +184,7 @@ exports.getUserIdx = async function (req, res) {
  */
 exports.getUserInfo = async function (req, res) {
   const userIdxFromJWT = req.verifiedToken.userIdx;
+  console.log(userIdxFromJWT)
 
   //validation
   if (!userIdxFromJWT) {
@@ -243,7 +228,6 @@ exports.getUserProfile = async function (req, res) {
 exports.patchUserPassword = async function (req, res) {
   const userIdxFromJWT = req.verifiedToken.userIdx;
   const { password } = req.body;
-
   //validation
   if (!userIdxFromJWT) {
     return res.send(errResponse(baseResponse.USER_USERIDX_EMPTY));  //2042
@@ -301,13 +285,13 @@ exports.patchUserProfile = async function (req, res) {
   } = req.body;
 
   //validation
-  if (!userIdxFromJWT) {
+  if (!userIdxFromJwt) {
     return res.send(errResponse(baseResponse.USER_USERIDX_EMPTY));  //2042
   }
-  if (userIdxFromJWT <= 0) {
+  if (userIdxFromJwt <= 0) {
     return res.send(errResponse(baseResponse.USER_USERIDX_LENGTH));  //2043
   }
-  
+
   const updateUserProfile = await userService.updateUserProfile(
     profileImg,
     taste,
@@ -320,7 +304,7 @@ exports.patchUserProfile = async function (req, res) {
     userIdxFromJwt
   );
 
-  return res.send(response(baseResponse.SUCCESS)); 
+  return res.send(response(baseResponse.SUCCESS));
 };
 
 /**
@@ -337,11 +321,11 @@ exports.patchUserProfile = async function (req, res) {
   }
 
   const getUserNickNameResponse = await userProvider.nickNameCheck(nickName);
-   
+
   if (getUserNickNameResponse.length > 0)
     return res.send(errResponse(baseResponse.SIGNUP_REDUNDANT_NICKNAME));
 
-  return res.send(response(baseResponse.SUCCESS));
+  // return res.send(response(baseResponse.SUCCESS));
  };
 
 /**
@@ -350,19 +334,18 @@ exports.patchUserProfile = async function (req, res) {
  * [GET] /app/user/getIdx
  */
 exports.getUserIdxFromJWT = async function (req, res) {
-  const userIdxFromJWT = req.verifiedToken.userIdx;
-  
+  const userIdxFromJwt = req.verifiedToken.userIdx;;
+  console.log(userIdxFromJwt)
   //validation
-  if (!userIdxFromJWT) {
+  if (!userIdxFromJwt) {
     return res.send(errResponse(baseResponse.USER_USERIDX_EMPTY));  //2042
   }
-  if (userIdxFromJWT <= 0) {
+  if (userIdxFromJwt <= 0) {
     return res.send(errResponse(baseResponse.USER_USERIDX_LENGTH));  //2043
   }
 
-  console.log("userIdx:", userIdxFromJWT);
-  const userIdx = userIdxFromJWT;
- 
+  console.log("userIdx:", userIdxFromJwt);
+  const userIdx = userIdxFromJwt;
   return res.send(response(baseResponse.SUCCESS, userIdx));
 }
 
