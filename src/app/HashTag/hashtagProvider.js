@@ -24,7 +24,6 @@ exports.getHashTag = async function (userIdx) {
 exports.getHashUser = async function (hashTag) {
   try {
     const connection = await pool.getConnection(async (conn) => conn);
-
     const getHashUser = await hashtagDao.selectHashTag(connection, hashTag);
     connection.release();
 

@@ -19,7 +19,7 @@ async function insertHashTag(connection, params) {
 async function deleteHashTag(connection, params) {
     const query =   `
                     DELETE FROM HashTag
-                    WHERE userIdx = ?, hashTag = ?;
+                    WHERE userIdx = ? and hashTag = ?;
                     `;
     const [row] = await connection.query(query, params);
     return row;
@@ -46,13 +46,14 @@ async function countHashTag(connection, userIdx) {
     const [row] = await connection.query(query, userIdx);
     return row;
 }
-
+//원래 유저 닉네임인걸 테스트위해 네임으로 수정
 // 해시태그 탐색 *** 5 ***
 async function selectHashTag(connection, params) {
     const query =   `
-                    SELECT up.nickName 
-                    FROM HashTag AS h, User AS up
-                    WHERE h.hashTag = ? AND h.userIdx = up.userIdx;
+                    SELECT up.userName 
+                    FROM HashTag AS h 
+                        LEFT JOIN User AS up ON up.userIdx = h.userIdx
+                    WHERE h.hashTag = ?;
                     `;
     const [row] = await connection.query(query, params);
     return row;

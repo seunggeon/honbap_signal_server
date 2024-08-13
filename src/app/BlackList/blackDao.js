@@ -25,11 +25,13 @@ async function deleteBlack(connection, params) {
 }
 
 // 블랙리스트 조회 *** 3 ***
+//nickName-> userName 으로 테스트함
+// blackIdx 랑 조회하던거 userIdx 로 변경
 async function selectBlack(connection, userIdx) {
     const query =   `
-                    SELECT up2.nickName AS blackNickName
+                    SELECT distinct up2.Username AS blackNickName
                     FROM BlackList AS b
-                        RIGHT JOIN User AS up2 ON up2.userIdx = b.blackIdx
+                        RIGHT JOIN User AS up2 ON up2.userIdx = b.userIdx
                     WHERE b.userIdx = ?; 
                     `;
     const [row] = await connection.query(query, userIdx);
@@ -37,11 +39,12 @@ async function selectBlack(connection, userIdx) {
 }
 
 // 블랙리스트 상세 조회 *** 4 ***
+// nickname -> userName
 async function selectBlackInfo(connection, params) {
     const query =   `
-                    SELECT up2.nickName AS blackNickName, b.whyBlack
+                    SELECT up2.userName AS blackNickName, b.whyBlack
                     FROM BlackList AS b
-                        RIGHT JOIN User AS up2 ON up2.userIdx = b.blackIdx
+                        RIGHT JOIN User AS up2 ON up2.userIdx = b.userIdx
                     WHERE b.userIdx = ? AND b.blackIdx = ?;
                     `;
     const [row] = await connection.query(query, params);

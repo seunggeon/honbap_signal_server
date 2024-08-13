@@ -27,6 +27,7 @@ exports.emailCheck = async function (email) {
     const emailCheckResult = await userDao.existUserEmail(connection, email);
     connection.release();
 
+
     return emailCheckResult;
   } catch (err) {
     logger.error(`emailCheck Provider error\n: ${err.message}`);
@@ -113,8 +114,8 @@ exports.getUserInfo = async function (userIdx) {
 
     const userInfoResult = await userDao.selectUserInfo(connection, userIdx);
     connection.release();
-
-    return userInfoResult[0];
+    console.log(userInfoResult[0])
+    return userInfoResult;
   } catch (err) {
     logger.error(`getUserInfo Provider error\n: ${err.message}`);
     return errResponse(baseResponse.DB_ERROR);

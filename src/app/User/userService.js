@@ -11,8 +11,7 @@ const userProvider = require("./userProvider");
 const userDao = require("./userDao");
 
 const baseResponse = require("../../../config/baseResponseStatus");
-const { response } = require("../../../config/response");
-const { errResponse } = require("../../../config/response");
+const { response, errResponse } = require("../../../config/response");
 
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
@@ -22,19 +21,24 @@ const { connect } = require("http2");
 
   // 회원가입
   // 오류 코드는 나중에 수정할 예정
-exports.createUsers = async function (email, password, userName, nickName, birth, phoneNum, sex) {
+exports.createUsers = async function (email, password, userName, birth, phoneNum, sex) {
     try {
         const emailRows = await userProvider.emailCheck(email);
-        if (emailRows.length > 0)
-            return errResponse(baseResponse.SIGNUP_REDUNDANT_EMAIL);
+        if (emailRows.length > 0) {
+            return errResponse(baseResponse.SIGNUP_REDUNDANT_EMAIL); }
         
-        const nickNameRows = await userProvider.nickNameCheck(nickName);
-        if (nickNameRows.length > 0)
-            return errResponse(baseResponse.SIGNUP_REDUNDANT_NICKNAME);
-    
+
+        // const nickNameRows = await userProvider.nickNameCheck(nickName);
+        // if (nickNameRows.length > 0)
+        //     return errResponse(baseResponse.SIGNUP_REDUNDANT_NICKNAME);
+
         const phoneNumRows = await userProvider.phoneNumCheck(phoneNum);
-        if (phoneNumRows.length > 0)
-            return errResponse(baseResponse.SIGNUP_REDUNDANT_PHONENUMBER);
+
+        if (phoneNumRows.length > 0) {
+            return errResponse(baseResponse.SIGNUP_REDUNDANT_PHONENUMBER); }
+
+
+
 
         // 비밀번호 암호화
         const hashedPassword = await crypto
@@ -43,12 +47,11 @@ exports.createUsers = async function (email, password, userName, nickName, birth
             .digest("hex");
 
         // 쿼리문에 사용할 변수 값을 배열 형태로 전달
-        const insertUserInfoParams = [email, hashedPassword, userName, nickName, birth, phoneNum, sex];
+        const insertUserInfoParams = [email, hashedPassword, userName, birth, phoneNum, sex];
+
 
         const connection = await pool.getConnection(async (conn) => conn);
-
         const emailResult = await userDao.insertUserInfo(connection, insertUserInfoParams);
-        // console.log(`추가된 회원 : ${emailResult.insertEmail}`)  // emailResult 데이터 형식이 어떤지 확인 필요
         connection.release();
         return response(baseResponse.SUCCESS);
 
@@ -57,7 +60,6 @@ exports.createUsers = async function (email, password, userName, nickName, birth
         return errResponse(baseResponse.DB_ERROR);
     }
 };
-
 // 유저 프로필 등록 : 데옹
 exports.createUserProfile = async function (userIdx, profileImg, taste, hateFood, interest, avgSpeed, preferArea, mbti, userIntroduce) {
     const connection = await pool.getConnection(async (conn) => conn);
@@ -65,8 +67,8 @@ exports.createUserProfile = async function (userIdx, profileImg, taste, hateFood
         await connection.beginTransaction();
 
         // 쿼리문에 사용할 변수 값을 배열 형태로 전달
-        const insertUserProfileParams = 
-            [userIdx, profileImg, taste, hateFood, 
+        const insertUserProfileParams =
+            [userIdx, profileImg, taste, hateFood,
                 interest, avgSpeed, preferArea, mbti, userIntroduce];
         const createUserLocation = [userIdx];
         const createUserManner = [userIdx];
@@ -92,6 +94,7 @@ exports.createUserProfile = async function (userIdx, profileImg, taste, hateFood
 // 패스워드 변경
 exports.updatePassword = async function(password, userIdx) {
     try {
+
         const hashedPassword = await crypto
         .createHash("sha512")
         .update(password)
@@ -132,7 +135,7 @@ exports.updateUserInfo = async function(userName, birth, userIdx) {
 exports.updateUserProfile = async function(profileImg, taste, hateFood, interest, avgSpeed, preferArea, mbti, userIntroduce, userIdx) {
     try {
         const connection = await pool.getConnection(async (conn) => conn);
-        
+
         const params = [profileImg, taste, hateFood, interest,avgSpeed,
                         preferArea, mbti, userIntroduce, userIdx];
         const result = await userDao.updateUserProfile(connection, params);
@@ -146,12 +149,16 @@ exports.updateUserProfile = async function(profileImg, taste, hateFood, interest
 // 로그인
 exports.login = async function (email, password){
     try {
-        const emailRows = await userProvider.emailCheck(email);
+        console.log("test")
+        const [emailRows] = await userProvider.emailCheck(email);
+        console.log(emailRows.email)
 
         if (emailRows.length == 0)
             return errResponse(baseResponse.USER_IS_NOT_EXIST);
 
-        selectUserEmail = emailRows[0].email
+        selectUserEmail = emailRows.email
+
+
         console.log("selectUserEmail :", selectUserEmail);
         console.log("jwtsecret : ", jwtsecret);
 
@@ -175,7 +182,7 @@ exports.login = async function (email, password){
         let jwtToken = await jwt.sign(
             {
                 userIdx : userIdxRow[0].userIdx
-            }, 
+            },
             jwtsecret,
             {
                 expiresIn: "365d",
@@ -184,12 +191,12 @@ exports.login = async function (email, password){
         );
         return response(baseResponse.SUCCESS, {'userIdx': userIdxRow[0].userIdx , 'jwt': jwtToken});
 
-        // return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMsg.LOGIN_SUCCESS, 
+        // return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMsg.LOGIN_SUCCESS,
         //     {
         //       /* 생성된 Token을 클라이언트에게 Response */
         //         token: jwtToken.token
         //     }));
-        // console.log(`로그인 되었습니다.`)
+        //console.log(`로그인 되었습니다.`)
     } catch (err) {
         logger.error(`App - login Service error\n: ${err.message}`);
         return errResponse(baseResponse.DB_ERROR);
@@ -207,7 +214,7 @@ exports.kakaoLogin = async function (email){
         let jwtToken = await jwt.sign(
             {
                 userIdx : userIdxRow[0].userIdx
-            }, 
+            },
             jwtsecret,
             {
                 expiresIn: "365d",
@@ -216,7 +223,7 @@ exports.kakaoLogin = async function (email){
         );
         return response(baseResponse.SUCCESS, {'userIdx': userIdxRow[0].userIdx , 'jwt': jwtToken});
 
-        // return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMsg.LOGIN_SUCCESS, 
+        // return res.status(statusCode.OK).send(util.success(statusCode.OK, responseMsg.LOGIN_SUCCESS,
         //     {
         //       /* 생성된 Token을 클라이언트에게 Response */
         //         token: jwtToken.token
